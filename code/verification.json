@@ -1,0 +1,96 @@
+{
+ "V1_thin_wall_limit": {
+  "passed": true,
+  "ratio_at_eta_0p03": 0.9943,
+  "ratio_at_eta_0p06": 0.9773
+ },
+ "V2_shooting_vs_bvp": {
+  "passed": true,
+  "cases": 7,
+  "max_relative_difference": 1.7883763359094473e-09
+ },
+ "V3_lambda_scaling": {
+  "passed": true,
+  "max_relative_difference": 9.763301278553627e-13
+ },
+ "V4_de_sitter_action": {
+  "passed": true,
+  "rel": 4.440892098500626e-16
+ },
+ "V5_flat_limit_of_gravity": {
+  "passed": true,
+  "ratio_minus_one_at_g_1em4": -0.0005058742020749296,
+  "predicted_from_kappa": -0.00035496317154835036,
+  "kappa_g1em3": 3.5496317154835033,
+  "kappa_g2em3": 3.4585625302291367,
+  "monotone": true
+ },
+ "V6_parke_thin_wall_suppression": {
+  "passed": true,
+  "numerical_vs_analytic_ratio": [
+   [
+    0.12,
+    0.001,
+    0.9933,
+    0.9945
+   ],
+   [
+    0.12,
+    0.01,
+    0.9358,
+    0.9467
+   ],
+   [
+    0.2,
+    0.001,
+    0.9955,
+    0.9967
+   ],
+   [
+    0.2,
+    0.01,
+    0.9567,
+    0.9676
+   ]
+  ]
+ },
+ "V7_hawking_moss_consistency": {
+  "passed": true,
+  "grid_points": 98,
+  "bounces_found": 84,
+  "found_with_criterion_violated": 0,
+  "found_with_B_above_HM": 0
+ },
+ "V8_interpolation_off_grid": {
+  "passed": true,
+  "max_relative_error": 6.584469429327111e-05,
+  "errors": [
+   2.0859352406699117e-05,
+   1.0557781624953577e-05,
+   6.584469429327111e-05,
+   9.508549267511768e-06
+  ]
+ },
+ "V9_critical_action": {
+  "passed": true
+ },
+ "V10_friedmann_constraint": {
+  "passed": true,
+  "max_residual": 5.272574044035139e-12
+ },
+ "V11_interior_closed_form": {
+  "passed": true,
+  "max_relative_difference": 5.54685427367474e-07
+ },
+ "V12_constants": {
+  "passed": true,
+  "rho_lambda_gev4": 2.552523808576802e-47,
+  "T_reh_max_meV": 2.192113357391066,
+  "ln_M4_over_Vf": 276.63033049386434
+ },
+ "V13_monte_carlo": {
+  "passed": true,
+  "fractions_sum": 1.0,
+  "reproduces_stored_100k_run": true
+ }
+}
