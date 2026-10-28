@@ -81,10 +81,11 @@ class _P:
             self.take()
             # \rm applies to the rest of the current group; \mathrm takes a group
             if v == "mathrm":
-                body = self.group()
-                return ("plain", body), plain
-            return None, True
-        atom = self.atom(plain)
+                atom = ("plain", self.group())
+            else:
+                return None, True
+        else:
+            atom = self.atom(plain)
         if no_scripts:
             return atom, plain
         sub = sup = None

@@ -138,7 +138,7 @@ add(("h1", "2. Scalar effective theory and the potential"))
 add(("p", "We consider a real scalar field minimally coupled to Einstein gravity,"))
 add(("eq", r"S=\int d^4x\sqrt{-g}\left[\frac{M_{\rm Pl}^2}{2}R-\frac12 g^{\mu\nu}\partial_\mu\varphi\,\partial_\nu\varphi-V(\varphi)\right]"))
 add(("p", "where $M_{\\rm Pl}$ is the reduced Planck mass. The false vacuum has the energy density $V_f = V(\\varphi_f)$, which is identified with the "
-          "observed dark energy, $V_f = \\rho_\\Lambda = %s$ GeV$^4$ (quarter-root %.2f meV; Planck 2018 \\cite{Planck}, $H_0 = %.2f$ km s$^{-1}$ Mpc$^{-1}$, "
+          "observed dark energy, $V_f = \\rho_\\Lambda = %s$ $\\mathrm{GeV}^4$ (quarter-root %.2f meV; Planck 2018 \\cite{Planck}, $H_0 = %.2f\\ \\mathrm{km\\,s^{-1}\\,Mpc^{-1}}$, "
           "$\\Omega_\\Lambda = %.4f$). The asymptotic de Sitter rate is $H_\\Lambda = \\sqrt{V_f/3}/M_{\\rm Pl} = %s$ GeV, so that $H_\\Lambda^{-1} = %.1f$ Gyr, and "
           "$M_{\\rm Pl}^4/V_f = %s$, with $\\ln(M_{\\rm Pl}^4/V_f) = %.1f$. A microscopic origin of the potential is not assumed." % (
               sci(K.V_F, 2), K.V_F ** 0.25 * 1e12, K.H0_KMS_MPC, K.OMEGA_L, sci(K.H_L, 2), K.T_HUBBLE_YR / 1e9, sci(K.M4_OVER_VF, 2), K.LN_M4_OVER_VF)))
@@ -181,7 +181,7 @@ add(("p", "The bounce is found by shooting on the central field value with overs
           "The analytic thin-wall formula with gravity \cite{Parke} serves as a further check of the gravitational suppression. Table 1 lists the checks, all of which are executed by a script distributed with the paper." % sci(v("V2_shooting_vs_bvp")["max_relative_difference"], 0)))
 add(("table", "Table 1. Executable consistency checks of the numerical bounce (the complete suite has %d checks, all passing)." % len(V),
      ["Check", "Result"],
-     [["Thin-wall limit: B/B$_{\\rm thin}$ as $\\eta\\to0$", "%.4f at $\\eta=0.03$, %.4f at 0.06 (monotone)" % (v("V1_thin_wall_limit")["ratio_at_eta_0p03"], v("V1_thin_wall_limit")["ratio_at_eta_0p06"])],
+     [["Thin-wall limit: $B/B_{\\rm thin}$ as $\\eta\\to0$", "%.4f at $\\eta=0.03$, %.4f at 0.06 (monotone)" % (v("V1_thin_wall_limit")["ratio_at_eta_0p03"], v("V1_thin_wall_limit")["ratio_at_eta_0p06"])],
       ["Shooting versus boundary-value solver", "max relative difference %s (%d cases)" % (sci(v("V2_shooting_vs_bvp")["max_relative_difference"], 1), v("V2_shooting_vs_bvp")["cases"])],
       ["Scaling $B=b(\\eta)/\\lambda$", "max relative difference %s" % sci(v("V3_lambda_scaling")["max_relative_difference"], 1)],
       ["de Sitter action $-24\\pi^2M^4/V_f$", "relative difference %s" % sci(v("V4_de_sitter_action")["rel"], 0)],
