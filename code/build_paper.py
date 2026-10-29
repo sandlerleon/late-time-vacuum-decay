@@ -147,7 +147,7 @@ add(("p", "In the standard cosmological model the late universe approaches de Si
           "tunneling of the present dark energy produce a new hot, expanding epoch? That requires a specified metastable minimum, the tunneling action "
           "including gravity, a rate compared with the observed expansion history, and the interior of the nucleated region followed to see whether it can "
           "become a hot big bang."))
-add(("p", "Two outcomes must be kept apart. In a branching or recycling picture (Option A) a parent metastable vacuum nucleates daughter regions by tunneling; each is a bubble inside the parent "
+add(("p", "A further distinction concerns the outcome. In a branching or recycling picture (Option A) a parent metastable vacuum nucleates daughter regions by tunneling; each is a bubble inside the parent "
           "spacetime, and whether it is a hot expanding universe, or a universe at all in the sense of \\cite{BGG,FG,FGG}, is a separate question. In a genuinely cyclic cosmology (Option B) the same region "
           "expands, contracts, bounces and reheats, which needs a dynamical bounce beyond tunneling and raises problems of stability and entropy \\cite{Tolman,PS}. This paper addresses Option A with the "
           "Coleman--De Luccia theory and treats Option B only by stating, in Section 5.4, what it would require."))
