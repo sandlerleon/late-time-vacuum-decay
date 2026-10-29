@@ -143,5 +143,29 @@
  "V18_coupling_estimate": {
   "passed": true,
   "rows": 2
+ },
+ "V19_finite_temperature_reduction": {
+  "passed": true,
+  "max_rel_reduction": 0.000181418628823371,
+  "thin_wall_ratio_O3": [
+   0.995,
+   0.9863,
+   0.9651
+  ],
+  "critical_theta_ok": true
+ },
+ "V20_time_dependent_survival": {
+  "passed": true,
+  "V4_grid_over_survival": 1.0000000066945693,
+  "monotone_cooling": true,
+  "ln_rate_today_thermal": -65.09427174424098,
+  "ln_rate_zero_T": -152.64230837383764,
+  "S3_over_T_dS": 4.199254282408666e+32
+ },
+ "V21_thermal_prior_maps": {
+  "passed": true,
+  "scenarios": 6,
+  "decoupled_excluded": 0.14723,
+  "min_excluded_equilibrated": 0.24216
  }
 }

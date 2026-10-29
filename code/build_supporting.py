@@ -28,13 +28,14 @@ OUT = os.path.join(REPO, "manuscript")
 J = lambda n: json.load(open(os.path.join(HERE, n), encoding="utf-8"))
 T, F, MC, IN, V = J("bounce_tables.json"), J("falsification_map.json"), J("monte_carlo.json"), J("interior_evolution.json"), J("verification.json")
 SV, CV, SC, CP = J("survival.json"), J("convergence.json"), J("scope.json"), J("coupling.json")
+TR, TT = J("thermal_results.json"), J("thermal_tables.json")
 assert all(v["passed"] for v in V.values())
 GITHUB = "https://github.com/sandlerleon/late-time-vacuum-decay"
 DOI_PAPER, DOI_CODE = "10.5281/zenodo.23717617", "10.5281/zenodo.23717619"
 if os.path.exists(os.path.join(HERE, "dois.json")):
     _d = J("dois.json")
     DOI_PAPER, DOI_CODE = _d["paper"], _d["code"]
-TITLE = "Late-Time Vacuum Decay as a Cosmological Reset: Coleman--De Luccia Tunneling, Reheating Constraints, and Consistency Boundaries"
+TITLE = "Daughter-Universe Nucleation from a Metastable Dark-Energy Vacuum: Thermal and Quantum Decay, Past-Light-Cone Survival, and Reheating Bounds"
 BASE = MC["baseline"]
 A_, B_, G_, D_ = CV["A_flat_shooting"], CV["B_boundary_value"], CV["C_gravity_coefficient"], CV["D_negative_mode"]
 
@@ -58,6 +59,9 @@ DESC = {
     "V16_negative_mode": "One negative eigenvalue (l = 0), l = 1 zero modes, none for l >= 2, no node, Derrick identity",
     "V17_scope_of_reheating_bound": "Matter-dilution envelope, curvature parameter, e-folds, AdS crunch time, extra reservoir",
     "V18_coupling_estimate": "Internal consistency of the matter-coupling estimate",
+    "V19_finite_temperature_reduction": "Exact rescaling of the thermal potential against direct O(3)/O(4) bounces; thin-wall limit of the O(3) action; critical thermal strength",
+    "V20_time_dependent_survival": "Light-cone quadrature, monotone cooling of the rate, de Sitter horizon temperature",
+    "V21_thermal_prior_maps": "Thermal channel only tightens survival (c >= 0) and closes the late-time decay window",
 }
 S = []
 add = S.append
@@ -77,7 +81,7 @@ add(("p", "The equation $x''+3x'/r=v'(x)$ is integrated from a small radius ($10
           "(DOP853) with relative tolerance $10^{-11}$ and absolute tolerance $10^{-13}$. A trajectory is an overshoot if $x$ crosses $x_f$ with positive velocity and an undershoot if $x'$ changes sign first. "
           "The central value $x_0$ is bracketed between the undershoot limit $x_s$ (the point on the true-vacuum side with $v(x_s)=v_f$) and a point $10^{-9}$ from $x_t$, and "
           "bisected to $10^{-13}$. The action is the trapezoid sum of $2\\pi^2r^3[x'^2/2+v-v_f]$ over $2\\times10^5$ points up to the radius at which the trajectory leaves. In the thin-wall regime ($\\eta<0.1$) the sensitivity of the shooting to $x_0$ is exponential in the wall radius, so the bounce is instead computed by "
-          "collocation on the boundary-value problem with a tanh initial guess (SciPy solve\\_bvp, tolerance $10^{-9}$, 4000 initial nodes, domain padding 30). Where both methods apply ($0.10\\le\\eta\\le0.17$) they agree to "
+          "collocation on the boundary-value problem with a tanh initial guess (SciPy solve_bvp, tolerance $10^{-9}$, 4000 initial nodes, domain padding 30). Where both methods apply ($0.10\\le\\eta\\le0.17$) they agree to "
           "%s (check V2)." % tx(V["V2_shooting_vs_bvp"]["max_relative_difference"])))
 add(("h2", "S2.3 Bounce with gravity"))
 add(("p", "The four-dimensional system $(x,x',\\rho,\\rho')$ is integrated in the arclength $\\xi$ with $\\rho''=-(g\\rho/3)(x'^2+v)$ and the same overshoot/undershoot "
@@ -130,6 +134,20 @@ add(("p", "The probability that no bubble has nucleated in the past light cone o
           "corresponds to a mean decay time $t_{\\rm dec}\\gtrsim%s$ yr."
           % (K.H0_KMS_MPC, K.OMEGA_L, tx(SV["omega_r"], 2), SV["omega_m"], SV["V4_over_H0m4"], SV["V4_HL4"], tx(abs(SV["check_EdS"]["numeric"] / SV["check_EdS"]["analytic"] - 1), 1),
              SV["parameter_variation"][0]["V4_HL4"], SV["parameter_variation"][2]["V4_HL4"], SV["euclid_HL4"], SV["N_95"], SV["gamma_over_hl4_max_95"], tx(SV["t_dec_min_yr"], 1))))
+add(("h2", "S5.1 Finite temperature: thermal rescaling, the O(3) action and the time-dependent rate"))
+add(("p", "Thermally corrected potential $V_{\\rm eff}=V_0+cT^2\\varphi^2/2$, $\\theta=cT^2/(\\lambda f^2)$. With $x=sy$, $s=\\sqrt{1-2\\theta}$, $(x^2-1)^2/8+\\eta x/2+\\theta x^2/2=s^4[(y^2-1)^2/8+(\\eta/s^3)y/2]$+const, so "
+          "the family is closed under the thermal term with $\\eta_{\\rm eff}=\\eta/s^3$. For a potential $V=A\\,w(\\varphi/F)$ the O(4) action is $(F^4/A)\\,b(\\eta)$ and the O(3) action is $(F^3/\\sqrt A)\\,s_3(\\eta)$; with $F=fs$, $A=\\lambda f^4s^4$ "
+          "this gives $B_4=b(\\eta_{\\rm eff})/\\lambda$ and $S_3=(fs/\\sqrt\\lambda)s_3(\\eta_{\\rm eff})$. $s_3(\\eta)=4\\pi\\int\\rho^2[x'^2/2+w-w_f]d\\rho$ is tabulated by thermal.py (shooting for $\\eta\\ge0.1$, collocation below; "
+          "thin-wall check $16\\pi\\sigma^3/3\\Delta V^2$, ratio %.4f at $\\eta=0.03$). Outside the table, $b\\propto\\eta^{-3}$ and $s_3\\propto\\eta^{-2}$ (thin-wall power laws) are used for $\\eta_{\\rm eff}<0.03$ (negative $c$), and $b(0.38)$, $s_3(0.38)$ "
+          "are held fixed between $0.38$ and $\\eta_c$. Validation (check V19): direct bounces with the thermal term in the potential agree with the scalings to %.1e (Table S6). The dominant saddle is the O(3) one if $S_3/T<B_4$; its prefactor is "
+          "$D_TT^4(S_3/2\\pi T)^{3/2}$ with $\\ln D_T\\sim N(0,(1.5\\ln10)^2)$. The survival integral $\\ln I=\\ln\\sum_i\\Gamma(T_i)w_i$ uses 300--600 nodes in $s=-\\ln a$ with the weights of Section S5 (their sum reproduces $V_4$ to %.1e). "
+          "thermal_analysis.py draws $2\\times10^5$ parameter sets with the seed and priors of Section S6 (plus $\\ln D_T$), and classifies each as above the survival bound ($\\ln I>\\ln3.0$), inconsistent (no false minimum at some redshift of the "
+          "equilibrium epoch) or allowed; the future decay time is the zero-temperature O(4) value because the thermal contribution switches off as $T\\propto e^{-H_\\Lambda t}$."
+          % (TT["s3_thin_wall"][0]["ratio"], max(max(r["rel4"], r["rel3"]) for r in TT["reduction_check"]), abs(TR["light_cone_check"]["V4_HL4_grid"] / TR["light_cone_check"]["V4_HL4_survival_json"] - 1))))
+rows = [["%.2f" % r["eta"], "%.2f" % r["theta"], "%.4f" % r["eta_eff"], "%.4f" % r["B4_direct"], "%.4f" % r["B4_scaling"], "%.4f" % r["S3_direct"], "%.4f" % r["S3_scaling"]] for r in TT["reduction_check"]]
+add(("table", "Table S6. Direct bounce with the thermal term in the potential against the exact rescaling ($\\lambda=1$): $B_4$ and $S_3$.", ["$\\eta$", "$\\theta$", "$\\eta_{\\rm eff}$", "$B_4$ direct", "$B_4$ scaling", "$S_3$ direct", "$S_3$ scaling"], rows, None))
+rows = [["%.3f" % r["eta"], "%.4g" % r["s3"], "%.4g" % r["b"]] for r in TT["s3_table"] if r["eta"] in (0.03, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.38)]
+add(("table", "Table S7. The O(3) action $s_3(\\eta)$ and the O(4) action $b(\\eta)$ at $\\lambda=1$, $\\theta=0$ (selected tilts; the full table is in thermal_tables.json).", ["$\\eta$", "$s_3$", "$b$"], rows, None))
 add(("h1", "S6. Monte Carlo specification"))
 add(("p", "Draws: $N=%d$, NumPy PCG64 generator, seed %d. $\\log_{10}\\lambda\\sim U(-2,\\log_{10}4\\pi)$; $\\eta\\sim U(0.03,0.38)$; $\\ln D\\sim N(0,(1.5\\ln10)^2)$; $r_L=1$. Each draw is converted to "
           "$\\ln\\Gamma/H^4$ with Eq. (7), to a decay time, and classified: above the survival bound if $\\Gamma/H_\\Lambda^4\\ge%.2f$ (Section S5); otherwise decaying by $10^{12}$, $10^{20}$, $10^{50}$ or $10^{100}$ yr, or "
@@ -154,8 +172,8 @@ add(("p", "Scope (scope.py). With the curvature parameter $Y=a^2\\rho/(3M_{\\rm 
 add(("h1", "S8. Reproduction"))
 add(("p", "Environment of the published run: Python %s, NumPy %s, SciPy %s (Windows). Requirements: NumPy, SciPy, Matplotlib, python-docx (requirements.txt). From the code directory, in this order: "
           "bounce_tables.py (about 3 minutes), survival.py (seconds), monte_carlo.py (about 20 seconds), falsification_map.py, interior_evolution.py, convergence.py (about 4 minutes), scope.py, coupling.py, "
-          "verify.py (about 15 seconds), make_figures.py, build_paper.py, build_supporting.py. The scripts write the JSON files that the "
-          "manuscript builder reads; monte\\_carlo.py needs survival.json and falsification\\_map.py needs survival.json. A rerun in a clean clone of the repository reproduced the stored JSON files exactly in the earlier release. Code: %s, archived at https://doi.org/%s."
+          "thermal.py (about 40 seconds), thermal_analysis.py (about 6 minutes), verify.py (about 20 seconds), make_figures.py (calls make_thermal_figures.py), build_paper.py, build_supporting.py. The scripts write the JSON files that the "
+          "manuscript builder reads; monte_carlo.py needs survival.json and falsification_map.py needs survival.json. A rerun in a clean clone of the repository reproduced the stored JSON files exactly in the earlier release. Code: %s, archived at https://doi.org/%s."
           % (platform.python_version(), np.__version__, scipy.__version__, GITHUB, DOI_CODE)))
 add(("h1", "S9. Known limitations of the numerics"))
 add(("bullets", [
@@ -199,6 +217,10 @@ para("The paper tests a proposal that is often stated informally: that the decay
      "The nucleated region reheats to at most about %.1f meV, and the reason is not only energy conservation: the open interior stays curvature dominated, so that a hot epoch at one second would require a parent "
      "energy scale at least %d orders of magnitude above the Planck scale. A trigger by matter dilution requires a change of the matter mass between the vacua of at least about 0.1%%." % (
          round(MC["B_critical_quantiles"]["0.5"]), SV["V4_HL4"], round(SV["ratio_euclid_to_lorentzian"]), F["reheat"]["T_max_meV_at_Vf"], int(np.floor(SC["needed_parent_for_bbn_at_1s"]["kappa_m_min"]["orders_above_Planck"]))))
+para("Cosmological cooling is treated explicitly. A scalar coupled to the CMB acquires a thermal mass, which rescales the tilted quartic potential exactly; the quantum (O(4)) and thermal (O(3)) exponents are compared, "
+     "and the survival probability is computed with the time-dependent rate on the past light cone. Cooling lowers the thermal channel monotonically and cannot raise the late-time probability of a transition: a scalar decoupled from the CMB is unaffected, "
+     "and one in equilibrium with it is more strongly constrained (%s%% to %s%% of the prior excluded against %s%%) with no late-time decay window left. The conclusion is therefore about daughter regions of the present dark energy, "
+     "which are cold and empty, and not about a cyclic cosmology." % (str(round(100 * TR["prior_maps"]["c=0 (equilibrated), z<=1"]["excluded"])), str(round(100 * TR["prior_maps"]["c=0, z<=10"]["excluded"])), str(round(100 * TR["prior_maps"]["decoupled"]["excluded"]))))
 para("I want to be clear about novelty. The bounce, Hawking–Moss and thin-wall results, the past-light-cone survival method, open-universe interiors and screened couplings are established, and are cited as such; Table 1 of the "
      "manuscript lists, for each ingredient, what is known and what is added. What is new is the quantitative combination for the dark-energy vacuum: an explicit map from potential parameters to decay times with a "
      "numerical error budget and negative-mode check; the survival bound on the past light cone and the corrected width of the transition window; a statement of which energy sources the reheating bound excludes by geometry and which only by "

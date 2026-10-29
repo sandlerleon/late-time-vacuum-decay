@@ -22,6 +22,9 @@ unless every check passes.
  V16 negative-mode structure: one negative eigenvalue (l = 0), l = 1 zero modes, none for l >= 2, no node, Derrick identity
  V17 scope of the reheating bound: matter-dilution envelope, curvature parameter, e-folds, AdS crunch, reservoir
  V18 matter-coupling estimate: internal consistency
+ V19 finite temperature: exact rescaling of the thermal potential against direct O(3)/O(4) bounces, thin-wall limit of the O(3) action, critical thermal strength
+ V20 time-dependent survival integral: light-cone quadrature, monotone cooling of the rate, de Sitter horizon temperature
+ V21 thermal prior maps: the thermal channel only tightens survival (c >= 0) and closes the late-time decay window
 """
 import json
 import os
@@ -173,5 +176,37 @@ for row in CP["rows"]:
     for c in row["cases"]:
         ok18 &= abs(c["beta_linear"] * row["delta_phi_meV"] * 1e-12 / K.M_PL / c["delta_ln_m"] - 1) < 1e-9 and abs(c["delta_ln_m"] * CP["rho_m_over_Vf"] / c["dV_over_DV"] - 1) < 1e-9
 rec("V18_coupling_estimate", ok18, rows=len(CP["rows"]))
+# V19
+TT = json.load(open(os.path.join(HERE, "thermal_tables.json"), encoding="utf-8"))
+TRs = json.load(open(os.path.join(HERE, "thermal_results.json"), encoding="utf-8"))
+red = TT["reduction_check"]
+thin = [r["ratio"] for r in TT["s3_thin_wall"]]
+ec = C.eta_crit()
+tc_ok = True
+for e19 in (0.1, 0.2, 0.3, 0.36):
+    thc = 0.5 * (1.0 - (e19 / ec) ** (2.0 / 3.0))
+    rts = np.sort(np.roots([1.0, 0.0, -(1.0 - 2.0 * thc), e19]).real)
+    tc_ok &= abs(rts[2] - rts[1]) < 1e-3
+rec("V19_finite_temperature_reduction", max(max(r["rel4"], r["rel3"]) for r in red) < 5e-4 and all(np.diff(thin) < 0) and thin[0] > 0.99 and tc_ok,
+    max_rel_reduction=float(max(max(r["rel4"], r["rel3"]) for r in red)), thin_wall_ratio_O3=[round(x, 4) for x in thin], critical_theta_ok=bool(tc_ok))
+# V20
+import thermal as TH
+z_, w_ = TH.light_cone_grid(1100.0, 600)
+v4g = float(np.sum(w_) * K.OMEGA_L ** 2)
+mono = True
+for lab in ("c=0", "c=0.1"):
+    lr = np.array([np.nan if x is None else x for x in TRs["rate_vs_z"]["ln_rate"][lab]])
+    zz = np.array(TRs["rate_vs_z"]["z"])
+    good = np.isfinite(lr)
+    mono &= bool(np.all(np.diff(lr[good]) > 0))                    # the rate falls as the universe cools (z decreases)
+q0 = TRs["rate_vs_z"]["ln_rate"]["decoupled"][0]
+rec("V20_time_dependent_survival", abs(v4g / SV["V4_HL4"] - 1) < 1e-5 and mono and TRs["rate_vs_z"]["ln_rate"]["c=0"][0] > q0 and TRs["S3_over_T_dS"] > 1e30 and TRs["T_dS_over_T_cmb"] < 1e-29,
+    V4_grid_over_survival=float(v4g / SV["V4_HL4"]), monotone_cooling=bool(mono), ln_rate_today_thermal=TRs["rate_vs_z"]["ln_rate"]["c=0"][0], ln_rate_zero_T=q0, S3_over_T_dS=TRs["S3_over_T_dS"])
+# V21
+pm = TRs["prior_maps"]
+eqs = [v for k, v in pm.items() if isinstance(v, dict) and v.get("c") is not None and v["c"] >= 0]
+tight = all(v["allowed_but_decoupled_excluded"] == 0.0 and v["excluded"] + v["inconsistent"] > pm["decoupled"]["excluded"] for v in eqs)
+closed = all(v["decay_by_1e20"] == 0.0 for v in eqs)
+rec("V21_thermal_prior_maps", tight and closed, scenarios=len(eqs), decoupled_excluded=pm["decoupled"]["excluded"], min_excluded_equilibrated=min(v["excluded"] + v["inconsistent"] for v in eqs))
 json.dump(res, open(os.path.join(HERE, "verification.json"), "w", encoding="utf-8"), indent=1)
 print("\nALL PASS" if all(v["passed"] for v in res.values()) else "\nSOME FAILED")

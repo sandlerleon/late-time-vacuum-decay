@@ -196,7 +196,7 @@ def fig5():
     c.set_yscale("log"); c.set_xlabel("tilt / barrier  $\\eta$"); c.set_ylabel("interior energy fraction  $\\epsilon_{in}$")
     c.set_title("(c) Energy carried by the interior", fontsize=8.6, fontweight="bold")
     fig.tight_layout()
-    save(fig, "fig6_reheating_interior.png")
+    save(fig, "fig8_reheating_interior.png")
 
 
 # ---------------------------------------------------------------------------------------------------------- Fig. 6
@@ -228,8 +228,10 @@ def fig6():
     b.set_xlabel("time since nucleation  $\\tau = H_\\Lambda t$"); b.set_ylabel("curvature parameter  $Y = a^2\\rho / 3M_{Pl}^2$")
     b.set_ylim(1e-150, 1e6); b.set_title("Interior: curvature dominated at all times", fontsize=8.4, fontweight="bold"); b.legend(fontsize=6.4, loc="center right")
     fig.tight_layout()
-    save(fig, "fig7_curvature_interior.png")
+    save(fig, "fig9_curvature_interior.png")
 
 
 if __name__ == "__main__":
     fig1(); fig2(); fig3(); fig4(); fig5(); fig6()
+    import make_thermal_figures as _mt
+    _mt.fig6(); _mt.fig7()

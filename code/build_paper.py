@@ -16,6 +16,7 @@ import numpy as np
 import constants as K
 import cdl_lib as C
 import render as RN
+import thermal_blocks as TB
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, ".."))
@@ -25,6 +26,8 @@ os.makedirs(OUT, exist_ok=True)
 J = lambda n: json.load(open(os.path.join(HERE, n), encoding="utf-8"))
 T, F, MC, IN, V = J("bounce_tables.json"), J("falsification_map.json"), J("monte_carlo.json"), J("interior_evolution.json"), J("verification.json")
 SV, CV, SC, CP = J("survival.json"), J("convergence.json"), J("scope.json"), J("coupling.json")
+TR, TT = J("thermal_results.json"), J("thermal_tables.json")
+PMAP = TR["prior_maps"]
 assert all(v["passed"] for v in V.values()), "verification has failures - do not build"
 
 GITHUB = "https://github.com/sandlerleon/late-time-vacuum-decay"
@@ -32,7 +35,7 @@ DOI_PAPER, DOI_CODE = "10.5281/zenodo.23717617", "10.5281/zenodo.23717619"      
 if os.path.exists(os.path.join(HERE, "dois.json")):
     _d = J("dois.json")
     DOI_PAPER, DOI_CODE = _d["paper"], _d["code"]
-TITLE = "Late-Time Vacuum Decay as a Cosmological Reset: Coleman--De Luccia Tunneling, Reheating Constraints, and Consistency Boundaries"
+TITLE = "Daughter-Universe Nucleation from a Metastable Dark-Energy Vacuum: Thermal and Quantum Decay, Past-Light-Cone Survival, and Reheating Bounds"
 
 
 def chk(cond, msg):
@@ -108,26 +111,23 @@ chk(BM["cases"][0]["beta_linear"] > 1e26 and BM["cases"][1]["beta_linear"] < 1e3
 
 # ------------------------------------------------------------------------------------------------------- abstract
 ABSTRACT = (
-    "A late-time transition of the present dark energy out of a metastable vacuum has been proposed as the seed of a new cosmological epoch. We test this "
-    "proposal as a reset mechanism instead of assuming it. For a scalar potential with an explicit metastable minimum at the dark-energy scale, the O(4) "
-    "Coleman--De Luccia bounce is computed in flat space and with gravity (shooting, an independent boundary-value solution, analytic de Sitter tails), with a "
-    "numerical error budget, a check of the negative-mode structure and %d executable consistency checks. All scales are set by the dark energy, so the "
-    "gravitational parameter is $g = f^2/M_{\\rm Pl}^2 \\sim 10^{-60}$, gravitational corrections are $\\sim10^{-59}$, the Hawking--Moss channel is irrelevant, and the decay "
-    "is a flat-space process controlled by one number, the action $B = b(\\eta)/\\lambda$. The survival of the present vacuum is evaluated with the Lorentzian "
-    "four-volume of our past light cone in the observed expansion history, $V_4 = %.3f\\,H_\\Lambda^{-4}$, which is %.0f times smaller than the Euclidean four-sphere volume often used as a "
-    "shortcut: the 95%% bound is $\\Gamma/H_\\Lambda^4 < %.0f$, so the survival condition is weak and the transition window is set by $B \\simeq %d$, with the mean "
-    "decay time running from $%s$ yr to beyond $10^{100}$ yr as $B$ increases by only $\\sim%d$. For the stated priors, which define a parameter space and not "
-    "probabilities for our universe, %s%% of the prior volume lies above the survival bound, %s%% decays within $10^{20}$ yr, and %s%% shows no decay within $10^{100}$ yr. "
-    "Within explicit assumptions (one scalar field, minimal coupling, no inflationary stage) the nucleated region reheats to at most $%.1f$ meV, %s times below nucleosynthesis; "
-    "this is not an energy-conservation statement alone: the open interior stays curvature dominated and a hot big bang at $t \\sim 1$ s would require a parent energy scale "
-    "at least %d orders of magnitude above the Planck scale. A matter trigger requires a fractional change of the matter mass between the two vacua of $\\Delta\\ln m \\gtrsim %s$, "
-    "that is a linear coupling $\\beta \\sim 10^{%d}$--$10^{%d}$ or a quadratic coupling scale of tens of meV; screened couplings are not excluded by this paper. "
-    "A cyclic reset by decay of the present dark energy is therefore not supported in this framework; consistency conditions and observational tests are listed separately." % (
-        len(V), SV["V4_HL4"], SV["ratio_euclid_to_lorentzian"], XMAX, round(bc_med), texsci(T_MIN, 1), round(DB_WINDOW),
-        pc(BASE["frac_inconsistent_with_survival"], 1), pc(BASE["frac_decay_by"]["1e+20"], 1), pc(BASE["frac_never_within_1e100"], 1),
-        RH["T_max_meV_at_Vf"], sci(RH["ratio_Tbbn_over_Tmax"], 1), int(np.floor(NSC["kappa_m_min"]["orders_above_Planck"])),
-        sci(BM["cases"][0]["delta_ln_m"], 1), int(np.floor(np.log10(BM["cases"][0]["beta_linear"]))), int(np.ceil(np.log10(BM["cases"][1]["beta_linear"])))))
-KEYWORDS = "false vacuum decay; Coleman--De Luccia instanton; de Sitter space; dark energy; reheating; cyclic cosmology; past light cone; falsifiability"
+    "A metastable dark-energy vacuum could decay by nucleating bubbles that evolve into daughter regions. Whether such a region can be a hot expanding universe, and whether "
+    "cosmological cooling changes the probability of the transition, are quantitative questions, and this paper answers them for an explicit model. For a scalar potential "
+    "with a metastable minimum at the dark-energy scale, the O(4) Coleman--De Luccia bounce is computed in flat space and with gravity (shooting, an independent boundary-value solution, a numerical "
+    "error budget, the negative-mode structure and %d executable checks). All scales are set by the dark energy, so $g = f^2/M_{\\rm Pl}^2 \\sim 10^{-60}$, the Hawking--Moss channel is irrelevant, and "
+    "the quantum decay is controlled by one action $B = b(\\eta)/\\lambda$, with $\\Gamma/H^4 = 1$ at $B \\simeq %d$. Survival of the present vacuum is evaluated on the Lorentzian past light cone of "
+    "the observed expansion history, $V_4 = %.3f\\,H_\\Lambda^{-4}$, %.0f times below the Euclidean four-sphere, which gives the weak 95%% bound $\\Gamma/H_\\Lambda^4 < %.0f$. "
+    "Cooling is added through a thermal mass: the thermally corrected potential is an exact rescaling of the zero-temperature family, with $\\eta_{\\rm eff} = \\eta/(1-2\\theta)^{3/2}$, and the "
+    "O(3) thermal saddle dominates above a crossover temperature of %.2f meV, below the CMB temperature today (0.23 meV) for the benchmark. The rate falls monotonically as the universe cools, so cooling "
+    "cannot raise the late-time transition probability: a scalar decoupled from the CMB is unaffected, while one in equilibrium with it raises the excluded fraction of the prior from %s%% to %s--%s%% "
+    "and closes the late-time decay window. The fractions refer to stated priors and are not probabilities for our universe. The daughter region reheats to at most $%.1f$ meV, %s times below "
+    "nucleosynthesis; it stays curvature dominated, a hot epoch at 1 s would need a parent energy scale at least %d orders of magnitude above the Planck scale, and a second field supplies no energy "
+    "because the released energy is the potential difference. A matter trigger needs $\\Delta\\ln m \\gtrsim %s$. The daughter region is cold and empty, and a cyclic reset by the present dark energy is not supported; "
+    "consistency conditions and observational tests are listed separately." % (
+        len(V), round(bc_med), SV["V4_HL4"], SV["ratio_euclid_to_lorentzian"], XMAX, TR["crossover_T_meV"]["0"],
+        pc(PMAP["decoupled"]["excluded"], 0), pc(PMAP["c=0 (equilibrated), z<=1"]["excluded"], 0), pc(PMAP["c=0, z<=10"]["excluded"], 0),
+        RH["T_max_meV_at_Vf"], sci(RH["ratio_Tbbn_over_Tmax"], 1), int(np.floor(NSC["kappa_m_min"]["orders_above_Planck"])), sci(BM["cases"][0]["delta_ln_m"], 1)))
+KEYWORDS = "false vacuum decay; Coleman--De Luccia instanton; thermal activation; daughter universe; dark energy; reheating; cyclic cosmology; past light cone; falsifiability"
 
 B = []
 add = B.append
@@ -147,9 +147,13 @@ add(("p", "In the standard cosmological model the late universe approaches de Si
           "tunneling of the present dark energy produce a new hot, expanding epoch? That requires a specified metastable minimum, the tunneling action "
           "including gravity, a rate compared with the observed expansion history, and the interior of the nucleated region followed to see whether it can "
           "become a hot big bang."))
-add(("p", "Three claims are tested. (i) A scalar potential with a metastable minimum at the dark-energy scale can nucleate bubbles of lower-energy vacuum at a rate "
+add(("p", "Two outcomes must be kept apart. In a branching or recycling picture (Option A) a parent metastable vacuum nucleates daughter regions by tunneling; each is a bubble inside the parent "
+          "spacetime, and whether it is a hot expanding universe, or a universe at all in the sense of \\cite{BGG,FG,FGG}, is a separate question. In a genuinely cyclic cosmology (Option B) the same region "
+          "expands, contracts, bounces and reheats, which needs a dynamical bounce beyond tunneling and raises problems of stability and entropy \\cite{Tolman,PS}. This paper addresses Option A with the "
+          "Coleman--De Luccia theory and treats Option B only by stating, in Section 5.4, what it would require."))
+add(("p", "Four claims are tested. (i) A scalar potential with a metastable minimum at the dark-energy scale can nucleate bubbles of lower-energy vacuum at a rate "
           "that is neither negligible nor already excluded. (ii) The nucleated region reheats into a hot expanding universe. (iii) The "
-          "transition is triggered, or enhanced, by the dilution of matter in the late universe. The analysis is conditional: it takes the dark-energy density as the "
+          "transition is triggered, or enhanced, by the dilution of matter in the late universe. (iv) Cosmological cooling, acting on a scalar coupled to the CMB, makes the transition more probable at late times. The analysis is conditional: it takes the dark-energy density as the "
           "false-vacuum energy and asks what follows. The result is a quantitative consistency and exclusion analysis, not a new cosmological mechanism."))
 add(("p", "The contributions are the following."))
 add(("bullets", [
@@ -161,6 +165,8 @@ add(("bullets", [
     "energy conservation (Section 5).",
     "Explicit conditions that separate a late-time vacuum transition from a viable cosmological restart, divided into internal consistency conditions and "
     "observational tests (Section 7), and a model-independent requirement on any matter coupling that could trigger the transition (Section 6).",
+    "A finite-temperature extension: the exact rescaling of the thermally corrected potential, the O(3) and O(4) exponents and their crossover, the past-light-cone survival integral with a time-dependent "
+    "rate, and prior maps showing that cooling cannot raise the late-time transition probability (Sections 4.6--4.8).",
 ]))
 add(("h2", "1.1 Relation to previous work"))
 add(("p", "The ingredients are established, and the paper claims novelty only for the specific combination and the quantitative results for the dark-energy vacuum. "
@@ -174,6 +180,9 @@ add(("table", "Table 1. Closest literature and what this paper adds.",
        "Applied to the dark-energy vacuum with the observed expansion history: $V_4=%.3f\\,H_\\Lambda^{-4}$, %.0f times below the Euclidean four-sphere (Section 4.2)." % (SV["V4_HL4"], SV["ratio_euclid_to_lorentzian"])],
       ["Open interior and reheating", "Open universes from bubbles need an inflationary stage \\cite{Gott,BGT,FKMS}",
        "Quantified for the dark-energy scale: curvature parameter, e-folds and the parent scale needed for a hot epoch (Section 5.3)."],
+      ["Finite-temperature decay", "Thermal masses \\cite{DJ,W74}; thermal activation and the O(3) bounce \\cite{L83,A81,BW}",
+       "Exact rescaling of the tilted quartic family under a thermal mass; O(3)/O(4) crossover for the dark-energy vacuum; survival with $\\Gamma(T_\\gamma(t))$ (Sections 4.6--4.8)."],
+      ["Daughter universes by tunneling", "\\cite{BGG,FG,FGG}", "The nucleated region quantified as a cold, curvature-dominated daughter region, with the energy budget and reservoir bounds (Section 5)."],
       ["Cyclic and bouncing models", "\\cite{Penrose,GV,ST,IS}", "These supply the reset by other means; here one proposed mechanism, tunneling of the present dark energy, is tested."],
       ["Landscape and bubble collisions", "\\cite{BP,DKS,FKMS,Kleban,AJ}", "Observable signals need $\\Gamma/H^4=O(1)$; the width of that window in $B$ and its prior mass are computed (Section 4.5)."],
       ["Matter couplings and screening", "\\cite{KW,HK}", "A coupling-independent requirement, $\\Delta\\ln m$, and its translation to linear and quadratic couplings (Section 6)."]], None))
@@ -294,7 +303,7 @@ add(("p", "At the physical $g\\sim10^{-60}$ the relative gravitational correctio
           % (texsci(max(p["gravity_correction_relative"] for p in F["physical"]), 1), np.mean([p["ln_hm_action"] for p in F["physical"]]), texsci(K.V_F / K.M_PL ** 4 / 0.3 ** 4, 0), texsci(0.3 ** 4 * K.M_PL ** 4 / K.V_F, 0))))
 
 # ------------------------------------------------------------------------------------------------ 4 Rate
-add(("h1", "4. Nucleation rate and survival in the observed universe"))
+add(("h1", "4. Nucleation rate, cooling and survival in the observed universe"))
 add(("h2", "4.1 The rate"))
 add(("p", "The rate per unit four-volume is $\\Gamma/V_4 = A\\,e^{-B}$ \\cite{Coleman,CC}. In the rescaled variables $\\Gamma/V_4 = K f^4\\lambda^2 e^{-B}$, "
           "where $K = (B/2\\pi)^2 D$ contains the four translational zero modes and an unknown dimensionless factor $D$ from the remaining fluctuation determinant. "
@@ -448,12 +457,25 @@ add(("p", "Three points follow. First, the anti-de Sitter case shows that energy
           "value of $V_f$, and therefore covers an additional reservoir too: it cannot raise $Y$ above the curvature bound unless its energy density exceeds $\\Delta V$ by $%s$. Third, "
           "the escape routes are exactly those the model lacks: a long inflationary stage inside the bubble, a parent energy scale close to the Planck scale, or an additional mechanism "
           "that raises $Y$ at $t_0$. A successful cosmology would have to lie in that outside class." % (SC["ads_lifetime_13p8_gyr"]["T_max_meV"], sci(SC["extra_reservoir"]["rho_x_over_DeltaV"], 1))))
+add(("p", "A second scalar field $\\chi$ does not change this. For any number of scalar fields with a potential $V(\\varphi,\\chi)$, the energy released in the transition of a homogeneous region is the potential "
+          "difference between the false and true vacua, $V_f-V_t$, and the false-vacuum energy $V_f=V(\\varphi_f,\\chi_f)$ is the whole observed dark energy $\\rho_\\Lambda$: any energy stored in $\\chi$ while it sits in the false vacuum "
+          "gravitates as dark energy and is already counted in $V_f$. A larger release needs $V_t<0$ (the anti-de Sitter row of Table 9, a crunch within seconds), and the curvature argument above is independent of the field content. "
+          "A reservoir that is not vacuum energy (radiation, matter, kinetic energy of $\\chi$) would have been present and gravitating throughout the cold era, where observations limit it to a fraction of the critical density, "
+          "whereas the interior needs $\\rho_x=%s\\,\\Delta V$. A coupled two-field model is therefore a relabelling of $\\Delta V$ and not a source of new energy, unless the second sector inflates or carries a Planck-scale parent energy, "
+          "which is the outside class of Section 7." % sci(SC["extra_reservoir"]["rho_x_over_DeltaV"], 1)))
 add(("h2", "5.4 Other fates and the singularity question"))
 add(("p", "If the true vacuum has negative energy ($V_t<0$) the open interior collapses to a singularity in a finite time, "
           "$\\tau_c = \\pi/\\sqrt{|V_t|/V_f}$: %s. A decay to a de Sitter vacuum with $V_t>0$ leaves the interior with an accelerating phase and no radiation epoch. Only $V_t\\simeq0$ leaves a "
           "regular, expanding, but empty interior. No case yields a nonsingular bounce from the parent geometry: the bubble is a region of the parent "
           "de Sitter space, causally connected to it, and the Milne interior is geodesically complete only because it has no matter."
           % "; ".join("$|V_t|=%g\\,V_f$: %.0f Gyr" % (-a["vt_over_Vf"], a["gyr"]) for a in IN["ads_crunch"])))
+
+add(("p", "The distinction between daughter regions and a cyclic cosmology (Section 1) applies to these fates. The nucleated region is a daughter region in the sense of Option A: a cold, curvature-dominated open region "
+          "bounded by the wall inside the parent de Sitter space and still causally connected to it, not a new hot universe. The potential has no further metastable minimum at the true vacuum, so repeated transitions of "
+          "the interior would need a different potential; the entropy produced in reheating is bounded by the energy $\\Delta V$ and is carried by an open interior of infinite comoving volume, so no entropy statement can be made "
+          "for the daughter as a closed system. A cyclic cosmology (Option B) needs a nonsingular bounce, which in spatially flat general relativity with conventional matter requires a violation of the null energy condition "
+          "($\\dot H=-(\\rho+p)/2M_{\\rm Pl}^2>0$) and raises problems of stability and entropy \\cite{Tolman,PS}; the present model contains no such mechanism. These statements are qualitative: entropy accounting and the stability of "
+          "an interior bounce are not computed."))
 
 # ------------------------------------------------------------------------------------------------ 6 dilution
 add(("h1", "6. Matter dilution and decoherence as a trigger"))
@@ -499,6 +521,7 @@ add(("bullets", [
     "C4 (energy). With $V_t\\ge0$ the released energy density cannot exceed $\\rho_\\Lambda$, so $T_{\\rm reh}\\le%.1f$ meV; with $V_t<0$ the interior crunches (Section 5.3)." % RH["T_max_meV_at_Vf"],
     "C5 (geometry). For any sub-Planckian energy the open interior stays curvature dominated, $Y(t)\\le Y(t_0)=%s$, unless it inflates; the single-field potential gives at most $%s$ e-folds (Section 5.3)." % (sci(SC["curvature"][0]["Y0_at_Vf"], 1), sci(efm, 1)),
     "C6 (percolation). A global transition requires $\\Gamma/H^4=O(1)$ or larger, a window of width $\\Delta B=%.1f$ below the survival bound that holds %s%% of the prior volume." % (DB_SURV, pc(BASE["frac_percolating_and_surviving"]["1"], 2)),
+    "C7 (thermal consistency). A scalar in equilibrium with the CMB at redshift $z$ keeps its false minimum only if $c<\\theta_c\\lambda f^2/T_\\gamma(z)^2$, i.e. $c<%s$ for a bath coupled back to recombination, and the survival condition then applies to the rate history $\\Gamma(T_\\gamma(t))$ (Section 4.8)." % sci(TB.C_MAX_1100, 1)
 ]))
 add(("h2", "7.2 Observational tests"))
 add(("bullets", [
@@ -507,6 +530,7 @@ add(("bullets", [
     "O3 (hot epoch). A hot universe in the nucleated region requires $\\rho_{\\rm reh}\\gtrsim(1\\ \\mathrm{MeV})^4$, which is %s times the dark-energy density; the bound of Section 5 excludes it for decay of the present dark energy in this framework." % sci(RH["rho_needed_for_bbn_over_Vf"], 1),
     "O4 (trigger). Matter dilution as the trigger needs $\\Delta\\ln m\\gtrsim10^{-3}$ between the vacua, a linear coupling of $\\beta\\sim10^{26}$--$10^{29}$ or a screened coupling at a scale of tens of meV (Section 6), which local gravity and fifth-force tests can probe if the screening is incomplete.",
     "O5 (signals). A solitary transition produces no signal in our patch; bubble collisions \\cite{FKMS,Kleban,AJ} require a population and $\\Gamma/H^4=O(1)$ (C6). The vacuum is indistinguishable from a cosmological constant ($w=-1$) until it decays. A measured evolution of the dark energy, which recent baryon-acoustic-oscillation analyses combined with the CMB and supernovae prefer at the level of a few standard deviations depending on the supernova sample \\cite{DESI}, would favor a rolling field and not a metastable vacuum. No observational discriminant of the cyclic reset is available from this model.",
+    "O6 (cooling). If the scalar is coupled to the CMB the decay probability was larger in the past and falls as the universe cools: equilibrated scenarios with $c\\ge0$ lift the excluded prior mass from %s%% to %s--%s%% and leave no survival-consistent draw that decays within $10^{20}$ yr, so the absence of a transition so far constrains the coupling of the scalar to the CMB as well as its potential (Section 4.8)." % (pc(PMAP["decoupled"]["excluded"], 0), pc(PMAP["c=0 (equilibrated), z<=1"]["excluded"], 0), pc(PMAP["c=0, z<=10"]["excluded"], 0))
 ]))
 add(("p", "A transition producing a successful cosmology would have to lie outside the class studied here. It would need a parent vacuum energy "
           "of at least $\\sim10^{34}\\rho_\\Lambda$ (an earlier, higher-energy phase of the universe rather than the present one) and, by Section 5.3, a post-nucleation region "
@@ -529,16 +553,19 @@ add(("bullets", [
     "The priors of the Monte Carlo are documented assumptions, not measurements; the regime fractions describe the sample space of the model, not the "
     "probability of a transition in our universe.",
     "The matter-coupling analysis is first order in the tilt shift and does not simulate any specific screened model.",
+    "The thermal analysis assumes equilibrium with the CMB (an upper bound on the thermal channel), the leading high-temperature term with one coefficient $c$, and a bath coupled below a stated redshift; it neglects higher-order thermal corrections and the interpolation between the O(4) and O(3) saddles near $T_\\times$, which a periodic-instanton calculation would refine.",
+    "No two-field simulation of the post-nucleation evolution is performed: the argument of Section 5.3 shows that a second field cannot supply energy, and the repeated-transition and entropy questions of Section 5.4 are stated but not computed."
 ]))
 
 add(("h1", "9. Conclusions"))
-add(("p", "A late-time false-vacuum transition of the present dark energy is a well-defined calculation, and for the explicit potential studied it can be "
-          "done to a stated precision. The result is a set of boundaries. The decay is a flat-space process controlled by the action $B=b(\\eta)/\\lambda$, which must lie "
-          "near $B_c\\approx%d$ for the transition to be neither excluded nor effectively absent; with the survival of the present vacuum evaluated on the past light cone, "
-          "the bound is weak ($\\Gamma/H^4<%.0f$) and the window is set by the action itself, with %s%% of the stated prior volume decaying within $10^{20}$ yr. "
-          "The interior of a nucleated region carries at most the dark-energy density, reheats to at most $%.1f$ meV and cools as $1/t$ in a curvature-dominated open universe; "
-          "this conclusion rests on geometry and not on energy conservation alone, and it holds for any sub-Planckian parent energy. A trigger by matter dilution needs a change of the matter mass between the vacua of at least "
-          "$0.1\\%%$. The cyclic-reset hypothesis, in the form tested, is therefore not supported, and the framework identifies what would have to change." % (round(bc_med), XMAX, pc(BASE["frac_decay_by"]["1e+20"], 1), RH["T_max_meV_at_Vf"])))
+add(("p", "A late-time false-vacuum transition of the present dark energy is a well-defined calculation, and for the explicit potential studied it can be done to a stated precision. The quantum decay is a flat-space "
+          "process controlled by the action $B=b(\\eta)/\\lambda$, which must lie near $B_c\\approx%d$ for the transition to be neither excluded nor effectively absent; with survival evaluated on the past light cone the bound is weak "
+          "($\\Gamma/H^4<%.0f$) and the window is set by the action itself. Cosmological cooling does not help: a thermal mass rescales the potential exactly, the thermal O(3) channel dominates above %.2f meV and falls "
+          "monotonically as the universe cools, and a scalar in equilibrium with the CMB is more strongly constrained (%s--%s%% of the prior excluded against %s%%) with no late-time decay window left. "
+          "The nucleated daughter region carries at most the dark-energy density, reheats to at most $%.1f$ meV and cools as $1/t$ in a curvature-dominated open universe; this rests on geometry and not on energy conservation alone, "
+          "holds for any sub-Planckian parent energy and any number of scalar fields, and a trigger by matter dilution would need a change of the matter mass between the vacua of at least $0.1\\%%$. A daughter region of the present dark energy "
+          "is cold and empty, and the cyclic-reset hypothesis, in the form tested, is not supported; the framework identifies what would have to change." % (
+              round(bc_med), XMAX, TR["crossover_T_meV"]["0"], pc(PMAP["c=0 (equilibrated), z<=1"]["excluded"], 0), pc(PMAP["c=0, z<=10"]["excluded"], 0), pc(PMAP["decoupled"]["excluded"], 0), RH["T_max_meV_at_Vf"])))
 
 # ---------------------------------------------------------------------------------------------------- statements
 add(("h1", "Declarations"))
@@ -595,8 +622,45 @@ REFS = [
     ("KW", "J. Khoury, A. Weltman, Chameleon fields: awaiting surprises for tests of gravity in space. Phys. Rev. Lett. 93, 171104 (2004). https://doi.org/10.1103/PhysRevLett.93.171104"),
     ("HK", "K. Hinterbichler, J. Khoury, Screening long-range forces through local symmetry restoration. Phys. Rev. Lett. 104, 231301 (2010). https://doi.org/10.1103/PhysRevLett.104.231301"),
 ]
+REFS += [
+    ("L83", "A.D. Linde, Decay of the false vacuum at finite temperature. Nucl. Phys. B 216, 421--445 (1983). https://doi.org/10.1016/0550-3213(83)90293-6"),
+    ("A81", "I. Affleck, Quantum-statistical metastability. Phys. Rev. Lett. 46, 388--391 (1981). https://doi.org/10.1103/PhysRevLett.46.388"),
+    ("DJ", "L. Dolan, R. Jackiw, Symmetry behavior at finite temperature. Phys. Rev. D 9, 3320--3341 (1974). https://doi.org/10.1103/PhysRevD.9.3320"),
+    ("W74", "S. Weinberg, Gauge and global symmetries at high temperature. Phys. Rev. D 9, 3357--3378 (1974). https://doi.org/10.1103/PhysRevD.9.3357"),
+    ("PS", "J. Pavlovic, N. Sossich, Geodesically complete cyclic cosmologies and entropy. Eur. Phys. J. C 84, 242 (2024). https://doi.org/10.1140/epjc/s10052-024-12621-z"),
+    ("Tolman", "R.C. Tolman, On the problem of the entropy of the universe as a whole. Phys. Rev. 37, 1639--1660 (1931). https://doi.org/10.1103/PhysRev.37.1639"),
+    ("FG", "E. Farhi, A.H. Guth, An obstacle to creating a universe in the laboratory. Phys. Lett. B 183, 149--155 (1987). https://doi.org/10.1016/0370-2693(87)90429-1"),
+    ("FGG", "E. Farhi, A.H. Guth, J. Guven, Is it possible to create a universe in the laboratory by quantum tunneling? Nucl. Phys. B 339, 417--490 (1990). https://doi.org/10.1016/0550-3213(90)90357-J"),
+    ("BGG", "S.K. Blau, E.I. Guendelman, A.H. Guth, Dynamics of false-vacuum bubbles. Phys. Rev. D 35, 1747--1766 (1987). https://doi.org/10.1103/PhysRevD.35.1747"),
+]
 # order references by first citation in the text (tables count: they are cited where they appear)
 import re as _re
+THB, THX = TB.blocks()
+
+
+def _renum(t):
+    t = _re.sub(r"(Table )([6-8])(?![0-9])", lambda m: "%s%d" % (m.group(1), int(m.group(2)) + 2), t)
+    t = _re.sub(r"(Fig\. )([6-7])(?![0-9])", lambda m: "%s%d" % (m.group(1), int(m.group(2)) + 2), t)
+    return t
+
+
+def _renum_block(b):
+    if b[0] in ("p", "abstract", "note", "h1", "h2"):
+        return (b[0], _renum(b[1]))
+    if b[0] == "bullets":
+        return ("bullets", [_renum(x) for x in b[1]])
+    if b[0] == "pb":
+        return ("pb", b[1], _renum(b[2]))
+    if b[0] == "table":
+        return ("table", _renum(b[1]), b[2], [[_renum(str(c)) for c in row] for row in b[3]], b[4])
+    if b[0] == "fig":
+        return ("fig", b[1].replace("fig6_reheating", "fig8_reheating").replace("fig7_curvature", "fig9_curvature"), _renum(b[2])) + tuple(b[3:])
+    return b
+
+
+B = [_renum_block(b) for b in B]
+_i5 = [k for k, b in enumerate(B) if b[0] == "h1" and b[1].startswith("5. What the nucleated")][0]
+B[_i5:_i5] = THB
 text_all = " ".join(b[-1] for b in B if b[0] in ("p", "abstract", "pb") and isinstance(b[-1], str)) + " ".join(" ".join(x) for b in B if b[0] == "bullets" for x in [b[1]])
 order = []
 for blk in B:
