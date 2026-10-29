@@ -167,5 +167,39 @@
   "scenarios": 6,
   "decoupled_excluded": 0.14723,
   "min_excluded_equilibrated": 0.24216
+ },
+ "V22_interior_simulation_single_field": {
+  "passed": true,
+  "ratios": [
+   0.934,
+   1.042,
+   1.056,
+   1.057
+  ],
+  "max_residual_g_ge_1e3": 8.880527981900633e-09,
+  "Y_max_at_g_1e2": 0.47868449121231343
+ },
+ "V23_two_field_reservoir_ads": {
+  "passed": true,
+  "crunch_ratio_range": [
+   1.0,
+   1.0
+  ],
+  "T_at_1s_max_GeV": 7.567679440319965e-24,
+  "Tt": 10.873063172822599
+ },
+ "V24_hilltop_chain_entropy": {
+  "passed": true,
+  "N_flat": [
+   6.8,
+   18.9,
+   36.3,
+   59.0,
+   87.1,
+   120.7,
+   204.4
+  ],
+  "T_hilltop_max_meV": 1.4524443018394493,
+  "entropy_ratio_to_bound": 2.2127827662496113e-63
  }
 }

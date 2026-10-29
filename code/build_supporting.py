@@ -29,6 +29,7 @@ J = lambda n: json.load(open(os.path.join(HERE, n), encoding="utf-8"))
 T, F, MC, IN, V = J("bounce_tables.json"), J("falsification_map.json"), J("monte_carlo.json"), J("interior_evolution.json"), J("verification.json")
 SV, CV, SC, CP = J("survival.json"), J("convergence.json"), J("scope.json"), J("coupling.json")
 TR, TT = J("thermal_results.json"), J("thermal_tables.json")
+SM = J("interior_sim.json")
 assert all(v["passed"] for v in V.values())
 GITHUB = "https://github.com/sandlerleon/late-time-vacuum-decay"
 DOI_PAPER, DOI_CODE = "10.5281/zenodo.23717617", "10.5281/zenodo.23717619"
@@ -62,6 +63,9 @@ DESC = {
     "V19_finite_temperature_reduction": "Exact rescaling of the thermal potential against direct O(3)/O(4) bounces; thin-wall limit of the O(3) action; critical thermal strength",
     "V20_time_dependent_survival": "Light-cone quadrature, monotone cooling of the rate, de Sitter horizon temperature",
     "V21_thermal_prior_maps": "Thermal channel only tightens survival (c >= 0) and closes the late-time decay window",
+    "V22_interior_simulation_single_field": "Lorentzian interior: closed form reproduced, constraint residual in the gravity scan, flat-like epoch only for g >~ 1e2",
+    "V23_two_field_reservoir_ads": "Two-field reservoir: crunch time equals the AdS value, T(1 s) far below 1 MeV for every depth",
+    "V24_hilltop_chain_entropy": "Hilltop flattening needs a super-Planckian vev; repeated transitions obey the sum rule; entropy",
 }
 S = []
 add = S.append
@@ -148,6 +152,21 @@ rows = [["%.2f" % r["eta"], "%.2f" % r["theta"], "%.4f" % r["eta_eff"], "%.4f" %
 add(("table", "Table S6. Direct bounce with the thermal term in the potential against the exact rescaling ($\\lambda=1$): $B_4$ and $S_3$.", ["$\\eta$", "$\\theta$", "$\\eta_{\\rm eff}$", "$B_4$ direct", "$B_4$ scaling", "$S_3$ direct", "$S_3$ scaling"], rows, None))
 rows = [["%.3f" % r["eta"], "%.4g" % r["s3"], "%.4g" % r["b"]] for r in TT["s3_table"] if r["eta"] in (0.03, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.38)]
 add(("table", "Table S7. The O(3) action $s_3(\\eta)$ and the O(4) action $b(\\eta)$ at $\\lambda=1$, $\\theta=0$ (selected tilts; the full table is in thermal_tables.json).", ["$\\eta$", "$s_3$", "$b$"], rows, None))
+add(("h2", "S5.2 Lorentzian simulations of the daughter region (Steps 6--7)"))
+add(("p", "interior_sim.py integrates $(a,\\dot a,x,\\dot x,y,\\dot y,\\rho_r)$ with DOP853 (relative tolerance $10^{-11}$, absolute $10^{-14}$) from $t_0=10^{-4}$ with the series start $a=t_0$, $\\dot a=1$, $x=x_0-V_x t_0^2/8$, $\\dot x=-V_xt_0/4$ "
+          "($x_0$ the centre of the flat-space bounce, from bounce\\_tables.json). The constraint residual is $(\\dot a^2-1-ga^2\\rho/3)/(1+\\dot a^2)$. Part A: $\\lambda=1$, $\\eta=0.30$, $V_t=0$, dissipation $\\Upsilon=\\gamma$ with $\\gamma/m=1,10^{-1},10^{-2},10^{-3}$, "
+          "and a scan of $g$ from $10^{-60}$ to $10^3$ (Table S8). Part B: $V=V_\\varphi+\\tfrac{\\lambda_y}{4}(y^2-w_y^2)^2+\\tfrac12g_c^2(x-x_t)^2y^2+V_{\\rm off}$ with $\\lambda_y=1$, $w_y=1.5$, $g_c^2=1.6\\lambda_yw_y^2/(x_f-x_t)^2$, $V_{\\rm off}=-(\\Delta V+\\lambda_yw_y^4/4)$ "
+          "(false-vacuum energy zero in these units), $y(t_0)=10^{-6}$, $\\Upsilon_x=\\Upsilon_y=m/2$, run for $\\kappa=|V_t|/\\rho_\\Lambda=1,10^5,\\dots,10^{35}$, which sets $f=(\\kappa\\rho_\\Lambda/|V_t^{\\rm sim}|)^{1/4}$ and $g=f^2/M_{\\rm Pl}^2$. After the fields have decayed the evolution is the exact solution of "
+          "$\\dot a^2=1-ba^2+c/a^2$ with $b=g|V_t|/3$, $c=g\\rho_ra^4/3$: with $s=a^2$ the time is $t=[\\arcsin((2s-s_++s_-)/(s_++s_-))]/(2\\sqrt b)$ between turning points $s_\\pm$, and the crunch time follows from the half-period. "
+          "Part C: $H_\\Lambda=M_{\\rm Pl}=1$, $V=\\tfrac{\\lambda_c}{4}(\\chi^2-w^2)^2$ with $\\lambda_cw^4/4=3$, $\\chi(t_0)=10^{-5}w$, $\\Upsilon=0.7\\sqrt{2\\lambda_c}\\,w$, $t_{\\rm end}=4000$. Part D: the chain uses the rate of Eq. (7) with the parent energy of each generation "
+          "($\\ln(M_{\\rm Pl}^4/V_{\\rm parent})$, $r_L=V_{\\rm parent}/\\Delta V$, $H_2^2=\\Delta V_2/3M_{\\rm Pl}^2$); the entropy per comoving curvature volume is $(2\\pi^2/45)g_*(T/f)^3a^3$ and the bound for the wall volume is $8\\pi^2M_{\\rm Pl}^2R_b^2$."))
+rows = [["%.0e" % r["gamma_over_m"], "%.4f" % r["T_max_meV"], "%.4f" % r["T_max_closed_meV"], "%.3f" % r["ratio_sim_over_closed"], "%.2f" % r["t_peak"], "%.2f" % r["envelope_ratio"], "%.2f" % r["T_tau_final"]] for r in SM["A_single_field"]["rows"]]
+add(("table", "Table S8. Single field (benchmark): maximum temperature in the simulation and in the closed form, their ratio, time of the maximum (units of $1/f$), the envelope ratio $\\max\\rho(mt)^3/E_{\\rm rel}$ and the product $Tt$ at the end.",
+     ["$\\gamma/m$", "$T_{\\max}$ sim (meV)", "closed form (meV)", "ratio", "$t_{\\rm peak}$", "envelope", "$Tt$"], rows, None))
+rows = [["%d" % r["log10_g"], "%.2e" % r["Y_max"], "%s" % r["flat_like_radiation_epoch"], "%.1e" % r["max_residual"]] for r in SM["A_gravity_scan"]]
+add(("table", "Table S9. Gravity scan of the single-field interior: maximum curvature parameter $Y=ga^2\\rho/3$, whether a flat-like radiation epoch occurs, and the constraint residual.", ["$\\log_{10}g$", "$Y_{\\max}$", "flat-like epoch", "residual"], rows, None))
+rows = [["%.1f" % r["w_y"], "%.2f" % r["E_res"], "%.2f" % r["T_max_over_f"], "%.2f" % r["Tt_product_sim"]] for r in SM["B_reservoir_scan"]]
+add(("table", "Table S10. Reservoir size: stored energy $E_\\chi=\\lambda_yw_y^4/4$ (units $\\lambda f^4$), maximum temperature over $f$, and $Tt$ at the end of the run.", ["$w_y$", "$E_\\chi$", "$T_{\\max}/f$", "$Tt$"], rows, None))
 add(("h1", "S6. Monte Carlo specification"))
 add(("p", "Draws: $N=%d$, NumPy PCG64 generator, seed %d. $\\log_{10}\\lambda\\sim U(-2,\\log_{10}4\\pi)$; $\\eta\\sim U(0.03,0.38)$; $\\ln D\\sim N(0,(1.5\\ln10)^2)$; $r_L=1$. Each draw is converted to "
           "$\\ln\\Gamma/H^4$ with Eq. (7), to a decay time, and classified: above the survival bound if $\\Gamma/H_\\Lambda^4\\ge%.2f$ (Section S5); otherwise decaying by $10^{12}$, $10^{20}$, $10^{50}$ or $10^{100}$ yr, or "
@@ -172,7 +191,7 @@ add(("p", "Scope (scope.py). With the curvature parameter $Y=a^2\\rho/(3M_{\\rm 
 add(("h1", "S8. Reproduction"))
 add(("p", "Environment of the published run: Python %s, NumPy %s, SciPy %s (Windows). Requirements: NumPy, SciPy, Matplotlib, python-docx (requirements.txt). From the code directory, in this order: "
           "bounce_tables.py (about 3 minutes), survival.py (seconds), monte_carlo.py (about 20 seconds), falsification_map.py, interior_evolution.py, convergence.py (about 4 minutes), scope.py, coupling.py, "
-          "thermal.py (about 40 seconds), thermal_analysis.py (about 6 minutes), verify.py (about 20 seconds), make_figures.py (calls make_thermal_figures.py), build_paper.py, build_supporting.py. The scripts write the JSON files that the "
+          "thermal.py (about 40 seconds), thermal_analysis.py (about 6 minutes), interior_sim.py (about 25 seconds), verify.py (about 25 seconds), make_figures.py (calls make_thermal_figures.py and make_sim_figures.py), build_paper.py, build_supporting.py. The scripts write the JSON files that the "
           "manuscript builder reads; monte_carlo.py needs survival.json and falsification_map.py needs survival.json. A rerun in a clean clone of the repository reproduced the stored JSON files exactly in the earlier release. Code: %s, archived at https://doi.org/%s."
           % (platform.python_version(), np.__version__, scipy.__version__, GITHUB, DOI_CODE)))
 add(("h1", "S9. Known limitations of the numerics"))
@@ -221,6 +240,8 @@ para("Cosmological cooling is treated explicitly. A scalar coupled to the CMB ac
      "and the survival probability is computed with the time-dependent rate on the past light cone. Cooling lowers the thermal channel monotonically and cannot raise the late-time probability of a transition: a scalar decoupled from the CMB is unaffected, "
      "and one in equilibrium with it is more strongly constrained (%s%% to %s%% of the prior excluded against %s%%) with no late-time decay window left. The conclusion is therefore about daughter regions of the present dark energy, "
      "which are cold and empty, and not about a cyclic cosmology." % (str(round(100 * TR["prior_maps"]["c=0 (equilibrated), z<=1"]["excluded"])), str(round(100 * TR["prior_maps"]["c=0, z<=10"]["excluded"])), str(round(100 * TR["prior_maps"]["decoupled"]["excluded"]))))
+para("The interior of the nucleated region is simulated, not only bounded: Lorentzian evolution of one and two fields with dissipation and gravity (constraint residual at most 1e-8), a reservoir hidden by a negative vacuum offset, hilltop flattening at the dark-energy scale, "
+     "a chain of repeated transitions with the energy sum rule, and entropy accounting. They give the criteria of Table 13 for a viable daughter universe, which no scenario with the observed dark energy as the parent satisfies.")
 para("I want to be clear about novelty. The bounce, Hawking–Moss and thin-wall results, the past-light-cone survival method, open-universe interiors and screened couplings are established, and are cited as such; Table 1 of the "
      "manuscript lists, for each ingredient, what is known and what is added. What is new is the quantitative combination for the dark-energy vacuum: an explicit map from potential parameters to decay times with a "
      "numerical error budget and negative-mode check; the survival bound on the past light cone and the corrected width of the transition window; a statement of which energy sources the reheating bound excludes by geometry and which only by "

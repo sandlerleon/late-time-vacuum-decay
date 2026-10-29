@@ -27,6 +27,7 @@ region is not a cyclic cosmology, and the paper claims only to test this one res
 | Thermal mass rescales the potential exactly (η_eff = η/(1−2θ)^{3/2}); O(3) thermal saddle dominates above T× = 0.18 meV for the benchmark; the rate falls monotonically as the universe cools | `thermal.py`, `thermal_analysis.py` |
 | Over the stated priors (a sample space, not probabilities): 14.8% above the survival bound for a decoupled scalar, 24–49% if it is in equilibrium with the CMB, and no late-time decay window left | `monte_carlo.py`, `thermal_analysis.py` |
 | Reheating T ≤ 2.2 meV (4.6×10⁸ below nucleosynthesis); the open interior stays curvature dominated for any sub-Planckian energy and any number of scalar fields, so a hot epoch at 1 s needs a parent scale at least 41 orders of magnitude above M_Pl | `interior_evolution.py`, `scope.py` |
+| Lorentzian simulations of the daughter region (two fields, dissipation, gravity): closed-form interior reproduced to 7%; a reservoir hidden by a negative offset leaves an AdS vacuum that crunches after 5.5 s when it reaches 0.7 MeV; hilltop flattening at the dark-energy scale needs a vev above 4 M_Pl and still reheats below 1.5 meV; repeated transitions obey ΣΔV ≤ ρ_Λ; entropy accounting | `interior_sim.py` |
 | A matter trigger needs Δln m ≳ 10⁻³ between the vacua: linear β ~ 10²⁶–10²⁹, or a quadratic scale of tens of meV | `coupling.py` |
 
 The cyclic-reset hypothesis, in the form tested, is not supported; the daughter region is cold and empty. The paper separates internal consistency conditions from observational tests.
@@ -47,12 +48,13 @@ code/       cdl_lib.py              potential, flat-space and gravitational boun
             interior_evolution.py   energy budget, open-universe solution with reheating, AdS crunch
             scope.py                scope of the reheating bound: curvature parameter, envelope, e-folds, AdS, reservoirs
             coupling.py             requirement on a matter coupling (general, linear, quadratic)
-            verify.py               21 executable checks
-            make_figures.py, make_thermal_figures.py   Figs 1-9
+            interior_sim.py         Lorentzian simulations of the daughter region (Steps 6-7): two fields, AdS reservoirs, hilltop flattening, repeated transitions, entropy
+            verify.py               24 executable checks
+            make_figures.py, make_thermal_figures.py, make_sim_figures.py   Figs 1-10
             omml.py, render.py      LaTeX -> native Word equations; Word and LaTeX renderers
-            build_paper.py, thermal_blocks.py, build_supporting.py   build the manuscript, supplement and cover letter from the stored results
+            build_paper.py, thermal_blocks.py, sim_blocks.py, build_supporting.py   build the manuscript, supplement and cover letter from the stored results
 *.json      stored results that the manuscript reads
-figures/    Figs 1-9 (300 dpi)
+figures/    Figs 1-10 (300 dpi)
 manuscript/ manuscript (Word and LaTeX/PDF), supplement, cover letter
 ```
 
@@ -71,7 +73,8 @@ python scope.py
 python coupling.py
 python thermal.py              # ~40 s (writes thermal_tables.json)
 python thermal_analysis.py     # ~6 min (needs thermal_tables.json)
-python verify.py               # ~20 s; 21 checks
+python interior_sim.py         # ~25 s (needs bounce_tables.json, interior_evolution.json)
+python verify.py               # ~25 s; 24 checks
 python make_figures.py
 python build_paper.py          # refuses to run unless verify.py passed
 python build_supporting.py
@@ -81,6 +84,8 @@ Seeds are fixed (Monte Carlo: 20261030), so the numbers reproduce exactly.
 
 ## Revision history
 
+* **v1.3.0** — Steps 6-7 simulations. Lorentzian homogeneous evolution of the daughter region with one and two fields, dissipation and gravity (constraint residual ≤ 1e-8), the AdS-compensated
+  reservoir and its crunch, hilltop flattening, chain of repeated transitions with the energy sum rule, entropy accounting, criteria for a viable daughter universe (Table 13), Section 5.5, Fig. 10, 3 new checks (24 in total).
 * **v1.2.0** — finite-temperature extension and a new title. Thermal mass with exact rescaling of the potential, O(3) action table, O(3)/O(4) crossover, survival with a
   time-dependent rate on the past light cone, thermal prior maps (decoupled vs equilibrated scalar), two-field energy-budget argument, daughter-region versus cyclic
   distinction, consistency conditions C7 and test O6, 3 new checks (21 in total), Figs 6–7 (old Figs 6–7 are now 8–9).

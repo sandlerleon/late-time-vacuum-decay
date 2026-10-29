@@ -1,0 +1,437 @@
+{
+ "A_single_field": {
+  "f_meV": 3.0470974194811955,
+  "g": 1.5659386654763414e-60,
+  "eps_in": 0.01799556928951332,
+  "m_sim": 1.183153056401456,
+  "rows": [
+   {
+    "envelope_ratio": 10.763975912618506,
+    "gamma_over_m": 1.0,
+    "T_max_meV": 0.4257945844283542,
+    "t_peak": 2.983608101608002,
+    "T_max_closed_meV": 0.45579921557596964,
+    "ratio_sim_over_closed": 0.934171384850454,
+    "max_residual": 3.017934481053973e-63,
+    "T_tau_final": 0.5923733973086646,
+    "field_energy_final_over_rad": -5.2202373411797694e-06
+   },
+   {
+    "envelope_ratio": 5.699680185885347,
+    "gamma_over_m": 0.1,
+    "T_max_meV": 0.27815597682476506,
+    "t_peak": 2.874245976017334,
+    "T_max_closed_meV": 0.2670131928807661,
+    "ratio_sim_over_closed": 1.0417312111951516,
+    "max_residual": 2.1657378403899698e-63,
+    "T_tau_final": 0.5632616990545388,
+    "field_energy_final_over_rad": -1.649805961693798e-05
+   },
+   {
+    "envelope_ratio": 5.366021117093057,
+    "gamma_over_m": 0.01,
+    "T_max_meV": 0.15930584060068245,
+    "t_peak": 2.871767956260325,
+    "T_max_closed_meV": 0.15088416287457673,
+    "ratio_sim_over_closed": 1.0558155181144246,
+    "max_residual": 2.0974153407876198e-63,
+    "T_tau_final": 0.9380434280961625,
+    "field_energy_final_over_rad": 1.5540976187434624e-12
+   },
+   {
+    "envelope_ratio": 5.333981669787956,
+    "gamma_over_m": 0.001,
+    "T_max_meV": 0.08975205752861717,
+    "t_peak": 2.8691908948265583,
+    "T_max_closed_meV": 0.08488982402398496,
+    "ratio_sim_over_closed": 1.0572769888562665,
+    "max_residual": 2.0907222632052083e-63,
+    "T_tau_final": 1.6584863901805138,
+    "field_energy_final_over_rad": 8.254347045644225e-11
+   }
+  ]
+ },
+ "A_gravity_scan": [
+  {
+   "log10_g": -60,
+   "Y_max": 3.854476917612191e-63,
+   "flat_like_radiation_epoch": false,
+   "max_residual": 1.9272384588060956e-63
+  },
+  {
+   "log10_g": -40,
+   "Y_max": 3.8544769176121905e-43,
+   "flat_like_radiation_epoch": false,
+   "max_residual": 1.9272384588060952e-43
+  },
+  {
+   "log10_g": -20,
+   "Y_max": 3.854476917612191e-23,
+   "flat_like_radiation_epoch": false,
+   "max_residual": 1.9272384588060954e-23
+  },
+  {
+   "log10_g": -10,
+   "Y_max": 3.8544769176129117e-13,
+   "flat_like_radiation_epoch": false,
+   "max_residual": 1.148506591863516e-15
+  },
+  {
+   "log10_g": -5,
+   "Y_max": 3.854476997323492e-08,
+   "flat_like_radiation_epoch": false,
+   "max_residual": 1.551840281380054e-15
+  },
+  {
+   "log10_g": -3,
+   "Y_max": 3.854484888744648e-06,
+   "flat_like_radiation_epoch": false,
+   "max_residual": 1.0645098780371162e-14
+  },
+  {
+   "log10_g": -2,
+   "Y_max": 3.854556629798406e-05,
+   "flat_like_radiation_epoch": false,
+   "max_residual": 9.222041175157062e-14
+  },
+  {
+   "log10_g": -1,
+   "Y_max": 0.00038552741255530425,
+   "flat_like_radiation_epoch": false,
+   "max_residual": 9.15635557171662e-13
+  },
+  {
+   "log10_g": 0,
+   "Y_max": 0.003862457611436366,
+   "flat_like_radiation_epoch": false,
+   "max_residual": 9.233618601590334e-12
+  },
+  {
+   "log10_g": 1,
+   "Y_max": 0.03935429962531587,
+   "flat_like_radiation_epoch": false,
+   "max_residual": 9.13165349277357e-11
+  },
+  {
+   "log10_g": 2,
+   "Y_max": 0.47868449121231343,
+   "flat_like_radiation_epoch": true,
+   "max_residual": 9.096471917703376e-10
+  },
+  {
+   "log10_g": 3,
+   "Y_max": 77.6355668884844,
+   "flat_like_radiation_epoch": true,
+   "max_residual": 8.880527981900633e-09
+  }
+ ],
+ "B_reservoir_ads": {
+  "rows": [
+   {
+    "envelope_ratio": 4326.239336976077,
+    "E_release_sim": 1.2709533167489344,
+    "kappa": 1.0,
+    "f_GeV": 2.010675433004982e-12,
+    "g": 6.818455526463867e-61,
+    "E_res_over_dtil": 4.274453537658628,
+    "T_max_GeV": 1.278578366983098e-12,
+    "T_max_MeV": 1.278578366983098e-09,
+    "t_peak_s": 4.982006337083185e-12,
+    "t_crunch_s": 1.726196898981086e+18,
+    "t_crunch_ads_only_s": 1.726196898981086e+18,
+    "crunch_ratio": 1.0,
+    "T_at_1s_GeV": 7.156780188480886e-24,
+    "max_residual": 2.839593168065106e-56,
+    "Tt_product_sim": 10.873063172822599,
+    "t_peak_sim": 15.218802460269162
+   },
+   {
+    "envelope_ratio": 4326.239336976077,
+    "E_release_sim": 1.2709533167489344,
+    "kappa": 100000.0,
+    "f_GeV": 3.5755427227838555e-11,
+    "g": 2.1561849588188314e-58,
+    "E_res_over_dtil": 4.274453537658628,
+    "T_max_GeV": 2.273669584127233e-11,
+    "T_max_MeV": 2.273669584127233e-08,
+    "t_peak_s": 2.801588045702075e-13,
+    "t_crunch_s": 5458713890699819.0,
+    "t_crunch_ads_only_s": 5458713890699819.0,
+    "crunch_ratio": 1.0,
+    "T_at_1s_GeV": 7.156780188480886e-24,
+    "max_residual": 8.97958203933904e-54,
+    "Tt_product_sim": 10.873063172822599,
+    "t_peak_sim": 15.218802460269162
+   },
+   {
+    "envelope_ratio": 4326.239336976077,
+    "E_release_sim": 1.2709533167489344,
+    "kappa": 10000000000.0,
+    "f_GeV": 6.358314003641038e-10,
+    "g": 6.818455526463868e-56,
+    "E_res_over_dtil": 4.274453537658628,
+    "T_max_GeV": 4.0432198066852193e-10,
+    "T_max_MeV": 4.043219806685219e-07,
+    "t_peak_s": 1.5754487342575453e-14,
+    "t_crunch_s": 17261968989810.855,
+    "t_crunch_ads_only_s": 17261968989810.855,
+    "crunch_ratio": 1.0,
+    "T_at_1s_GeV": 7.156780188480886e-24,
+    "max_residual": 2.839593168065106e-51,
+    "Tt_product_sim": 10.873063172822599,
+    "t_peak_sim": 15.218802460269162
+   },
+   {
+    "envelope_ratio": 4326.239336976077,
+    "E_release_sim": 1.2709533167489344,
+    "kappa": 1e+20,
+    "f_GeV": 2.0106754330049822e-07,
+    "g": 6.818455526463868e-51,
+    "E_res_over_dtil": 4.274453537658628,
+    "T_max_GeV": 1.278578366983098e-07,
+    "T_max_MeV": 0.0001278578366983098,
+    "t_peak_s": 4.9820063370831845e-17,
+    "t_crunch_s": 172619689.89810854,
+    "t_crunch_ads_only_s": 172619689.89810854,
+    "crunch_ratio": 1.0,
+    "T_at_1s_GeV": 7.156780188480885e-24,
+    "max_residual": 2.839593168065106e-46,
+    "Tt_product_sim": 10.873063172822599,
+    "t_peak_sim": 15.218802460269162
+   },
+   {
+    "envelope_ratio": 4326.239336976077,
+    "E_release_sim": 1.2709533167489344,
+    "kappa": 1e+30,
+    "f_GeV": 6.358314003641038e-05,
+    "g": 6.818455526463868e-46,
+    "E_res_over_dtil": 4.274453537658628,
+    "T_max_GeV": 4.0432198066852194e-05,
+    "T_max_MeV": 0.04043219806685219,
+    "t_peak_s": 1.5754487342575452e-19,
+    "t_crunch_s": 1726.1968989810853,
+    "t_crunch_ads_only_s": 1726.1968989810853,
+    "crunch_ratio": 1.0,
+    "T_at_1s_GeV": 7.156784139286636e-24,
+    "max_residual": 2.8395931680651063e-41,
+    "Tt_product_sim": 10.873063172822599,
+    "t_peak_sim": 15.218802460269162
+   },
+   {
+    "envelope_ratio": 4326.239336976077,
+    "E_release_sim": 1.2709533167489344,
+    "kappa": 1e+35,
+    "f_GeV": 0.0011306858875237006,
+    "g": 2.156184958818831e-43,
+    "E_res_over_dtil": 4.274453537658628,
+    "T_max_GeV": 0.0007189974532489879,
+    "T_max_MeV": 0.7189974532489879,
+    "t_peak_s": 8.859399289918462e-21,
+    "t_crunch_s": 5.45871389069982,
+    "t_crunch_ads_only_s": 5.45871389069982,
+    "crunch_ratio": 1.0,
+    "T_at_1s_GeV": 7.567679440319965e-24,
+    "max_residual": 8.979582039339036e-39,
+    "Tt_product_sim": 10.873063172822599,
+    "t_peak_sim": 15.218802460269162
+   }
+  ],
+  "w_y": 1.5,
+  "note": "V_off compensates the stored reservoir so that V(false vacuum) = rho_Lambda; the true vacuum has V_t = V_off < 0"
+ },
+ "B_reservoir_scan": [
+  {
+   "w_y": 0.5,
+   "E_res": 0.015625,
+   "release_total": 0.3117154800694729,
+   "T_max_over_f": 0.23399435011641845,
+   "Tt_product_sim": 13.477719404149868
+  },
+  {
+   "w_y": 1.0,
+   "E_res": 0.25,
+   "release_total": 0.5460904800694729,
+   "T_max_over_f": 0.44637825692414423,
+   "Tt_product_sim": 11.372047109994686
+  },
+  {
+   "w_y": 1.5,
+   "E_res": 1.265625,
+   "release_total": 1.561715480069473,
+   "T_max_over_f": 0.6358824143240743,
+   "Tt_product_sim": 10.873063172822599
+  },
+  {
+   "w_y": 2.0,
+   "E_res": 4.0,
+   "release_total": 4.296090480069473,
+   "T_max_over_f": 0.8117540868370365,
+   "Tt_product_sim": 10.727053688523828
+  },
+  {
+   "w_y": 3.0,
+   "E_res": 20.25,
+   "release_total": 20.546090480069473,
+   "T_max_over_f": 1.152358391176064,
+   "Tt_product_sim": 10.747235771108251
+  }
+ ],
+ "C_hilltop": {
+  "rows": [
+   {
+    "w_over_M": 1.0,
+    "lam_c": 12.0,
+    "N_accel": 8.166434208527807,
+    "N_flatness": 6.806838212346546,
+    "slow_roll_estimate": 2.878231366242557,
+    "Omega_k_min": 1.223645029279867e-06,
+    "T_max_meV": 1.4524443018394493,
+    "max_residual": 5.000000105060318e-09,
+    "t_end_over_Hinv": 4000.0
+   },
+   {
+    "w_over_M": 2.0,
+    "lam_c": 0.75,
+    "N_accel": 20.541471363170402,
+    "N_flatness": 18.929742259193233,
+    "slow_roll_estimate": 11.512925464970229,
+    "Omega_k_min": 3.6127240147243475e-17,
+    "T_max_meV": 1.1775162442103808,
+    "max_residual": 5.000000104965741e-09,
+    "t_end_over_Hinv": 4000.0
+   },
+   {
+    "w_over_M": 3.0,
+    "lam_c": 0.14814814814814814,
+    "N_accel": 38.08748918083191,
+    "N_flatness": 36.261164749264466,
+    "slow_roll_estimate": 25.904082296183013,
+    "Omega_k_min": 3.1911886893588447e-32,
+    "T_max_meV": 1.0167318128839469,
+    "max_residual": 5.00000010496574e-09,
+    "t_end_over_Hinv": 4000.0
+   },
+   {
+    "w_over_M": 4.0,
+    "lam_c": 0.046875,
+    "N_accel": 60.998406631837945,
+    "N_flatness": 58.96509496993806,
+    "slow_roll_estimate": 46.051701859880914,
+    "Omega_k_min": 6.075321416022442e-52,
+    "T_max_meV": 0.9078641918549616,
+    "max_residual": 5.000000184833569e-09,
+    "t_end_over_Hinv": 4000.0
+   },
+   {
+    "w_over_M": 5.0,
+    "lam_c": 0.0192,
+    "N_accel": 89.26456912207917,
+    "N_flatness": 87.10767905582581,
+    "slow_roll_estimate": 71.95578415606393,
+    "Omega_k_min": 2.1838927638935635e-76,
+    "T_max_meV": 0.8278975318324138,
+    "max_residual": 5.000000128465629e-09,
+    "t_end_over_Hinv": 4000.0
+   },
+   {
+    "w_over_M": 6.0,
+    "lam_c": 0.009259259259259259,
+    "N_accel": 123.05817433539714,
+    "N_flatness": 120.72015842812378,
+    "slow_roll_estimate": 103.61632918473205,
+    "Omega_k_min": 1.392523972522629e-105,
+    "T_max_meV": 0.7659089089519571,
+    "max_residual": 5.000000107971389e-09,
+    "t_end_over_Hinv": 4000.0
+   },
+   {
+    "w_over_M": 8.0,
+    "lam_c": 0.0029296875,
+    "N_accel": 206.96342780186333,
+    "N_flatness": 204.40838265241004,
+    "slow_roll_estimate": 184.20680743952366,
+    "Omega_k_min": 2.8387994902973024e-178,
+    "T_max_meV": 0.6748218278485939,
+    "max_residual": 5.000000105060318e-09,
+    "t_end_over_Hinv": 4000.0
+   }
+  ],
+  "note": "units H_Lambda = M_Pl = 1, chi0 = 1e-5 w; T_max in meV for the observed dark-energy density"
+ },
+ "C_parent_energy_for_1MeV_over_rho_Lambda": 1.3855338907477521e+35,
+ "D_chain": [
+  {
+   "eta1": 0.3,
+   "lam1": 1.0,
+   "eta2": 0.3,
+   "lam2": 1.0,
+   "dV1_over_rho": 0.6,
+   "dV2_over_rho": 0.4,
+   "B1": 441.19015143750136,
+   "B2": 441.19015143750136,
+   "ln_gamma1_over_H4": -153.15313399760362,
+   "ln_gamma2_over_H2_4": -151.7260176419635,
+   "log10_t1_yr": 76.132308864355,
+   "log10_t2_yr": 75.71149011040264,
+   "total_released_over_rho": 1.0,
+   "T_max_total_meV": 2.192113357391066
+  },
+  {
+   "eta1": 0.32,
+   "lam1": 1.0,
+   "eta2": 0.28,
+   "lam2": 2.0,
+   "dV1_over_rho": 0.6,
+   "dV2_over_rho": 0.4,
+   "B1": 300.8694400421315,
+   "B2": 314.3344123948503,
+   "ln_gamma1_over_H4": -13.660318413278333,
+   "ln_gamma2_over_H2_4": -24.788142305061456,
+   "log10_t1_yr": 15.551348790934606,
+   "log10_t2_yr": 20.5830713070632,
+   "total_released_over_rho": 1.0,
+   "T_max_total_meV": 2.192113357391066
+  },
+  {
+   "eta1": 0.3,
+   "lam1": 1.0,
+   "eta2": 0.33,
+   "lam2": 0.5,
+   "dV1_over_rho": 0.5,
+   "dV2_over_rho": 0.5,
+   "B1": 441.19015143750136,
+   "B2": 487.5604597261254,
+   "ln_gamma1_over_H4": -153.33545555439758,
+   "ln_gamma2_over_H2_4": -198.90456382217144,
+   "log10_t1_yr": 76.21149011040264,
+   "log10_t2_yr": 96.15241737418064,
+   "total_released_over_rho": 1.0,
+   "T_max_total_meV": 2.192113357391066
+  },
+  {
+   "eta1": 0.27,
+   "lam1": 3.0,
+   "eta2": 0.27,
+   "lam2": 3.0,
+   "dV1_over_rho": 0.5,
+   "dV2_over_rho": 0.5,
+   "B1": 248.75330781662103,
+   "B2": 248.75330781662103,
+   "ln_gamma1_over_H4": 39.156470678833614,
+   "ln_gamma2_over_H2_4": 40.54276503995351,
+   "log10_t1_yr": -7.3866912636174735,
+   "log10_t2_yr": -7.838236257113445,
+   "total_released_over_rho": 1.0,
+   "T_max_total_meV": 2.192113357391066
+  }
+ ],
+ "D_entropy": {
+  "S_comoving_curvature_volume": 0.3063678189293034,
+  "S_constant_after_reheating": true,
+  "S_dS_parent": 3.2623987922579794e+122,
+  "S_bound_wall_volume": 2.2118186846813272e+63,
+  "S_in_wall_volume_at_Tmax": 4.894274267531724,
+  "ratio_to_bound": 2.2127827662496113e-63,
+  "R_b_over_RH": 2.603791694859974e-30
+ }
+}

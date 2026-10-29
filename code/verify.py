@@ -25,6 +25,9 @@ unless every check passes.
  V19 finite temperature: exact rescaling of the thermal potential against direct O(3)/O(4) bounces, thin-wall limit of the O(3) action, critical thermal strength
  V20 time-dependent survival integral: light-cone quadrature, monotone cooling of the rate, de Sitter horizon temperature
  V21 thermal prior maps: the thermal channel only tightens survival (c >= 0) and closes the late-time decay window
+ V22 interior simulation, single field: closed form reproduced, constraint residual of the gravitational scan, flat-like epoch only for g >~ 1e2
+ V23 two-field reservoir: crunch time equals the AdS value, temperature at 1 s far below 1 MeV for every depth, envelope
+ V24 hilltop flattening, repeated transitions (sum rule) and entropy
 """
 import json
 import os
@@ -208,5 +211,28 @@ eqs = [v for k, v in pm.items() if isinstance(v, dict) and v.get("c") is not Non
 tight = all(v["allowed_but_decoupled_excluded"] == 0.0 and v["excluded"] + v["inconsistent"] > pm["decoupled"]["excluded"] for v in eqs)
 closed = all(v["decay_by_1e20"] == 0.0 for v in eqs)
 rec("V21_thermal_prior_maps", tight and closed, scenarios=len(eqs), decoupled_excluded=pm["decoupled"]["excluded"], min_excluded_equilibrated=min(v["excluded"] + v["inconsistent"] for v in eqs))
+# V22
+SIMJ = json.load(open(os.path.join(HERE, "interior_sim.json"), encoding="utf-8"))
+rowsA = SIMJ["A_single_field"]["rows"]
+scanA = {r["log10_g"]: r for r in SIMJ["A_gravity_scan"]}
+ok22 = (all(abs(r["ratio_sim_over_closed"] - 1) < 0.08 for r in rowsA) and max(r["max_residual"] for r in scanA.values() if r["log10_g"] >= -3) < 1e-7
+        and not scanA[1]["flat_like_radiation_epoch"] and scanA[3]["flat_like_radiation_epoch"] and scanA[-60]["Y_max"] < 1e-60)
+rec("V22_interior_simulation_single_field", ok22, ratios=[round(r["ratio_sim_over_closed"], 3) for r in rowsA], max_residual_g_ge_1e3=float(max(r["max_residual"] for r in scanA.values() if r["log10_g"] >= -3)),
+    Y_max_at_g_1e2=scanA[2]["Y_max"])
+# V23
+rowsB = SIMJ["B_reservoir_ads"]["rows"]
+Ts1 = [r["T_at_1s_GeV"] for r in rowsB]
+ok23 = (all(abs(r["crunch_ratio"] - 1) < 1e-3 for r in rowsB) and max(Ts1) < 1e-20 and max(r["T_max_MeV"] for r in rowsB) < 1.0
+        and max(r["max_residual"] for r in rowsB) < 1e-6 and max(abs(r["Tt_product_sim"] / rowsB[0]["Tt_product_sim"] - 1) for r in rowsB) < 1e-9)
+rec("V23_two_field_reservoir_ads", ok23, crunch_ratio_range=[min(r["crunch_ratio"] for r in rowsB), max(r["crunch_ratio"] for r in rowsB)], T_at_1s_max_GeV=float(max(Ts1)), Tt=rowsB[0]["Tt_product_sim"])
+# V24
+rowsC = SIMJ["C_hilltop"]["rows"]
+Nf = [r["N_flatness"] for r in rowsC]
+ch = SIMJ["D_chain"]
+ent = SIMJ["D_entropy"]
+ok24 = (all(np.diff(Nf) > 0) and [r["w_over_M"] for r in rowsC if r["N_flatness"] >= 60] == [5.0, 6.0, 8.0] and Nf[3] > 55 and max(r["T_max_meV"] for r in rowsC) < 2.2 * 1.0
+        and max(r["max_residual"] for r in rowsC) < 1e-7 and all(abs(c["total_released_over_rho"] - 1.0) < 1e-12 and c["T_max_total_meV"] < 2.2 for c in ch)
+        and ent["ratio_to_bound"] < 1e-60 and ent["S_constant_after_reheating"])
+rec("V24_hilltop_chain_entropy", ok24, N_flat=[round(x, 1) for x in Nf], T_hilltop_max_meV=max(r["T_max_meV"] for r in rowsC), entropy_ratio_to_bound=ent["ratio_to_bound"])
 json.dump(res, open(os.path.join(HERE, "verification.json"), "w", encoding="utf-8"), indent=1)
 print("\nALL PASS" if all(v["passed"] for v in res.values()) else "\nSOME FAILED")

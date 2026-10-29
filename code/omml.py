@@ -13,7 +13,7 @@ from docx.oxml.ns import qn
 GREEK = {"alpha": "α", "beta": "β", "gamma": "γ", "delta": "δ", "epsilon": "ε", "varepsilon": "ε", "zeta": "ζ", "eta": "η", "theta": "θ", "kappa": "κ",
          "lambda": "λ", "mu": "μ", "nu": "ν", "xi": "ξ", "pi": "π", "rho": "ρ", "sigma": "σ", "tau": "τ", "phi": "ϕ", "varphi": "φ", "chi": "χ", "psi": "ψ",
          "omega": "ω", "Gamma": "Γ", "Delta": "Δ", "Lambda": "Λ", "Sigma": "Σ", "Omega": "Ω", "Phi": "Φ", "ell": "ℓ", "hbar": "ℏ", "partial": "∂",
-         "sim": "∼", "simeq": "≃", "approx": "≈", "lesssim": "≲", "gtrsim": "≳", "ll": "≪", "gg": "≫", "times": "×", "cdot": "·", "to": "→", "pm": "±",
+         "sim": "∼", "sum": "∑", "Upsilon": "Υ", "simeq": "≃", "approx": "≈", "lesssim": "≲", "gtrsim": "≳", "ll": "≪", "gg": "≫", "times": "×", "cdot": "·", "to": "→", "pm": "±",
          "le": "≤", "leq": "≤", "ge": "≥", "geq": "≥", "ne": "≠", "infty": "∞", "propto": "∝", "equiv": "≡", "dots": "…", "ldots": "…", "nabla": "∇",
          "Rightarrow": "⇒", "Longrightarrow": "⇒", "prime": "′", "mid": "|", "langle": "⟨", "rangle": "⟩"}
 FUNCS = {"ln", "log", "exp", "sin", "cos", "arcsin", "max", "min"}
@@ -138,6 +138,8 @@ class _P:
                 ek, ev = self.take()
                 right = ev
                 return ("delim", left, body, right)
+            if v in ("dot", "ddot"):
+                return ("acc", self.group(), "̇" if v == "dot" else "̈")
             if v in ("int",):
                 return ("int",)
             if v in SPACES:
@@ -208,6 +210,9 @@ def _emit(nodes, parent, plain=False):
             _emit(n[1], parent, plain)
         elif kind == "int":
             parent.append(_run("∫", plain=True))
+        elif kind == "acc":
+            ac = M("acc"); pr = M("accPr"); cc = M("chr"); cc.set(qn("m:val"), n[2]); pr.append(cc); ac.append(pr)
+            e = M("e"); _emit(n[1], e, plain); ac.append(e); parent.append(ac)
         elif kind == "frac":
             f = M("f"); num = M("num"); den = M("den")
             _emit(n[1], num, plain); _emit(n[2], den, plain)

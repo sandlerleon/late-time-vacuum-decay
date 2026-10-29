@@ -235,3 +235,5 @@ if __name__ == "__main__":
     fig1(); fig2(); fig3(); fig4(); fig5(); fig6()
     import make_thermal_figures as _mt
     _mt.fig6(); _mt.fig7()
+    import make_sim_figures as _ms
+    _ms.fig10()
