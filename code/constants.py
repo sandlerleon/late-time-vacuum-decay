@@ -25,6 +25,7 @@ M4_OVER_VF = M_PL ** 4 / V_F                              # (M_Pl^4 / V_f), abou
 LN_M4_OVER_VF = float(np.log(M4_OVER_VF))
 T_CMB_GEV = T_CMB_K * K_TO_GEV
 T_BBN_GEV = 1e-3                                          # GeV: the weak-interaction freeze-out / nucleosynthesis scale, ~1 MeV
+GSTAR_BBN = 10.75                                         # photons, e+-, three neutrino species at T ~ 1 MeV
 GSTAR_LOW = 3.36                                          # photons + three neutrino species at T << MeV (g_*)
 
 

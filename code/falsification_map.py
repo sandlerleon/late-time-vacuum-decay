@@ -15,6 +15,7 @@ import rates as R
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 T = json.load(open(os.path.join(HERE, "bounce_tables.json"), encoding="utf-8"))
+SURV = json.load(open(os.path.join(HERE, "survival.json"), encoding="utf-8"))
 out = {}
 
 # ---- grid of ln(Gamma/H^4), B and decay time
@@ -35,10 +36,11 @@ def eta_for_log10t(lam_, log10t):
     return brentq(f, lo, hi, xtol=1e-9)
 
 cont = {}
-for name, lt in [("survival_bound", float(np.log10(K.T_HUBBLE_YR / ((4 * np.pi / 3) * 3.0 / (8 * np.pi ** 2))))), ("1e12yr", 12.0), ("1e20yr", 20.0),
+for name, lt in [("survival_bound", float(np.log10(SURV["t_dec_min_yr"]))), ("1e12yr", 12.0), ("1e20yr", 20.0),
                  ("1e50yr", 50.0), ("1e100yr", 100.0)]:
     cont[name] = [dict(log10_lam=float(l), eta=eta_for_log10t(10 ** l, lt)) for l in np.linspace(-2.0, 2.0, 41)]
 out["contours"] = cont
+out["survival"] = dict(x_max=SURV["gamma_over_hl4_max_95"], t_dec_min_yr=SURV["t_dec_min_yr"], V4_HL4=SURV["V4_HL4"])
 
 # ---- the physical gravity parameter and its consequences
 phys = []
@@ -67,7 +69,7 @@ out["reheat"] = dict(
     dV_gev4=dV_grid.tolist(), T_gev=[float(K.t_reh_max(d)) for d in dV_grid],
     T_max_meV_at_Vf=float(K.t_reh_max(K.V_F) * 1e12), T_max_K_at_Vf=float(K.t_reh_max(K.V_F) / K.K_TO_GEV),
     T_cmb_meV=float(K.T_CMB_GEV * 1e12), ratio_Tbbn_over_Tmax=float(K.T_BBN_GEV / K.t_reh_max(K.V_F)),
-    rho_needed_for_bbn_over_Vf=float(((np.pi ** 2 * K.GSTAR_LOW / 30.0) * K.T_BBN_GEV ** 4) / K.V_F),
+    rho_needed_for_bbn_over_Vf=float(((np.pi ** 2 * K.GSTAR_BBN / 30.0) * K.T_BBN_GEV ** 4) / K.V_F),
     vacuum_quarter_root_meV=float(K.V_F ** 0.25 * 1e12), gstar=K.GSTAR_LOW)
 json.dump(out, open(os.path.join(HERE, "falsification_map.json"), "w"), indent=1)
 for p in phys:

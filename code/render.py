@@ -270,6 +270,8 @@ def render_tex(blocks, path, fig_dir_rel="../figures"):
             body.append(r"\subsection{%s}" % tex_inline(txt))
         elif k == "p":
             body.append(tex_inline(b[1]) + "\n")
+        elif k == "pb":
+            body.append(r"\noindent\textbf{" + tex_inline(b[1]) + "} " + tex_inline(b[2]) + "\n")
         elif k == "note":
             body.append(r"\emph{" + tex_inline(b[1]) + "}\n")
         elif k == "bullets":
@@ -278,11 +280,22 @@ def render_tex(blocks, path, fig_dir_rel="../figures"):
             body.append(r"\begin{equation}" + "\n" + b[1] + "\n" + r"\end{equation}")
         elif k == "fig":
             fignum += 1
-            body.append(r"\begin{figure}[htbp]\centering\includegraphics[width=\textwidth]{%s/%s}\caption{%s}\end{figure}" % (fig_dir_rel, b[1], tex_inline(re.sub(r"^Fig\.\s*\d+\.\s*", "", b[2]))))
+            wfrac = min(1.0, (b[3] if len(b) > 3 else 6.3) / 6.3)
+            body.append(r"\begin{figure}[htbp]\centering\includegraphics[width=%.2f\textwidth]{%s/%s}\caption{%s}\end{figure}" % (wfrac, fig_dir_rel, b[1], tex_inline(re.sub(r"^Fig\.\s*\d+\.\s*", "", b[2]))))
         elif k == "table":
             tabnum += 1
             header, rows = b[2], b[3]
-            col = "l" * len(header)
+            n_c = len(header)
+            plain = lambda t: re.sub(r"[$\\{}^_]", "", str(t))
+            lens = [min(60, max([len(plain(header[j]))] + [len(plain(r_[j])) for r_ in rows])) for j in range(n_c)]
+            wide = max(sum(min(60, len(plain(r_[j]))) for j in range(n_c)) for r_ in rows) > 95
+            if wide:
+                tot = float(sum(lens))
+                fr = [max(0.09, l_ / tot) for l_ in lens]
+                z = sum(fr)
+                col = "".join(r">{\raggedright\arraybackslash}p{%.3f\dimexpr\textwidth-%d\tabcolsep\relax}" % (f_ / z, 2 * n_c) for f_ in fr)
+            else:
+                col = "l" * n_c
             tb = [r"\begin{table}[htbp]\centering\small", r"\caption{%s}" % tex_inline(re.sub(r"^Table\s*\d+\.\s*", "", b[1])), r"\begin{tabular}{%s}" % col, r"\toprule",
                   " & ".join(tex_inline(h) for h in header) + r" \\ \midrule"]
             for r_ in rows:

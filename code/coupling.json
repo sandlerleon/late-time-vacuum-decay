@@ -1,0 +1,67 @@
+{
+ "omega_m": 0.31110000000000004,
+ "rho_m_over_Vf": 0.4515894904920889,
+ "B_c": 287.18299818399373,
+ "rows": [
+  {
+   "eta": 0.3,
+   "B": 441.19015143750136,
+   "dlnb_dlneta": 5.4870298717027834,
+   "deta_over_eta_per_dV": 1.032446867995833,
+   "x_f_minus_x_t": 1.9119013239182525,
+   "f_meV": 3.0470974194811955,
+   "delta_phi_meV": 5.825749590413989,
+   "x_f": 0.7864825411616271,
+   "x_t": -1.1254187827566255,
+   "dB_over_B_per_dV": 5.665066805639116,
+   "cases": [
+    {
+     "label": "change of the rate by a factor e",
+     "delta_B": 1.0,
+     "dV_over_DV": 0.0004001005561711482,
+     "delta_ln_m": 0.0008859828773587398,
+     "beta_linear": 3.703160036123738e+26,
+     "Lambda_quadratic_meV": 58.27072462840604
+    },
+    {
+     "label": "reset window: B lowered to B_c",
+     "delta_B": 154.00715325350762,
+     "dV_over_DV": 0.06161834767106366,
+     "delta_ln_m": 0.1364477007733711,
+     "beta_linear": 5.703131352055733e+28,
+     "Lambda_quadratic_meV": 4.695479753054729
+    }
+   ]
+  },
+  {
+   "eta": 0.32,
+   "B": 300.8694400421315,
+   "dlnb_dlneta": 6.500129007701204,
+   "deta_over_eta_per_dV": 1.039930014998415,
+   "x_f_minus_x_t": 1.893893125360593,
+   "f_meV": 3.0000090134003927,
+   "delta_phi_meV": 5.681696446498819,
+   "x_f": 0.7613913530813121,
+   "x_t": -1.132501772279281,
+   "dB_over_B_per_dV": 6.759679256470346,
+   "cases": [
+    {
+     "label": "change of the rate by a factor e",
+     "delta_B": 1.0,
+     "dV_over_DV": 0.0004916950462690636,
+     "delta_ln_m": 0.0010888097633389836,
+     "beta_linear": 4.6663030992516024e+26,
+     "Lambda_quadratic_meV": 53.8965375713427
+    },
+    {
+     "label": "reset window: B lowered to B_c",
+     "delta_B": 13.686441858137755,
+     "dV_over_DV": 0.006729555662695891,
+     "delta_ln_m": 0.014901931520511728,
+     "beta_linear": 6.386508606035506e+27,
+     "Lambda_quadratic_meV": 14.568525137901545
+    }
+   ]
+  }
+ ]
+}

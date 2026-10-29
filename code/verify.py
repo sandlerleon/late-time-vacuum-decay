@@ -17,6 +17,11 @@ unless every check passes.
  V11 closed-form interior radiation density against the full numerical integration
  V12 physical constants and the reheating bound
  V13 Monte Carlo: regime fractions, reproducibility, convergence
+ V14 past-light-cone four-volume: Einstein-de Sitter analytic value, two independent quadratures, cutoff convergence, survival threshold
+ V15 numerical error budget of the bounce action (integrator, tolerance, quadrature, bisection, truncation, boundary-value mesh and domain)
+ V16 negative-mode structure: one negative eigenvalue (l = 0), l = 1 zero modes, none for l >= 2, no node, Derrick identity
+ V17 scope of the reheating bound: matter-dilution envelope, curvature parameter, e-folds, AdS crunch, reservoir
+ V18 matter-coupling estimate: internal consistency
 """
 import json
 import os
@@ -28,6 +33,7 @@ import constants as K
 import rates as R
 import interior_evolution as I
 import monte_carlo as M
+import survival as S
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 T = json.load(open(os.path.join(HERE, "bounce_tables.json"), encoding="utf-8"))
@@ -128,5 +134,44 @@ conv = MC["convergence"]
 se = MC["baseline_batch"]["never"]["se"]
 rec("V13_monte_carlo", abs(tot - 1.0) < 1e-9 and abs(s13["frac_never_within_1e100"] - conv[2]["never"]) < 1e-12 and abs(conv[2]["never"] - conv[3]["never"]) < 5 * max(se, 0.005),
     fractions_sum=float(tot), reproduces_stored_100k_run=bool(abs(s13["frac_never_within_1e100"] - conv[2]["never"]) < 1e-12))
+# V14
+SV = json.load(open(os.path.join(HERE, "survival.json"), encoding="utf-8"))
+eds = SV["check_EdS"]
+v4_a, v4_b = S.v4_past_light_cone(), S.v4_past_light_cone(method="ode")
+cut = [x["V4"] for x in SV["convergence"]["a_min"]]
+grd = [x["V4"] for x in SV["convergence"]["grid"]]
+ok14 = (abs(eds["numeric"] / eds["analytic"] - 1) < 1e-9 and abs(v4_a / v4_b - 1) < 1e-9 and abs(cut[-1] / cut[-2] - 1) < 1e-9 and abs(grd[-1] / grd[-2] - 1) < 1e-9
+        and abs(SV["gamma_over_hl4_max_95"] * SV["V4_HL4"] - SV["N_95"]) < 1e-9 and abs(MC["survival"]["x_max"] - SV["gamma_over_hl4_max_95"]) < 1e-12)
+rec("V14_past_light_cone", ok14, V4_HL4=SV["V4_HL4"], EdS_rel=float(abs(eds["numeric"] / eds["analytic"] - 1)), grid_vs_ode=float(abs(v4_a / v4_b - 1)), euclid_over_lorentzian=SV["ratio_euclid_to_lorentzian"])
+# V15
+CV = json.load(open(os.path.join(HERE, "convergence.json"), encoding="utf-8"))
+dev, trunc = [], []
+for eta15, r in CV["A_flat_shooting"].items():
+    dev += [x["rel"] for x in r["rtol"] if x["rtol"] <= 1e-10] + [x["rel"] for x in r["method"] if x["rel"] is not None] + [x["rel"] for x in r["quadrature"]]
+    dev += [x["rel"] for x in r["bisection"] if x["tol"] <= 1e-10]
+    trunc.append([x["rel"] for x in r["truncation"]])
+for eta15, r in CV["B_boundary_value"].items():
+    dev += [x["rel"] for k in ("tol", "mesh", "domain_padding") for x in r[k]]
+kap_rel = CV["C_gravity_coefficient"]["kappa_g0_spread"] / CV["C_gravity_coefficient"]["kappa_g0_mean"]
+ok_trunc = all(t[-1] < 1e-5 and all(np.diff(t) < 0) for t in trunc)
+rec("V15_error_budget", max(dev) < 3e-8 and kap_rel < 1e-4 and ok_trunc, worst_relative_deviation=float(max(dev)), truncation_at_largest_radius=[float(t[-1]) for t in trunc], kappa_g0=CV["C_gravity_coefficient"]["kappa_g0_mean"], kappa_spread_rel=float(kap_rel))
+# V16
+neg = CV["D_negative_mode"]
+ok16 = all(v["n_negative_l0"] == 1 and v["n_negative_l1"] == 0 and v["n_negative_l2_to_4"] == 0 and abs(v["l1_lowest_over_mf2"]) < 1e-5
+           and v["phi_prime_sign_changes"] == 0 and v["phi_minus_phi_f_nodes"] == 0 and v["virial_residual"] < 1e-6 for v in neg.values())
+rec("V16_negative_mode", ok16, tilts=sorted(neg), l1_zero_mode_over_mf2=[float(neg[k]["l1_lowest_over_mf2"]) for k in sorted(neg)], virial=[float(neg[k]["virial_residual"]) for k in sorted(neg)])
+# V17
+SC = json.load(open(os.path.join(HERE, "scope.json"), encoding="utf-8"))
+ok17 = (SC["envelope_check_max_ratio"] <= 1.0 + 1e-9 and max(e["N"] for e in SC["e_folds"]) < 1e-50 and SC["curvature"][0]["Y0_at_Vf"] < 1e-50
+        and SC["needed_parent_for_bbn_at_1s"]["kappa_m_min"]["orders_above_Planck"] > 40 and SC["ads_for_1MeV"]["t_crunch_s"] < 10.0)
+rec("V17_scope_of_reheating_bound", ok17, envelope_max_ratio=SC["envelope_check_max_ratio"], max_e_folds=max(e["N"] for e in SC["e_folds"]), Y0=SC["curvature"][0]["Y0_at_Vf"],
+    orders_above_Planck_min_over_prior=SC["needed_parent_for_bbn_at_1s"]["kappa_m_min"]["orders_above_Planck"], crunch_time_for_1MeV_s=SC["ads_for_1MeV"]["t_crunch_s"])
+# V18
+CP = json.load(open(os.path.join(HERE, "coupling.json"), encoding="utf-8"))
+ok18 = True
+for row in CP["rows"]:
+    for c in row["cases"]:
+        ok18 &= abs(c["beta_linear"] * row["delta_phi_meV"] * 1e-12 / K.M_PL / c["delta_ln_m"] - 1) < 1e-9 and abs(c["delta_ln_m"] * CP["rho_m_over_Vf"] / c["dV_over_DV"] - 1) < 1e-9
+rec("V18_coupling_estimate", ok18, rows=len(CP["rows"]))
 json.dump(res, open(os.path.join(HERE, "verification.json"), "w", encoding="utf-8"), indent=1)
 print("\nALL PASS" if all(v["passed"] for v in res.values()) else "\nSOME FAILED")

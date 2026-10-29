@@ -71,7 +71,7 @@ def _flat_rhs(r, y, pot):
     return [p, pot.dv(x) - 3.0 * p / r]
 
 
-def _flat_shoot(x0, pot, r_max=400.0, rtol=1e-11, atol=1e-13):
+def _flat_shoot(x0, pot, r_max=400.0, rtol=1e-11, atol=1e-13, method="DOP853"):
     """Integrate from the centre. Returns +1 for overshoot (crosses the false minimum), -1 for undershoot, and the path."""
     r0 = 1e-6
     d = pot.dv(x0)
@@ -86,7 +86,7 @@ def _flat_shoot(x0, pot, r_max=400.0, rtol=1e-11, atol=1e-13):
     under.terminal, under.direction = True, -1
 
     sol = solve_ivp(_flat_rhs, [r0, r_max], y0, args=(pot,), events=(over, under), rtol=rtol, atol=atol, dense_output=True,
-                    method="DOP853")
+                    method=method)
     if sol.t_events[0].size:
         return +1, sol
     if sol.t_events[1].size:
@@ -94,7 +94,7 @@ def _flat_shoot(x0, pot, r_max=400.0, rtol=1e-11, atol=1e-13):
     return -1, sol
 
 
-def flat_bounce(lam, eta, tol=1e-13, r_max=400.0, with_profile=False):
+def flat_bounce(lam, eta, tol=1e-13, r_max=400.0, with_profile=False, rtol=1e-11, atol=1e-13, method="DOP853", n_quad=200001):
     """Flat-space O(4) bounce; returns B (action relative to the false vacuum), the central field value and the profile."""
     pot = Potential(lam, eta)
     if not pot.has_false_vacuum:
@@ -111,7 +111,7 @@ def flat_bounce(lam, eta, tol=1e-13, r_max=400.0, with_profile=False):
     # bisect on x0 between the undershoot (x_s) and the overshoot (near x_t) ends
     for _ in range(200):
         mid = 0.5 * (lo + hi)
-        kind, sol = _flat_shoot(mid, pot, r_max)
+        kind, sol = _flat_shoot(mid, pot, r_max, rtol, atol, method)
         if kind > 0:
             hi = mid
         else:
@@ -119,10 +119,10 @@ def flat_bounce(lam, eta, tol=1e-13, r_max=400.0, with_profile=False):
         if abs(hi - lo) < tol:
             break
     x0 = 0.5 * (lo + hi)
-    kind, sol = _flat_shoot(x0, pot, r_max)
+    kind, sol = _flat_shoot(x0, pot, r_max, rtol, atol, method)
     # action from the profile up to where the solution has settled (the integrand is negligible there)
     r_end = sol.t[-1]
-    rr = np.linspace(1e-6, r_end, 200001)
+    rr = np.linspace(1e-6, r_end, n_quad)
     xx, pp = sol.sol(rr)
     integrand = rr ** 3 * (pp ** 2 / 2.0 + pot.v(xx) - pot.v_f)
     B = 2.0 * np.pi ** 2 * float(np.trapezoid(integrand, rr))
@@ -145,7 +145,7 @@ def _grav_rhs(s, y, pot, g):
     return [p, pot.dv(x) - 3.0 * rp * p / rho, rp, -(g * rho / 3.0) * (p * p + pot.v(x))]
 
 
-def _grav_shoot(x0, pot, g, s_max):
+def _grav_shoot(x0, pot, g, s_max, rtol=1e-11, atol=1e-13, method="DOP853"):
     s0 = 1e-6
     v0 = pot.v(x0)
     d = pot.dv(x0)
@@ -163,14 +163,14 @@ def _grav_shoot(x0, pot, g, s_max):
         return y[2] - 1e-4
     pole.terminal, pole.direction = True, -1
 
-    sol = solve_ivp(_grav_rhs, [s0, s_max], y0, args=(pot, g), events=(over, under, pole), rtol=1e-11, atol=1e-13,
-                    dense_output=True, method="DOP853")
+    sol = solve_ivp(_grav_rhs, [s0, s_max], y0, args=(pot, g), events=(over, under, pole), rtol=rtol, atol=atol,
+                    dense_output=True, method=method)
     if sol.t_events[0].size:
         return +1, sol
     return -1, sol
 
 
-def grav_bounce(lam, eta, g, v0=0.0, tol=1e-13):
+def grav_bounce(lam, eta, g, v0=0.0, tol=1e-13, rtol=1e-11, atol=1e-13, method="DOP853"):
     """CDL bounce (false vacuum with v_f > 0, i.e. a de Sitter parent). Returns None if no oscillating bounce is found."""
     pot = Potential(lam, eta, v0)
     if not pot.has_false_vacuum or pot.v_f <= 0:
@@ -185,13 +185,13 @@ def grav_bounce(lam, eta, g, v0=0.0, tol=1e-13):
         return None
     x_s = brentq(f, xs_grid[idx[0]], xs_grid[idx[0] + 1], xtol=1e-14)
     lo, hi = x_s, pot.x_t + 1e-9
-    k_lo, _ = _grav_shoot(lo, pot, g, s_max)
-    k_hi, _ = _grav_shoot(hi, pot, g, s_max)
+    k_lo, _ = _grav_shoot(lo, pot, g, s_max, rtol, atol, method)
+    k_hi, _ = _grav_shoot(hi, pot, g, s_max, rtol, atol, method)
     if k_lo > 0 or k_hi < 0:
         return None
     for _ in range(200):
         mid = 0.5 * (lo + hi)
-        kind, sol = _grav_shoot(mid, pot, g, s_max)
+        kind, sol = _grav_shoot(mid, pot, g, s_max, rtol, atol, method)
         if kind > 0:
             hi = mid
         else:
@@ -199,7 +199,7 @@ def grav_bounce(lam, eta, g, v0=0.0, tol=1e-13):
         if abs(hi - lo) < tol:
             break
     x0 = 0.5 * (lo + hi)
-    kind, sol = _grav_shoot(x0, pot, g, s_max)
+    kind, sol = _grav_shoot(x0, pot, g, s_max, rtol, atol, method)
     return dict(x0=x0, pot=pot, sol=sol, H=H)
 
 
@@ -260,7 +260,7 @@ def parke_thin_wall(sigma, dV, v_f, g, v_t=None):
 
 
 # ------------------------------------------------------------------------------ flat-space bounce by boundary-value solver
-def flat_bounce_bvp(lam, eta, r_pad=30.0):
+def flat_bounce_bvp(lam, eta, r_pad=30.0, tol=1e-9, n_init=4000, max_nodes=400000, with_profile=False):
     """Independent check of flat_bounce using a collocation boundary-value solver. It does not suffer from the exponential
     sensitivity of the shooting method in the thin-wall regime. Initial guess: a tanh wall at the thin-wall radius."""
     from scipy.integrate import solve_bvp
@@ -273,7 +273,7 @@ def flat_bounce_bvp(lam, eta, r_pad=30.0):
     r_max = Rc * 1.0 + r_pad + 6.0 / np.sqrt(abs(pot.m2_f))
     r0 = 1e-4
     w = max(1.0 / np.sqrt(pot.lam), 0.3)
-    r = np.linspace(r0, r_max, 4000)
+    r = np.linspace(r0, r_max, n_init)
     xc = 0.5 * (pot.x_t + pot.x_f)
     xg = xc + 0.5 * (pot.x_f - pot.x_t) * np.tanh((r - Rc) / w)
     pg = 0.5 * (pot.x_f - pot.x_t) / w / np.cosh((r - Rc) / w) ** 2
@@ -284,10 +284,13 @@ def flat_bounce_bvp(lam, eta, r_pad=30.0):
     def bc(ya, yb):
         return np.array([ya[1] - pot.dv(ya[0]) * r0 / 4.0, yb[0] - pot.x_f])
 
-    sol = solve_bvp(rhs, bc, r, np.vstack([xg, pg]), tol=1e-9, max_nodes=400000)
+    sol = solve_bvp(rhs, bc, r, np.vstack([xg, pg]), tol=tol, max_nodes=max_nodes)
     if not sol.success:
         return dict(B=np.nan, success=False)
     rr = np.linspace(r0, r_max, 400001)
     xx, pp = sol.sol(rr)
     B = 2.0 * np.pi ** 2 * float(np.trapezoid(rr ** 3 * (pp ** 2 / 2.0 + pot.v(xx) - pot.v_f), rr))
-    return dict(B=B, success=True, x0=float(sol.sol(r0)[0]), pot=pot, Rc=Rc)
+    out = dict(B=B, success=True, x0=float(sol.sol(r0)[0]), pot=pot, Rc=Rc, nodes=int(sol.x.size))
+    if with_profile:
+        out["r"], out["x"], out["p"] = rr, xx, pp
+    return out

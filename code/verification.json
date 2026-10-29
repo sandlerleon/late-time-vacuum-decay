@@ -92,5 +92,56 @@
   "passed": true,
   "fractions_sum": 1.0,
   "reproduces_stored_100k_run": true
+ },
+ "V14_past_light_cone": {
+  "passed": true,
+  "V4_HL4": 0.05911708010434997,
+  "EdS_rel": 2.3869795029440866e-13,
+  "grid_vs_ode": 9.658940314238862e-14,
+  "euclid_over_lorentzian": 445.200355347642
+ },
+ "V15_error_budget": {
+  "passed": true,
+  "worst_relative_deviation": 1.2047155939498566e-08,
+  "truncation_at_largest_radius": [
+   1.3123905941991865e-06,
+   2.0017321133991572e-13,
+   5.133671265866724e-13
+  ],
+  "kappa_g0": 3.640695753440282,
+  "kappa_spread_rel": 7.718505985297555e-06
+ },
+ "V16_negative_mode": {
+  "passed": true,
+  "tilts": [
+   "0.05",
+   "0.15",
+   "0.3",
+   "0.36"
+  ],
+  "l1_zero_mode_over_mf2": [
+   -3.541471343592276e-08,
+   -1.2806997091383455e-09,
+   4.865230699993859e-08,
+   2.0986048237776677e-07
+  ],
+  "virial": [
+   1.9166932803332323e-09,
+   6.085666826545979e-09,
+   3.486801322290588e-08,
+   1.36134110258398e-07
+  ]
+ },
+ "V17_scope_of_reheating_bound": {
+  "passed": true,
+  "envelope_max_ratio": 1.0,
+  "max_e_folds": 9.26924375971218e-62,
+  "Y0": 1.986834383969295e-63,
+  "orders_above_Planck_min_over_prior": 41.794857057616454,
+  "crunch_time_for_1MeV_s": 4.637476858470595
+ },
+ "V18_coupling_estimate": {
+  "passed": true,
+  "rows": 2
  }
 }
