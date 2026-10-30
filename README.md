@@ -1,9 +1,9 @@
-# Daughter Universes and Oscillating Cycles from a Metastable Dark-Energy Vacuum
+# A Cyclic Hot Big Bang Triggered by Matter Dilution
 
 Leon Sandler, Independent Researcher — sandler.leon@gmail.com — ORCID 0009-0007-4584-808X
 
-Code, data and manuscript for *"Daughter Universes and Oscillating Cycles from a Metastable Dark-Energy Vacuum: Quantum and Thermal Decay,
-Survival, and Reheating Bounds,"* prepared for **The European Physical Journal C**. (Earlier titles: "Daughter-Universe Nucleation from a Metastable Dark-Energy Vacuum: …", "Late-Time Vacuum Decay as a Cosmological Reset: …"
+Code, data and manuscript for *"A Cyclic Hot Big Bang Triggered by Matter Dilution: Metastable Dark Energy, Vacuum Release, Recollapse
+and Self-Similar Nonsingular Cycles,"* prepared for **The European Physical Journal C**. (Earlier titles: "Daughter Universes and Oscillating Cycles from a Metastable Dark-Energy Vacuum: …", "Daughter-Universe Nucleation from a Metastable Dark-Energy Vacuum: …", "Late-Time Vacuum Decay as a Cosmological Reset: …"
 and "Late-Time Vacuum Decay and Cosmological Reheating: …".)
 
 ## What the paper does
@@ -28,6 +28,8 @@ region is not a cyclic cosmology, and the paper claims only to test this one res
 | Over the stated priors (a sample space, not probabilities): 14.8% above the survival bound for a decoupled scalar, 24–49% if it is in equilibrium with the CMB, and no late-time decay window left | `monte_carlo.py`, `thermal_analysis.py` |
 | Reheating T ≤ 2.2 meV (4.6×10⁸ below nucleosynthesis); the open interior stays curvature dominated for any sub-Planckian energy and any number of scalar fields, so a hot epoch at 1 s needs a parent scale at least 41 orders of magnitude above M_Pl | `interior_evolution.py`, `scope.py` |
 | Lorentzian simulations of the daughter region (two fields, dissipation, gravity): closed-form interior reproduced to 7%; a reservoir hidden by a negative offset leaves an AdS vacuum that crunches after 5.5 s when it reaches 0.7 MeV; hilltop flattening at the dark-energy scale needs a vev above 4 M_Pl and still reheats below 1.5 meV; repeated transitions obey ΣΔV ≤ ρ_Λ; entropy accounting | `interior_sim.py` |
+| **Matter-held vacuum (Section 6):** a dark-matter coupling holds the observed dark energy; dilution releases it into a negative vacuum and the expansion turns around, with an exact LambdaCDM past (w = -1, no fifth force today); the uncoupled control rolls before today for mu >= 300 H0; V_c - V0(v) = (A(v)-1) rho_crit/2 forces the dark-matter mass to grow severalfold at the release; cooling cannot replace dilution as the trigger; a coupling centred on the false vacuum lets vacua excluded by survival decay in the near future | `matter_coupling.py`, `dilution_background.py`, `turnaround_scan.py`, `dilution_thermal.py`, `density_bounce.py` |
+| **Self-similar hot cycles (Section 6.6):** effective LQC bounce + thermal dissipation (Upsilon ~ T^3) + dark-matter re-thermalization and freeze-out: every cycle has a radiation-dominated bounce, a matter era, a dark-energy epoch of ~3.6 e-folds and a release at the same temperature; entropy grows x1.2e7 per cycle and the next cycle is larger by exactly (S_n+1/S_n)^(1/3) = 231.8; without the dissipation or the freeze-out the cycles fail | `cyclic_extension.py`, `hot_cycles.py`, `dilution_validation.py` |
 | Option B (same region oscillating), effective LQC bounce + AdS turnaround: radiation-only cycles periodic over 1000+ bounces; a scalar excitation is amplified ×6–400 per cycle (cosmological hysteresis; validated with 3 integrators); turnaround radius obeys Δa_max = W/3 (W = ∮p dV); 100-cycle phase diagram: stable only for ΥP ≳ ln μ; a vacuum transition during the cycles destabilises them; no cycle has positive vacuum energy | `oscillation.py`, `oscillation_validation.py` |
 | A matter trigger needs Δln m ≳ 10⁻³ between the vacua: linear β ~ 10²⁶–10²⁹, or a quadratic scale of tens of meV | `coupling.py` |
 
@@ -53,12 +55,17 @@ code/       cdl_lib.py              potential, flat-space and gravitational boun
             oscillation.py          Option B cycles: periodicity, scaling, scalar Floquet multipliers, hysteresis, dissipation
             oscillation_validation.py   integrators, bounce continuity, W = oint p dV law, 100/1000-cycle phase diagram, second bounce prescription, vacuum transitions (A/B/C)
             oscillation_config.json, oscillation_cycles.csv   configuration and per-cycle results
-            verify.py               26 executable checks
-            make_figures.py, make_thermal_figures.py, make_sim_figures.py, make_osc_figures.py   Figs 1-12
+            matter_coupling.py, dilution_background.py   the matter-held vacuum and the coupled background (Section 6.2-6.3)
+            turnaround_scan.py      200-run grid: coupled model vs uncoupled control (turnaround_scan.json/.csv)
+            dilution_thermal.py     cooling vs dilution as the trigger; density_bounce.py   the tunneling branch
+            cyclic_extension.py     cold cycles (no dissipation / constant dissipation); hot_cycles.py   self-similar hot cycles (hot_cycles.json/.csv)
+            dilution_validation.py  ten checks of the new code
+            verify.py               28 executable checks
+            make_figures.py, make_thermal_figures.py, make_sim_figures.py, make_osc_figures.py, make_dil_figures.py   Figs 1-16
             omml.py, render.py      LaTeX -> native Word equations; Word and LaTeX renderers
-            build_paper.py, thermal_blocks.py, sim_blocks.py, osc_blocks.py, build_supporting.py   build the manuscript, supplement and cover letter from the stored results
+            build_paper.py, thermal_blocks.py, sim_blocks.py, osc_blocks.py, dil_blocks.py, build_supporting.py   build the manuscript, supplement and cover letter from the stored results
 *.json      stored results that the manuscript reads
-figures/    Figs 1-12 (300 dpi)
+figures/    Figs 1-16 (300 dpi)
 manuscript/ manuscript (Word and LaTeX/PDF), supplement, cover letter
 ```
 
@@ -80,7 +87,11 @@ python thermal_analysis.py     # ~6 min (needs thermal_tables.json)
 python interior_sim.py         # ~25 s (needs bounce_tables.json, interior_evolution.json)
 python oscillation.py          # ~40 s
 python oscillation_validation.py   # ~25 min
-python verify.py               # ~25 s; 26 checks
+python density_bounce.py        # ~1 min
+python turnaround_scan.py       # ~5 min
+python dilution_thermal.py; python cyclic_extension.py; python hot_cycles.py   # ~5 min
+python dilution_validation.py   # ~2 min
+python verify.py               # ~25 s; 28 checks
 python make_figures.py
 python build_paper.py          # refuses to run unless verify.py passed
 python build_supporting.py
@@ -90,6 +101,7 @@ Seeds are fixed (Monte Carlo: 20261030), so the numbers reproduce exactly.
 
 ## Revision history
 
+* **v1.5.0** — Main direction changed to a cyclic hot big bang triggered by matter dilution (new title): matter-held vacuum with a dark-matter coupling, release and recollapse against an uncoupled control (200-run grid), cooling vs dilution, tunneling branch, cold and hot cycles with an effective bounce, thermal dissipation and freeze-out (self-similar cycles), Section 6.2-6.7, Tables 16-17, Figs 13-16, checks V27-V28 (28).
 * **v1.4.0** — Option B (same region oscillating): effective loop-quantum-cosmology bounce with the AdS turnaround, sinusoid analysis, periodic radiation-only cycles, scalar amplification (cosmological
   hysteresis) validated with three integrators and convergence tests, the law Δa_max = W/3, 100-1000-cycle phase diagram with the boundary ΥP ≈ ln μ, a second bounce prescription, vacuum transitions
   during the cycles (Models A/B/C), Section 5.6, Table 14, Figs 11-12, 2 new checks (26), new title.

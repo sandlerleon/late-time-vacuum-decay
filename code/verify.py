@@ -30,6 +30,8 @@ unless every check passes.
  V24 hilltop flattening, repeated transitions (sum rule) and entropy
  V25 Option B cycles: periodicity, bounce, scaling of the period, constraint, shape against a sinusoid
  V26 Option B validation: integrators, bounce continuity, hysteresis law, 1000-cycle stability, effect of a transition
+ V27 matter-held vacuum: dilution_validation.py (conservation, integrators, LambdaCDM past, energy relation, thermal saturation, tunneling limit, bounce) and the release/control comparison
+ V28 hot cycles: self-similar cycles (bounce temperature, release temperature, held e-folds), growth = entropy^(1/3), constraint; both controls fail
 """
 import json
 import os
@@ -255,5 +257,31 @@ ok26 = (max(good) < 0.05 and bc["continuity_residual_at_bounces"] < 1e-3 and bc[
         and OVJ["transitions"]["C1"]["G"][-1] > 1.01)
 rec("V26_option_B_validation", ok26, integrator_spread=float(max(good)), continuity=bc["continuity_residual_at_bounces"], constraint=bc["constraint_residual_at_bounces"], law=float(max(laws) if laws else -1),
     long_runs=[l_["cls"] for l_ in longs])
+# V27
+DVJ = json.load(open(os.path.join(HERE, "dilution_validation.json"), encoding="utf-8"))
+SCJ = json.load(open(os.path.join(HERE, "turnaround_scan.json"), encoding="utf-8"))
+coupled = [r for r in SCJ["rows"] if r["coupled"]]
+ctrl300 = [r for r in SCJ["rows"] if (not r["coupled"]) and r["mu"] == 300.0]
+ok27 = (all(v["passed"] for v in DVJ.values()) and all(r["cls"] != "rolled before today" for r in coupled)
+        and all(r["cls"] == "rolled before today" for r in ctrl300) and max(r["max_residual"] for r in SCJ["rows"]) < 1e-4
+        and all(r["cls"] == "transition and recollapse" for r in coupled if r["q"] > 0))
+rec("V27_matter_held_vacuum", ok27, validation_checks=len(DVJ), scan_runs=len(SCJ["rows"]), max_residual=max(r["max_residual"] for r in SCJ["rows"]))
+# V28
+HCJ = json.load(open(os.path.join(HERE, "hot_cycles.json"), encoding="utf-8"))
+full = [r for r in HCJ["runs"] if r["params"]["reset"] and r["params"]["c_T"] > 0]
+ok28 = True
+spread = 0.0
+for r in full:
+    cs = [c for c in r["cycles"] if c["n"] >= 3]          # the self-similar cycle is approached within two cycles (an attractor)
+    for k in ("T_bounce", "T_release", "held_accelerated_efolds"):
+        vals = [c[k] for c in cs if c.get(k)]
+        spread = max(spread, (max(vals) - min(vals)) / max(vals))
+    gg = [(c["G"], c["G_from_entropy"]) for c in cs if c.get("G") and c.get("G_from_entropy")]
+    ok28 &= r["status"] == "completed" and r["max_residual"] < 1e-8 and all(abs(g / gs - 1) < 1e-3 for g, gs in gg)
+    ok28 &= all(c["bounce_radiation_fraction"] > 0.99 and c["max_matter_fraction"] > 0.9 and c["held_accelerated_efolds"] > 1.0 for c in cs)
+noreset = [r for r in HCJ["runs"] if not r["params"]["reset"]][0]
+nodiss = [r for r in HCJ["runs"] if r["params"]["c_T"] == 0][0]
+ok28 &= spread < 1e-2 and all(c.get("held_accelerated_efolds", 0) == 0 for c in noreset["cycles"][1:]) and nodiss["status"] == "runaway"
+rec("V28_hot_cycles", ok28, runs=len(full), max_spread_between_cycles=spread, controls_fail=True)
 json.dump(res, open(os.path.join(HERE, "verification.json"), "w", encoding="utf-8"), indent=1)
 print("\nALL PASS" if all(v["passed"] for v in res.values()) else "\nSOME FAILED")

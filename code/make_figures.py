@@ -239,3 +239,5 @@ if __name__ == "__main__":
     _ms.fig10()
     import make_osc_figures as _mo
     _mo.fig11(); _mo.fig12()
+    import make_dil_figures as _md
+    _md.fig13(); _md.fig14(); _md.fig15(); _md.fig16()

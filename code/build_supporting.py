@@ -30,6 +30,7 @@ T, F, MC, IN, V = J("bounce_tables.json"), J("falsification_map.json"), J("monte
 SV, CV, SC, CP = J("survival.json"), J("convergence.json"), J("scope.json"), J("coupling.json")
 TR, TT = J("thermal_results.json"), J("thermal_tables.json")
 SM = J("interior_sim.json")
+DVJ, SCJ, HCJ = J("dilution_validation.json"), J("turnaround_scan.json"), J("hot_cycles.json")
 OSC, OSV = J("oscillation.json"), J("oscillation_validation.json")
 assert all(v["passed"] for v in V.values())
 GITHUB = "https://github.com/sandlerleon/late-time-vacuum-decay"
@@ -37,7 +38,7 @@ DOI_PAPER, DOI_CODE = "10.5281/zenodo.23717617", "10.5281/zenodo.23717619"
 if os.path.exists(os.path.join(HERE, "dois.json")):
     _d = J("dois.json")
     DOI_PAPER, DOI_CODE = _d["paper"], _d["code"]
-TITLE = "Daughter-Universe Nucleation from a Metastable Dark-Energy Vacuum: Thermal and Quantum Decay, Past-Light-Cone Survival, and Reheating Bounds"
+TITLE = "A Cyclic Hot Big Bang Triggered by Matter Dilution: Metastable Dark Energy, Vacuum Release, Recollapse and Self-Similar Nonsingular Cycles"
 BASE = MC["baseline"]
 A_, B_, G_, D_ = CV["A_flat_shooting"], CV["B_boundary_value"], CV["C_gravity_coefficient"], CV["D_negative_mode"]
 
@@ -69,6 +70,8 @@ DESC = {
     "V24_hilltop_chain_entropy": "Hilltop flattening needs a super-Planckian vev; repeated transitions obey the sum rule; entropy",
     "V25_option_B_cycles": "Option B: periodic radiation-only cycles, regular bounce, period scaling, constraint, not a sinusoid",
     "V26_option_B_validation": "Option B: integrator agreement, bounce continuity, hysteresis law, 1000-cycle stability, effect of a transition",
+    "V27_matter_held_vacuum": "Matter-held vacuum: ten validation checks, LambdaCDM past for every coupled model, control rolls before today at mu = 300 H0",
+    "V28_hot_cycles": "Hot cycles: self-similar bounce and release temperatures and held e-folds, growth = entropy^(1/3), constraint; both controls fail",
 }
 S = []
 add = S.append
@@ -180,6 +183,27 @@ add(("table", "Table S11. Option B: scalar energy multiplier per cycle (linear r
      ["Integrator", "multiplier", "deviation", "$a_{\\max}$ deviation"], rows, None))
 rows = [["%.2f" % g["m"], "%.1f" % g["upsilon_P"], "%.0e" % g["phi0"], str(g["cycles"]), g["cls"]] for g in OSV["phase_diagram"]]
 add(("table", "Table S12. Option B phase diagram: classification after 100 or more cycles (runs stop when $a$ exceeds $10^{30}$).", ["$m$", "$\\Upsilon P$", "$\\varphi_0$", "cycles", "class"], rows, None))
+add(("h2", "S5.4 The matter-held vacuum and the hot cycles"))
+add(("p", "matter_coupling.py defines $V_0$, $A$, $\\rho_{\\rm crit}$ and $a_c$; dilution_background.py integrates the coupled background (flat, general relativity) from $z=1100$ with "
+          "the field at $10^{-60}v$, with the absolute tolerance of the field set relative to its seed (an absolute tolerance on the background scale would swamp the seed); "
+          "turnaround_scan.py runs the grid of Table 16 for the coupled model and the control; dilution_thermal.py the thermal branch; density_bounce.py the tunneling branch; "
+          "cyclic_extension.py the cold cycles; hot_cycles.py the hot cycles with thermal dissipation, freeze-out and hot-phase restoration, chunked integration (steps bounded by the "
+          "oscillation period while the field is heavy) and constraint projection at every doubling of the scale factor; dilution_validation.py runs the checks of Table S13."))
+rows = [[k.split("_")[0], k.split("_", 1)[1].replace("_", " "), "pass" if v["passed"] else "FAIL"] for k, v in DVJ.items()]
+add(("table", "Table S13. Validation of the dilution-trigger code (dilution_validation.py).", ["Check", "Content", "Result"], rows, None))
+rows = [["%g" % r["a_c"], "%g" % r["mu"], "%g" % r["q"], "coupled" if r["coupled"] else "control", r["cls"], ("%.3g" % r["a_turn"]) if r["a_turn"] else "--", "%.0e" % r["max_residual"]]
+        for r in SCJ["rows"] if r["q"] in (-0.5, 1.0) and (r["coupled"] or r["a_c"] == 2.0)]
+add(("table", "Table S14. Release and turnaround over the grid ($q=-0.5$ and 1; the control does not depend on $a_c$). The full grid, including $q=0.1$ and 10, is in turnaround_scan.csv.",
+     ["$a_c$", "$\\mu/H_0$", "$q$", "model", "outcome", "turnaround $a$", "residual"], rows, None))
+rows = []
+for r in HCJ["runs"]:
+    pp = r["params"]
+    lab = "a_c=%g mu=%g q=%g rho_c=1e%d C_T=%g%s" % (pp["a_c"], pp["mu"], pp["q"], round(np.log10(pp["rho_c_over_Vc"])), pp["c_T"], "" if pp["reset"] else " no reset")
+    for c in r["cycles"][:4]:
+        rows.append([lab if c["n"] == 0 else "", str(c["n"]), "%.4g" % c.get("T_bounce", 0), "%.3f" % c.get("max_matter_fraction", 0), "%.3f" % c.get("held_accelerated_efolds", 0),
+                     ("%.4g" % c["T_release"]) if c.get("T_release") else "--", ("%.2f" % c["G"]) if c.get("G") and pp["reset"] and pp["c_T"] > 0 else "--"])
+add(("table", "Table S15. Hot cycles, first four cycles of every run (cycle 0 starts today). Full per-cycle data in hot_cycles.csv.",
+     ["Run", "cycle", "$T_{\\rm bounce}$", "peak matter", "held e-folds", "$T_{\\rm rel}$", "$G_n$"], rows, None))
 add(("h1", "S6. Monte Carlo specification"))
 add(("p", "Draws: $N=%d$, NumPy PCG64 generator, seed %d. $\\log_{10}\\lambda\\sim U(-2,\\log_{10}4\\pi)$; $\\eta\\sim U(0.03,0.38)$; $\\ln D\\sim N(0,(1.5\\ln10)^2)$; $r_L=1$. Each draw is converted to "
           "$\\ln\\Gamma/H^4$ with Eq. (7), to a decay time, and classified: above the survival bound if $\\Gamma/H_\\Lambda^4\\ge%.2f$ (Section S5); otherwise decaying by $10^{12}$, $10^{20}$, $10^{50}$ or $10^{100}$ yr, or "
@@ -204,7 +228,7 @@ add(("p", "Scope (scope.py). With the curvature parameter $Y=a^2\\rho/(3M_{\\rm 
 add(("h1", "S8. Reproduction"))
 add(("p", "Environment of the published run: Python %s, NumPy %s, SciPy %s (Windows). Requirements: NumPy, SciPy, Matplotlib, python-docx (requirements.txt). From the code directory, in this order: "
           "bounce_tables.py (about 3 minutes), survival.py (seconds), monte_carlo.py (about 20 seconds), falsification_map.py, interior_evolution.py, convergence.py (about 4 minutes), scope.py, coupling.py, "
-          "thermal.py (about 40 seconds), thermal_analysis.py (about 6 minutes), interior_sim.py (about 25 seconds), oscillation.py (about 40 seconds), oscillation_validation.py (about 25 minutes), verify.py (about 25 seconds), make_figures.py (calls make_thermal_figures.py, make_sim_figures.py and make_osc_figures.py), build_paper.py, build_supporting.py. The scripts write the JSON files that the "
+          "thermal.py (about 40 seconds), thermal_analysis.py (about 6 minutes), interior_sim.py (about 25 seconds), oscillation.py (about 40 seconds), oscillation_validation.py (about 25 minutes), density_bounce.py (about 1 minute), turnaround_scan.py (about 5 minutes), dilution_thermal.py, cyclic_extension.py and hot_cycles.py (about 5 minutes together), dilution_validation.py (about 2 minutes), verify.py (about 25 seconds), make_figures.py (calls make_thermal_figures.py, make_sim_figures.py, make_osc_figures.py and make_dil_figures.py), build_paper.py, build_supporting.py. The scripts write the JSON files that the "
           "manuscript builder reads; monte_carlo.py needs survival.json and falsification_map.py needs survival.json. A rerun in a clean clone of the repository reproduced the stored JSON files exactly in the earlier release. Code: %s, archived at https://doi.org/%s."
           % (platform.python_version(), np.__version__, scipy.__version__, GITHUB, DOI_CODE)))
 add(("h1", "S9. Known limitations of the numerics"))
@@ -241,8 +265,16 @@ para("The Editors", after=0); para("The European Physical Journal C", after=0); 
 para("Dear Editors,")
 title_plain = TITLE.replace("--", "–")
 para("I submit the manuscript “%s” as a Regular Article (Theoretical Physics) for consideration in The European Physical Journal C." % title_plain)
-para("The paper tests a proposal that is often stated informally: that the decay of a metastable late-time vacuum could reset the cosmological history. It is treated as a calculation, and the answer is "
-     "largely negative. A scalar potential with an explicit metastable minimum is specified, the Coleman–De Luccia bounce is solved numerically in flat space and with Einstein gravity, and the action is converted to a "
+HB = HCJ["runs"][0]["cycles"][1]
+GS = [c["G_from_entropy"] for c in HCJ["runs"][0]["cycles"][1:] if c.get("G_from_entropy")]
+para("The paper asks whether the present dark energy can end the cosmological expansion and start a new hot big bang, and answers in two parts. The direct route, tunneling of a metastable dark-energy "
+     "vacuum, fails for reasons that are quantified below. The paper then constructs a route that works within an explicit model: a scalar coupled to dark matter holds the vacuum at the observed "
+     "dark-energy density while the matter density is high, and the dilution of the matter releases it into a negative vacuum, so that the expansion turns around with a LambdaCDM past that an "
+     "uncoupled field cannot reproduce. With an effective loop-quantum-cosmology bounce, thermal dissipation in the hot contraction and the re-thermalization and freeze-out of dark matter, the "
+     "cycles are self-similar: every cycle has a radiation-dominated bounce, a matter era, a dark-energy epoch of %.1f e-folds and a release at the same temperature, while the entropy produced "
+     "enlarges the next cycle by exactly (S_n+1/S_n)^(1/3) = %.1f, as the second law requires. Removing the dissipation or the freeze-out destroys the cycles, and cooling cannot replace dilution as "
+     "the trigger. The model predicts w = -1 until the release, no fifth force today and a future recollapse, and it is bounded by the deepest cosmic voids." % (HB["held_accelerated_efolds"], float(np.median(GS))))
+para("For the direct route the answer is negative. A scalar potential with an explicit metastable minimum is specified, the Coleman–De Luccia bounce is solved numerically in flat space and with Einstein gravity, and the action is converted to a "
      "nucleation rate with the measured dark-energy density as the false-vacuum energy. With all scales set by the dark energy the gravitational parameter is of order 10⁻⁶⁰, so gravity and the Hawking–Moss "
      "channel play no role and the decay is controlled by a single action, which must lie near %d for a transition on cosmological time scales. The survival of the present vacuum is evaluated on the Lorentzian past light "
      "cone of the observed expansion history (%.3f Hubble four-volumes, %d times smaller than the Euclidean four-sphere often used as a shortcut), which makes the survival condition a weak one. "
@@ -258,6 +290,11 @@ para("The interior of the nucleated region is simulated, not only bounded: Loren
 para("The same region oscillating (Option B) is tested as well, with an effective loop-quantum-cosmology bounce and the turnaround supplied by the decay to anti-de Sitter: radiation-only cycles are periodic over a thousand bounces, "
      "but a scalar excitation is amplified at every bounce, the turnaround radius follows the energy-balance law Delta a_max = W/3 with W the pressure-volume loop, the cycles are stable only when dissipation per cycle exceeds the logarithm of the amplification, "
      "and a vacuum transition during the cycles destabilises them. Cosmological hysteresis itself is known; the stability boundary, the law in this setting and the effect of a transition are what the paper adds.")
+para("I want to be clear about novelty here as well. The symmetron-type coupling, coupled dark matter, warm-inflation dissipation, thermal freeze-out, the effective bounce and Tolman's growing cycles are "
+     "established and cited. What the paper adds is their combination into a cycle that contains a hot big bang and an epoch like ours, the exact energy relation that fixes how much the dark-matter mass must "
+     "grow at the release, the comparison with an uncoupled control and with cooling as an alternative trigger, the tunneling branch in which dilution opens the survival window, and the identification of the "
+     "ingredients without which the cycles fail. The result is a demonstration within a model, with its limits stated (effective bounce, a bounce density far below the Planck value, homogeneous dynamics), "
+     "not a claim that the universe is cyclic.")
 para("I want to be clear about novelty. The bounce, Hawking–Moss and thin-wall results, the past-light-cone survival method, open-universe interiors and screened couplings are established, and are cited as such; Table 1 of the "
      "manuscript lists, for each ingredient, what is known and what is added. What is new is the quantitative combination for the dark-energy vacuum: an explicit map from potential parameters to decay times with a "
      "numerical error budget and negative-mode check; the survival bound on the past light cone and the corrected width of the transition window; a statement of which energy sources the reheating bound excludes by geometry and which only by "

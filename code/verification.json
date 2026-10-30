@@ -220,5 +220,17 @@
    "stable",
    "stable"
   ]
+ },
+ "V27_matter_held_vacuum": {
+  "passed": true,
+  "validation_checks": 10,
+  "scan_runs": 200,
+  "max_residual": 4.733220599513958e-05
+ },
+ "V28_hot_cycles": {
+  "passed": true,
+  "runs": 8,
+  "max_spread_between_cycles": 0.0005942593226494042,
+  "controls_fail": true
  }
 }
