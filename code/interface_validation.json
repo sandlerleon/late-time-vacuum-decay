@@ -1,0 +1,183 @@
+{
+ "checks": [
+  {
+   "name": "degeneracy density theta_deg = eta/2 (eta = 0.20)",
+   "passed": true,
+   "theta_deg": 0.1
+  },
+  {
+   "name": "degeneracy density theta_deg = eta/2 (eta = 0.30)",
+   "passed": true,
+   "theta_deg": 0.15000000000000002
+  },
+  {
+   "name": "degeneracy density theta_deg = eta/2 (eta = 0.36)",
+   "passed": true,
+   "theta_deg": 0.18
+  },
+  {
+   "name": "degeneracy density theta_deg = eta/2 (eta = 0.45)",
+   "passed": true,
+   "theta_deg": 0.22499999999999998
+  },
+  {
+   "name": "metastable window edges are roots of the cubic discriminant",
+   "passed": true,
+   "theta_low": 0.07325396403569256,
+   "theta_high": 0.28084554807248724
+  },
+  {
+   "name": "symmetron: the occupied minimum is never metastable (no tunneling)",
+   "passed": true
+  },
+  {
+   "name": "coupling check: exact / logarithmic = (e^d - 1)/d",
+   "passed": true,
+   "max_ratio": 1.0714356509572438
+  },
+  {
+   "name": "kink tension 2/3",
+   "passed": true,
+   "sigma": 0.6666666666666667
+  },
+  {
+   "name": "kink thickness 4 artanh(0.8)",
+   "passed": true,
+   "thickness": 4.394449154672442
+  },
+  {
+   "name": "bounce action at theta = 0 reproduces density_bounce (eta 0.20)",
+   "passed": true,
+   "b": 2493.7905659257144,
+   "ref": 2493.7905659257144
+  },
+  {
+   "name": "bounce action at theta = 0 reproduces density_bounce (eta 0.30)",
+   "passed": true,
+   "b": 441.19015143761925,
+   "ref": 441.19015143761925
+  },
+  {
+   "name": "bounce action at theta = 0 reproduces density_bounce (eta 0.36)",
+   "passed": true,
+   "b": 108.48563899788711,
+   "ref": 108.48563899788711
+  },
+  {
+   "name": "thin-wall limit: b / B_tw within 1 % for theta >= 0.6 theta_deg (eta 0.20)",
+   "passed": true,
+   "worst": 0.008971964390672493
+  },
+  {
+   "name": "thin-wall limit: b / B_tw within 1 % for theta >= 0.6 theta_deg (eta 0.30)",
+   "passed": true,
+   "worst": 0.009190467082881293
+  },
+  {
+   "name": "shooting and collocation agree (eta 0.30, 0.6 theta_deg)",
+   "passed": true,
+   "shooting": 5250.305679421875,
+   "collocation": 5250.305679395766
+  },
+  {
+   "name": "transmission reproduces the Poeschl-Teller result",
+   "passed": true,
+   "max_error": 2.2071608763996053e-06
+  },
+  {
+   "name": "unitarity T + R = 1",
+   "passed": true,
+   "max_error": 2.371849383564495e-10
+  },
+  {
+   "name": "sharp mass step: T = 4 k1 k2 / (k1 + k2)^2",
+   "passed": true,
+   "max_error": 1.9734716538710728e-07
+  },
+  {
+   "name": "transmission converged in the integration tolerance",
+   "passed": true,
+   "difference": 3.756202038296408e-08
+  },
+  {
+   "name": "junction reduces to the flat-space runaway Gamma = R/R_0",
+   "passed": true,
+   "deviation": 2.220446049250313e-16
+  },
+  {
+   "name": "wall energy equals the enclosed vacuum-energy deficit",
+   "passed": true,
+   "deviation": 6.661338147750939e-16
+  },
+  {
+   "name": "interior bookkeeping dE_in = F_E dV + W_wall closes",
+   "passed": true,
+   "residual": 5.088127967450651e-16
+  },
+  {
+   "name": "wall self-gravity negligible (sigma R / 2 Gamma < 1e-50)",
+   "passed": true,
+   "value": 2.108784609235124e-60
+  },
+  {
+   "name": "B percolated: H^2 = 0 at turnaround and bounce (relative)",
+   "passed": true,
+   "worst": 3.695556305416403e-09
+  },
+  {
+   "name": "B percolated: bounce at rho_c",
+   "passed": true
+  },
+  {
+   "name": "B percolated: Hubble rate continuous across nucleation",
+   "passed": true,
+   "worst": 3.3306690738754696e-16
+  },
+  {
+   "name": "B percolated: self-similar cycles (ln G constant to 1e-3)",
+   "passed": true,
+   "lnG": 2.6831158410621865
+  },
+  {
+   "name": "B isolated: H^2 = 0 at turnaround and bounce (relative)",
+   "passed": true,
+   "worst": 3.6682779036551244e-09
+  },
+  {
+   "name": "B isolated: bounce at rho_c",
+   "passed": true
+  },
+  {
+   "name": "B isolated: Hubble rate continuous across nucleation",
+   "passed": true,
+   "worst": 2.220446049250313e-16
+  },
+  {
+   "name": "B isolated: self-similar cycles (ln G constant to 1e-3)",
+   "passed": true,
+   "lnG": 1.6223138898512903
+  },
+  {
+   "name": "B percolated: comoving entropy never decreases",
+   "passed": true
+  },
+  {
+   "name": "B isolated: comoving entropy never decreases",
+   "passed": true
+  },
+  {
+   "name": "C* percolated, fully selective, hot bounce: comoving entropy never decreases",
+   "passed": true
+  },
+  {
+   "name": "C equals B (computed selectivity changes nothing)",
+   "passed": true
+  },
+  {
+   "name": "C* fails without re-thermalization",
+   "passed": true
+  }
+ ],
+ "all_passed": true,
+ "n": 36
+}

@@ -40,7 +40,8 @@ DOI_PAPER, DOI_CODE = "10.5281/zenodo.23717617", "10.5281/zenodo.23717619"
 if os.path.exists(os.path.join(HERE, "dois.json")):
     _d = J("dois.json")
     DOI_PAPER, DOI_CODE = _d["paper"], _d["code"]
-TITLE = "A Cyclic Hot Big Bang Triggered by Matter Dilution: Metastable Dark Energy, Vacuum Release, Recollapse and Nonsingular Cycles without Resets"
+TITLE = ("Matter-Dependent Vacuum Interfaces and a Conditional Cyclic Hot Big Bang: Dilution-Triggered Vacuum Release, Bubble Nucleation and "
+         "Nonsingular Cycles without Resets")
 BASE = MC["baseline"]
 A_, B_, G_, D_ = CV["A_flat_shooting"], CV["B_boundary_value"], CV["C_gravity_coefficient"], CV["D_negative_mode"]
 
@@ -77,7 +78,10 @@ DESC = {
     "V29_continuous_cycles": "Continuous cycles without resets: >= 100 cycles each with dark matter regenerated, a matter era and a held epoch; growth = entropy^(1/3); the cold bounce fails",
     "V30_causal_test": "Causal test: the frozen-matter intervention never recollapses; the diluting model recollapses for every q > 0",
     "V31_stability_bounce_relics": "Shear scaling and ekpyrotic gain, bounce invariants and continuity, black-hole volume fraction below percolation",
-    "V32_cycle_fixed_point": "The cycle as an attracting fixed point of the bounce-to-bounce map, closed-form held epoch, results unchanged by the numerical devices",
+    "V32_cycle_fixed_point": "The cycle as an attracting fixed point of the bounce-to-bounce map, closed-form held epoch, results unchanged by the solver tolerance, the overdamped threshold and the projection frequency",
+    "V33_vacuum_phase": "Phase structure: the symmetron release is spinodal (occupied minimum never metastable); tunneling-branch degeneracy at eta/2; coherence of the release; exact vs logarithmic coupling",
+    "V34_wall_transport_gravity": "Wall tension and thin-wall limit; transmission validated against Poeschl-Teller and unitarity; walls run away and filter a negligible dark-matter fraction; junction flat limit, wall energy = deficit",
+    "V35_daughter_cycles": "Daughter regions: constraint, bounce at rho_c and continuous H at every event; entropy non-decreasing; self-similar cycles; C = B, C* fails when cold, D window narrow; all interface checks pass",
 }
 S = []
 add = S.append
@@ -235,6 +239,21 @@ add(("table", "Table S18. Ekpyrotic phase (c = 5): largest controlled initial an
 rows = [[k, "%.3g" % v["T_MeV"]] for k, v in RLJ["percolation"].items()] + [["bounce", "%.3g" % RLJ["T_bounce_MeV"]]]
 add(("table", "Table S19. Percolation temperature of black-hole populations in the contraction (MeV), including the entropy growth of the cycle, and the bounce temperature of the baseline.",
      ["Population", "T (MeV)"], rows, None))
+add(("h2", "S5.6 Density-dependent vacuum interfaces (Section 7)"))
+import int_blocks as INT
+add(("p", "vacuum_phase_map.py maps the stationary points of both matter-coupled potentials over density and tilt and evaluates the coherence of the symmetron release "
+          "(the restored field value per cycle from cycle_map.json against $H_\\Lambda/2\\pi$; linear $\\sigma_R$ from a BBKS transfer function normalized to $\\sigma_8$). "
+          "vacuum_wall.py solves the O(4) bounce of the tunneling branch with its profile (shooting; collocation where the central value is within $10^{-5}$ of the true "
+          "minimum), the thin-wall tension with the energy difference removed, the static wall at the degeneracy density, and the nucleation history with the actual "
+          "Hubble rate. interface_transport.py integrates the mode equation across the planar wall with complex amplitudes (DOP853, rtol $10^{-10}$) and computes the "
+          "reflected momentum flux of a Bose bath with the transverse integral in closed form. bubble_gravity.py evaluates the Israel junction and evolves daughter regions "
+          "by root finding in $\\ln a$ with $H$ from the constraint and proper time by quadrature (analytic end pieces at turning points). bubble_to_cycle.py runs the "
+          "controls and the viability map; bubble_entropy.py the energy and entropy closure; interface_validation.py the %d checks of Table 21."
+          % INT.VJ["n"]))
+rows = [["%.2f" % r["gh"], "%.2f" % r["T"], INT.texsci(max(r["P_static_over_dV"], 1e-300), 1).join("$$"), INT.texsci(max(r["P_BM_over_dV"], 1e-300), 1).join("$$")] for r in INT.TJ["pressure"]]
+add(("table", "Table S20. Pressure of a thermal test-scalar bath on the wall at the trigger relative to the driving pressure: static wall (computed reflection) and "
+              "ultra-relativistic limit $\\Delta m^2T^2/24$. Temperatures in units of $\\sqrt\\lambda f$ (4.4 meV); the CMB at the trigger is %.3f." % INT.TJ["T_cmb_at_trigger_units"],
+     ["$g/\\sqrt\\lambda$", "T", "static", "relativistic limit"], rows, None))
 add(("h1", "S6. Monte Carlo specification"))
 add(("p", "Draws: $N=%d$, NumPy PCG64 generator, seed %d. $\\log_{10}\\lambda\\sim U(-2,\\log_{10}4\\pi)$; $\\eta\\sim U(0.03,0.38)$; $\\ln D\\sim N(0,(1.5\\ln10)^2)$; $r_L=1$. Each draw is converted to "
           "$\\ln\\Gamma/H^4$ with Eq. (7), to a decay time, and classified: above the survival bound if $\\Gamma/H_\\Lambda^4\\ge%.2f$ (Section S5); otherwise decaying by $10^{12}$, $10^{20}$, $10^{50}$ or $10^{100}$ yr, or "
@@ -262,6 +281,8 @@ add(("p", "Environment of the published run: Python %s, NumPy %s, SciPy %s (Wind
           "thermal.py (about 40 seconds), thermal_analysis.py (about 6 minutes), interior_sim.py (about 25 seconds), oscillation.py (about 40 seconds), oscillation_validation.py (about 25 minutes), density_bounce.py (about 1 minute), turnaround_scan.py (about 5 minutes), dilution_thermal.py, cyclic_extension.py and hot_cycles.py (about 5 minutes together), dilution_validation.py (about 2 minutes), verify.py (about 25 seconds), make_figures.py (calls make_thermal_figures.py, make_sim_figures.py, make_osc_figures.py and make_dil_figures.py), build_paper.py, build_supporting.py. The scripts write the JSON files that the "
           "manuscript builder reads; monte_carlo.py needs survival.json and falsification_map.py needs survival.json. A rerun in a clean clone of the repository reproduced the stored JSON files exactly in the earlier release. Code: %s, archived at https://doi.org/%s."
           % (platform.python_version(), np.__version__, scipy.__version__, GITHUB, DOI_CODE)))
+add(("p", "Section 7 (after the continuous-cycle scripts): vacuum_phase_map.py (about 40 seconds), vacuum_wall.py (about 2 minutes), interface_transport.py (about 25 minutes), "
+          "bubble_gravity.py (about 30 seconds), bubble_to_cycle.py (about 2 minutes), bubble_entropy.py, interface_validation.py (about 1 minute) and make_int_figures.py."))
 add(("h1", "S9. Known limitations of the numerics"))
 add(("bullets", [
     "Shooting is unreliable for $\\eta<0.1$ (exponential sensitivity); the boundary-value solver is used there, and below $\\eta=0.03$ only the thin-wall asymptote is available, which is irrelevant because $B$ exceeds $10^5$.",
@@ -306,6 +327,13 @@ para("The paper asks whether the present dark energy can end the cosmological ex
      "the earlier prescribed resets had hidden: a bounce too cold to re-thermalize the dark matter gives an empty next cycle. It adds the conditions on anisotropy (with and without an ekpyrotic "
      "phase), an independent bounce mechanism, the black holes of the previous cycle (which bound the bounce temperature from above), a failure-mode map, and the observational consequences, "
      "including the negative one that the cycle does not produce the observed primordial perturbations." % CYB.N_CYC)
+para("Following a further review, this version adds a section on density-dependent vacuum interfaces (Section 7). It maps where tunneling is meaningful: the "
+     "symmetron release of the main model is a classical roll and needs a coherent seed or a tilt to avoid domain walls, while a coupling centred on the false vacuum makes "
+     "the held vacuum metastable below a degeneracy density. For that branch the wall tension, the density-dependent action, the transmission of fields through the wall, "
+     "the Israel junction and the evolution of the enclosed region are computed, with energy and entropy closure and controls that remove the matter coupling or the "
+     "selectivity. The wall runs away and becomes transparent to the dark matter within a millimetre, so its mass-selective transmission has no cosmological effect; the "
+     "enclosed region contracts, is restored by the dark matter and bounces in self-similar cycles; and without the coupling the restoration fails and a transition "
+     "requires a tuned action. The title now reflects this content and states that the cycle is conditional.")
 para("For the direct route the answer is negative. A scalar potential with an explicit metastable minimum is specified, the Coleman–De Luccia bounce is solved numerically in flat space and with Einstein gravity, and the action is converted to a "
      "nucleation rate with the measured dark-energy density as the false-vacuum energy. With all scales set by the dark energy the gravitational parameter is of order 10⁻⁶⁰, so gravity and the Hawking–Moss "
      "channel play no role and the decay is controlled by a single action, which must lie near %d for a transition on cosmological time scales. The survival of the present vacuum is evaluated on the Lorentzian past light "

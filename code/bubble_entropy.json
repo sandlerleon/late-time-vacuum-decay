@@ -1,0 +1,63 @@
+{
+ "wall_energy_closure_max_dev": 6.661338147750939e-16,
+ "interior_bookkeeping_max_rel_residual": 5.088127967450651e-16,
+ "entropy": {
+  "B percolated": {
+   "min_step_ratio": 1.0,
+   "nondecreasing": true,
+   "per_cycle_ratio": 3131.7509096553104,
+   "nucleation_jumps": [
+    3099.4893015644057,
+    3097.9741000094587,
+    3097.9736105712814,
+    3097.973610414992
+   ],
+   "restoration_energy_over_Vf": [
+    0.7526356947863423,
+    0.7526356947863435,
+    0.7526356947863427,
+    0.7526356947863435
+   ]
+  },
+  "B isolated": {
+   "min_step_ratio": 1.0,
+   "nondecreasing": true,
+   "per_cycle_ratio": 129.9229613185629,
+   "nucleation_jumps": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "restoration_energy_over_Vf": [
+    0.7526356947863423,
+    0.7526356947863423,
+    0.7526356947863432,
+    0.7526356947863432
+   ]
+  },
+  "C* percolated, fully selective, hot bounce": {
+   "min_step_ratio": 1.0,
+   "nondecreasing": true,
+   "per_cycle_ratio": 3098.025207911889,
+   "nucleation_jumps": [
+    3099.4893015644057,
+    3097.9741053369466,
+    3097.9736105747115,
+    3097.9736104150024
+   ],
+   "restoration_energy_over_Vf": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ "filtered_fraction": 1.9837686450426697e-88,
+ "horizon": {
+  "S_dS": 3.2623987922579794e+122,
+  "S_radiation_Hubble_volume": 5.414569045720487e+88,
+  "log10_ratio": 33.77997315151912
+ }
+}

@@ -268,5 +268,25 @@
   "slope": -0.13584669702569763,
   "held_rms": 0.02020565180567417,
   "admissibility_max_held_change": 0.003288833590715301
+ },
+ "V33_vacuum_phase": {
+  "passed": true,
+  "seed_over_fluctuation": 10.765044772912567,
+  "eps_hat_min": 4.421785699509589e-64
+ },
+ "V34_wall_transport_gravity": {
+  "passed": true,
+  "B_trigger": 286.7131625173742,
+  "filtered_fraction": 1.9837686450426697e-88,
+  "gamma_at_hubble_radius": 5.9264121924993294e+29
+ },
+ "V35_daughter_cycles": {
+  "passed": true,
+  "lnG": 2.6831158410621865,
+  "D_window": [
+   286.0,
+   289.0
+  ],
+  "interface_checks": 36
  }
 }

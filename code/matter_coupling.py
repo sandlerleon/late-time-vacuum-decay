@@ -73,6 +73,19 @@ class Model:
     def V_eff(self, p, a):
         return self.V0(p) + self.rho_star(a) * self.A(p)
 
+    def rho_star_value(self, a):
+        return self.rho_star(a) if self.coupled else 0.0
+
+    def V_eff_rho(self, p, rho_s):
+        """V_eff at an arbitrary conserved density rho_* (not only the background value at scale factor a)."""
+        return self.V0(p) + rho_s * self.A(p)
+
+    def dV_eff_rho(self, p, rho_s):
+        return self.dV0(p) + rho_s * self.dA(p)
+
+    def d2V_eff_rho(self, p, rho_s):
+        return -self.mu ** 2 + 3.0 * self.lam * p ** 2 + (rho_s / self.M2 if self.coupled else 0.0)
+
     def m2_eff0(self, a):
         """Effective squared mass at phi = 0."""
         return (self.rho_star(a) / self.M2 if self.coupled else 0.0) + self.c_T * (self.T0 / a) ** 2 - self.mu ** 2

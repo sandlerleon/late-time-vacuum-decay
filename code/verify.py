@@ -36,6 +36,9 @@ unless every check passes.
  V30 causal test: frozen-matter intervention never recollapses, diluting model recollapses for every q > 0
  V31 stability, bounce and relics: analytic shear scaling, ekpyrotic tolerance gain, bounce invariants and continuity, black-hole volume fraction below percolation
  V32 the cycle as a fixed point: attracting fixed point of the bounce-to-bounce map (|slope| < 1, all probes working), closed-form held epoch, results unchanged by the numerical devices
+ V33 phase structure of the matter-coupled potentials and the coherence of the release
+ V34 vacuum wall: thin-wall limit, validated transmission, runaway and negligible filtering, Israel junction
+ V35 daughter regions: constraint, bounce, entropy, self-similar cycles and the controls
 """
 import json
 import os
@@ -326,5 +329,27 @@ ok32 = (mp["all_working"] and abs(mp["slope_at_fixed_point"]) < 1 and abs(CMJ["m
         and he["rms_error"] < 0.1 and he["n_points"] >= 50 and na_ok and na_dev < 0.1)
 rec("V32_cycle_fixed_point", ok32, fixed_point=mp["fixed_point"], slope=mp["slope_at_fixed_point"], held_rms=he["rms_error"],
     admissibility_max_held_change=na_dev)
+# V33-V35: density-dependent vacuum interfaces (Section 7)
+PMJ = json.load(open(os.path.join(HERE, "vacuum_phase_map.json"), encoding="utf-8"))
+WWJ = json.load(open(os.path.join(HERE, "vacuum_wall.json"), encoding="utf-8"))
+ITJ = json.load(open(os.path.join(HERE, "interface_transport.json"), encoding="utf-8"))
+BGJ = json.load(open(os.path.join(HERE, "bubble_gravity.json"), encoding="utf-8"))
+BCJ = json.load(open(os.path.join(HERE, "bubble_to_cycle.json"), encoding="utf-8"))
+IVJ = json.load(open(os.path.join(HERE, "interface_validation.json"), encoding="utf-8"))
+ok33 = (not any(v["occupied_ever_metastable"] for v in PMJ["symmetron"].values())
+        and all(abs(PMJ["tunneling_profiles"][e]["theta_deg"] - float(e) / 2) < 1e-9 for e in ("0.20", "0.30", "0.36", "0.45"))
+        and PMJ["symmetron_coherence"]["seed_over_fluctuation_median"] > 1 and max(c["exact_over_log"] for c in PMJ["coupling_check"]) < 1.1)
+rec("V33_vacuum_phase", ok33, seed_over_fluctuation=PMJ["symmetron_coherence"]["seed_over_fluctuation_median"],
+    eps_hat_min=PMJ["symmetron_coherence"]["eps_hat_min"])
+late = [r for r in WWJ["walls"]["0.30"]["rows"] if r["theta_over_deg"] >= 0.6 - 1e-9]
+ok34 = (all(abs(r["b_over_B_tw"] - 1) < 0.01 for r in late) and ITJ["max_PT_error"] < 1e-4 and ITJ["max_unitarity_error"] < 1e-8
+        and ITJ["dark_matter"]["runaway"] and ITJ["dark_matter"]["filtered_fraction"] < 1e-50 and BGJ["wall"]["max_rel_dev_from_flat"] < 1e-10
+        and BGJ["wall"]["max_grav"] < 1e-50)
+rec("V34_wall_transport_gravity", ok34, B_trigger=WWJ["trigger_wall"]["B"], filtered_fraction=ITJ["dark_matter"]["filtered_fraction"],
+    gamma_at_hubble_radius=BGJ["wall"]["Gamma_at_RH"])
+lg = BCJ["B percolated"]["lnG"]
+ok35 = (IVJ["all_passed"] and max(lg) - min(lg) < 1e-3 and BCJ["C percolated (computed selectivity)"]["lnG"] == lg
+        and BCJ["C* percolated, fully selective, cold bounce"]["failure"] is not None and BCJ["D"]["width"] <= 5.0)
+rec("V35_daughter_cycles", ok35, lnG=float(sum(lg) / len(lg)), D_window=BCJ["D"]["window_B0"], interface_checks=IVJ["n"])
 json.dump(res, open(os.path.join(HERE, "verification.json"), "w", encoding="utf-8"), indent=1)
 print("\nALL PASS" if all(v["passed"] for v in res.values()) else "\nSOME FAILED")
