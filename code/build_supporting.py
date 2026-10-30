@@ -30,6 +30,7 @@ T, F, MC, IN, V = J("bounce_tables.json"), J("falsification_map.json"), J("monte
 SV, CV, SC, CP = J("survival.json"), J("convergence.json"), J("scope.json"), J("coupling.json")
 TR, TT = J("thermal_results.json"), J("thermal_tables.json")
 SM = J("interior_sim.json")
+OSC, OSV = J("oscillation.json"), J("oscillation_validation.json")
 assert all(v["passed"] for v in V.values())
 GITHUB = "https://github.com/sandlerleon/late-time-vacuum-decay"
 DOI_PAPER, DOI_CODE = "10.5281/zenodo.23717617", "10.5281/zenodo.23717619"
@@ -66,6 +67,8 @@ DESC = {
     "V22_interior_simulation_single_field": "Lorentzian interior: closed form reproduced, constraint residual in the gravity scan, flat-like epoch only for g >~ 1e2",
     "V23_two_field_reservoir_ads": "Two-field reservoir: crunch time equals the AdS value, T(1 s) far below 1 MeV for every depth",
     "V24_hilltop_chain_entropy": "Hilltop flattening needs a super-Planckian vev; repeated transitions obey the sum rule; entropy",
+    "V25_option_B_cycles": "Option B: periodic radiation-only cycles, regular bounce, period scaling, constraint, not a sinusoid",
+    "V26_option_B_validation": "Option B: integrator agreement, bounce continuity, hysteresis law, 1000-cycle stability, effect of a transition",
 }
 S = []
 add = S.append
@@ -154,7 +157,7 @@ rows = [["%.3f" % r["eta"], "%.4g" % r["s3"], "%.4g" % r["b"]] for r in TT["s3_t
 add(("table", "Table S7. The O(3) action $s_3(\\eta)$ and the O(4) action $b(\\eta)$ at $\\lambda=1$, $\\theta=0$ (selected tilts; the full table is in thermal_tables.json).", ["$\\eta$", "$s_3$", "$b$"], rows, None))
 add(("h2", "S5.2 Lorentzian simulations of the daughter region (Steps 6--7)"))
 add(("p", "interior_sim.py integrates $(a,\\dot a,x,\\dot x,y,\\dot y,\\rho_r)$ with DOP853 (relative tolerance $10^{-11}$, absolute $10^{-14}$) from $t_0=10^{-4}$ with the series start $a=t_0$, $\\dot a=1$, $x=x_0-V_x t_0^2/8$, $\\dot x=-V_xt_0/4$ "
-          "($x_0$ the centre of the flat-space bounce, from bounce\\_tables.json). The constraint residual is $(\\dot a^2-1-ga^2\\rho/3)/(1+\\dot a^2)$. Part A: $\\lambda=1$, $\\eta=0.30$, $V_t=0$, dissipation $\\Upsilon=\\gamma$ with $\\gamma/m=1,10^{-1},10^{-2},10^{-3}$, "
+          "($x_0$ the centre of the flat-space bounce, from bounce_tables.json). The constraint residual is $(\\dot a^2-1-ga^2\\rho/3)/(1+\\dot a^2)$. Part A: $\\lambda=1$, $\\eta=0.30$, $V_t=0$, dissipation $\\Upsilon=\\gamma$ with $\\gamma/m=1,10^{-1},10^{-2},10^{-3}$, "
           "and a scan of $g$ from $10^{-60}$ to $10^3$ (Table S8). Part B: $V=V_\\varphi+\\tfrac{\\lambda_y}{4}(y^2-w_y^2)^2+\\tfrac12g_c^2(x-x_t)^2y^2+V_{\\rm off}$ with $\\lambda_y=1$, $w_y=1.5$, $g_c^2=1.6\\lambda_yw_y^2/(x_f-x_t)^2$, $V_{\\rm off}=-(\\Delta V+\\lambda_yw_y^4/4)$ "
           "(false-vacuum energy zero in these units), $y(t_0)=10^{-6}$, $\\Upsilon_x=\\Upsilon_y=m/2$, run for $\\kappa=|V_t|/\\rho_\\Lambda=1,10^5,\\dots,10^{35}$, which sets $f=(\\kappa\\rho_\\Lambda/|V_t^{\\rm sim}|)^{1/4}$ and $g=f^2/M_{\\rm Pl}^2$. After the fields have decayed the evolution is the exact solution of "
           "$\\dot a^2=1-ba^2+c/a^2$ with $b=g|V_t|/3$, $c=g\\rho_ra^4/3$: with $s=a^2$ the time is $t=[\\arcsin((2s-s_++s_-)/(s_++s_-))]/(2\\sqrt b)$ between turning points $s_\\pm$, and the crunch time follows from the half-period. "
@@ -167,6 +170,16 @@ rows = [["%d" % r["log10_g"], "%.2e" % r["Y_max"], "%s" % r["flat_like_radiation
 add(("table", "Table S9. Gravity scan of the single-field interior: maximum curvature parameter $Y=ga^2\\rho/3$, whether a flat-like radiation epoch occurs, and the constraint residual.", ["$\\log_{10}g$", "$Y_{\\max}$", "flat-like epoch", "residual"], rows, None))
 rows = [["%.1f" % r["w_y"], "%.2f" % r["E_res"], "%.2f" % r["T_max_over_f"], "%.2f" % r["Tt_product_sim"]] for r in SM["B_reservoir_scan"]]
 add(("table", "Table S10. Reservoir size: stored energy $E_\\chi=\\lambda_yw_y^4/4$ (units $\\lambda f^4$), maximum temperature over $f$, and $Tt$ at the end of the run.", ["$w_y$", "$E_\\chi$", "$T_{\\max}/f$", "$Tt$"], rows, None))
+add(("h2", "S5.3 Option B: oscillating cycles"))
+add(("p", "oscillation.py and oscillation_validation.py integrate $(a,H,\\varphi,\\dot\\varphi,\\rho_r,W,W_\\varphi)$ in Planck units with $\\dot H=-(\\rho+p)(1-(n+1)(\\rho/\\rho_c)^n)/2+k/a^2$ ($n=1$ loop quantum cosmology, $n=2$ check), $k=-1$, "
+          "$V=V_t+m^2\\varphi^2/2$, dissipation $\\Upsilon$, and $W=\\int p\\,d(a^3)$, $W_\\varphi=\\int p_\\varphi\\,d(a^3)$. Initial data at a turnaround ($H=0$) with the radiation density from the constraint; baseline $V_t=-10^{-6}$, $\\rho_c=1$, $m=0.05$, $a_{\\max}=3000$ "
+          "(oscillation_config.json). Turnarounds are zeros of $H$ with $\\rho\\ll\\rho_c$, bounces zeros with $\\rho\\sim\\rho_c$ (a scalar-dominated bounce can make $H$ cross zero more than once near $\\rho_c$; those crossings are not cycle events). "
+          "Per-cycle results for the phase-diagram grid are in oscillation_cycles.csv. Table S11 lists the integrator comparison."))
+rows = [[k, "%.4f" % v["multiplier"], "%.1e" % v["multiplier_rel_dev"], "%.1e" % v["a_max_rel_dev"]] for k, v in OSV["validation_integrators"].items()]
+add(("table", "Table S11. Option B: scalar energy multiplier per cycle (linear regime) and the turnaround radii of a nonlinear run for each integrator setting, with their deviation from the reference (DOP853, $10^{-11}$, $P/400$).",
+     ["Integrator", "multiplier", "deviation", "$a_{\\max}$ deviation"], rows, None))
+rows = [["%.2f" % g["m"], "%.1f" % g["upsilon_P"], "%.0e" % g["phi0"], str(g["cycles"]), g["cls"]] for g in OSV["phase_diagram"]]
+add(("table", "Table S12. Option B phase diagram: classification after 100 or more cycles (runs stop when $a$ exceeds $10^{30}$).", ["$m$", "$\\Upsilon P$", "$\\varphi_0$", "cycles", "class"], rows, None))
 add(("h1", "S6. Monte Carlo specification"))
 add(("p", "Draws: $N=%d$, NumPy PCG64 generator, seed %d. $\\log_{10}\\lambda\\sim U(-2,\\log_{10}4\\pi)$; $\\eta\\sim U(0.03,0.38)$; $\\ln D\\sim N(0,(1.5\\ln10)^2)$; $r_L=1$. Each draw is converted to "
           "$\\ln\\Gamma/H^4$ with Eq. (7), to a decay time, and classified: above the survival bound if $\\Gamma/H_\\Lambda^4\\ge%.2f$ (Section S5); otherwise decaying by $10^{12}$, $10^{20}$, $10^{50}$ or $10^{100}$ yr, or "
@@ -191,7 +204,7 @@ add(("p", "Scope (scope.py). With the curvature parameter $Y=a^2\\rho/(3M_{\\rm 
 add(("h1", "S8. Reproduction"))
 add(("p", "Environment of the published run: Python %s, NumPy %s, SciPy %s (Windows). Requirements: NumPy, SciPy, Matplotlib, python-docx (requirements.txt). From the code directory, in this order: "
           "bounce_tables.py (about 3 minutes), survival.py (seconds), monte_carlo.py (about 20 seconds), falsification_map.py, interior_evolution.py, convergence.py (about 4 minutes), scope.py, coupling.py, "
-          "thermal.py (about 40 seconds), thermal_analysis.py (about 6 minutes), interior_sim.py (about 25 seconds), verify.py (about 25 seconds), make_figures.py (calls make_thermal_figures.py and make_sim_figures.py), build_paper.py, build_supporting.py. The scripts write the JSON files that the "
+          "thermal.py (about 40 seconds), thermal_analysis.py (about 6 minutes), interior_sim.py (about 25 seconds), oscillation.py (about 40 seconds), oscillation_validation.py (about 25 minutes), verify.py (about 25 seconds), make_figures.py (calls make_thermal_figures.py, make_sim_figures.py and make_osc_figures.py), build_paper.py, build_supporting.py. The scripts write the JSON files that the "
           "manuscript builder reads; monte_carlo.py needs survival.json and falsification_map.py needs survival.json. A rerun in a clean clone of the repository reproduced the stored JSON files exactly in the earlier release. Code: %s, archived at https://doi.org/%s."
           % (platform.python_version(), np.__version__, scipy.__version__, GITHUB, DOI_CODE)))
 add(("h1", "S9. Known limitations of the numerics"))
@@ -242,6 +255,9 @@ para("Cosmological cooling is treated explicitly. A scalar coupled to the CMB ac
      "which are cold and empty, and not about a cyclic cosmology." % (str(round(100 * TR["prior_maps"]["c=0 (equilibrated), z<=1"]["excluded"])), str(round(100 * TR["prior_maps"]["c=0, z<=10"]["excluded"])), str(round(100 * TR["prior_maps"]["decoupled"]["excluded"]))))
 para("The interior of the nucleated region is simulated, not only bounded: Lorentzian evolution of one and two fields with dissipation and gravity (constraint residual at most 1e-8), a reservoir hidden by a negative vacuum offset, hilltop flattening at the dark-energy scale, "
      "a chain of repeated transitions with the energy sum rule, and entropy accounting. They give the criteria of Table 13 for a viable daughter universe, which no scenario with the observed dark energy as the parent satisfies.")
+para("The same region oscillating (Option B) is tested as well, with an effective loop-quantum-cosmology bounce and the turnaround supplied by the decay to anti-de Sitter: radiation-only cycles are periodic over a thousand bounces, "
+     "but a scalar excitation is amplified at every bounce, the turnaround radius follows the energy-balance law Delta a_max = W/3 with W the pressure-volume loop, the cycles are stable only when dissipation per cycle exceeds the logarithm of the amplification, "
+     "and a vacuum transition during the cycles destabilises them. Cosmological hysteresis itself is known; the stability boundary, the law in this setting and the effect of a transition are what the paper adds.")
 para("I want to be clear about novelty. The bounce, Hawking–Moss and thin-wall results, the past-light-cone survival method, open-universe interiors and screened couplings are established, and are cited as such; Table 1 of the "
      "manuscript lists, for each ingredient, what is known and what is added. What is new is the quantitative combination for the dark-energy vacuum: an explicit map from potential parameters to decay times with a "
      "numerical error budget and negative-mode check; the survival bound on the past light cone and the corrected width of the transition window; a statement of which energy sources the reheating bound excludes by geometry and which only by "

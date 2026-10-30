@@ -201,5 +201,24 @@
   ],
   "T_hilltop_max_meV": 1.4524443018394493,
   "entropy_ratio_to_bound": 2.2127827662496113e-63
+ },
+ "V25_option_B_cycles": {
+  "passed": true,
+  "period_spread": 1.7937638639477318e-06,
+  "slope": -0.5000020560430621,
+  "residual": 2.9516288132080532e-05,
+  "fundamental": 0.0037301848254042698
+ },
+ "V26_option_B_validation": {
+  "passed": true,
+  "integrator_spread": 0.026520538026969298,
+  "continuity": 2.1710232411182437e-06,
+  "constraint": 2.9835228260969645e-10,
+  "law": 0.002173183305049445,
+  "long_runs": [
+   "stable",
+   "stable",
+   "stable"
+  ]
  }
 }

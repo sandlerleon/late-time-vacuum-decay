@@ -1,0 +1,12 @@
+{
+ "baseline": {
+  "Vt": -1e-06,
+  "m": 0.05,
+  "rho_c": 1.0,
+  "k": -1.0,
+  "a_max": 3000.0,
+  "n": 1
+ },
+ "units": "Planck units, M_Pl = 1",
+ "integrator": "DOP853 rtol 1e-11 atol 1e-16, max_step = P/400 unless stated"
+}

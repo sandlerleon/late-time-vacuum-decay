@@ -237,3 +237,5 @@ if __name__ == "__main__":
     _mt.fig6(); _mt.fig7()
     import make_sim_figures as _ms
     _ms.fig10()
+    import make_osc_figures as _mo
+    _mo.fig11(); _mo.fig12()

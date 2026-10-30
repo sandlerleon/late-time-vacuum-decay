@@ -18,6 +18,7 @@ import cdl_lib as C
 import render as RN
 import thermal_blocks as TB
 import sim_blocks as SBK
+import osc_blocks as OSB
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, ".."))
@@ -32,6 +33,8 @@ PMAP = TR["prior_maps"]
 SIM = J("interior_sim.json")
 RB35 = [r for r in SIM["B_reservoir_ads"]["rows"] if r["kappa"] == 1e35][0]
 HILL_T = max(r["T_max_meV"] for r in SIM["C_hilltop"]["rows"])
+OSC, OSV = J("oscillation.json"), J("oscillation_validation.json")
+MU_LIN = [f["energy_multiplier_per_cycle"] for f in OSC["stability"]["scalar_floquet"]]
 assert all(v["passed"] for v in V.values()), "verification has failures - do not build"
 
 GITHUB = "https://github.com/sandlerleon/late-time-vacuum-decay"
@@ -39,7 +42,7 @@ DOI_PAPER, DOI_CODE = "10.5281/zenodo.23717617", "10.5281/zenodo.23717619"      
 if os.path.exists(os.path.join(HERE, "dois.json")):
     _d = J("dois.json")
     DOI_PAPER, DOI_CODE = _d["paper"], _d["code"]
-TITLE = "Daughter-Universe Nucleation from a Metastable Dark-Energy Vacuum: Thermal and Quantum Decay, Past-Light-Cone Survival, and Reheating Bounds"
+TITLE = "Daughter Universes and Oscillating Cycles from a Metastable Dark-Energy Vacuum: Quantum and Thermal Decay, Survival, and Reheating Bounds"
 
 
 def chk(cond, msg):
@@ -124,6 +127,9 @@ ABSTRACT = (
     "decay window (priors are samples, not probabilities). Lorentzian simulations of the daughter region with two fields, dissipation and gravity show that it reheats to at most $%.1f$ meV and stays curvature dominated; "
     "a reservoir hidden by a negative offset leaves an anti-de Sitter vacuum that crunches after %.1f s when it reaches %.1f MeV; flattening at the dark-energy scale needs a vev above $4M_{\\rm Pl}$ and still reheats below %.1f meV; "
     "and repeated transitions obey $\\sum\\Delta V\\le\\rho_\\Lambda$. A hot epoch at 1 s would need a parent energy scale at least %d orders of magnitude above the Planck scale, and a matter trigger $\\Delta\\ln m \\gtrsim %s$. "
+    "For the same region (an oscillating universe) the decay to anti-de Sitter supplies the turnaround and an effective loop-quantum-cosmology bounce the reversal: radiation-only cycles are periodic over $10^3$ bounces, "
+    "but any scalar excitation is amplified from cycle to cycle (cosmological hysteresis, with the turnaround radius obeying $\Delta a_{\max}=W/3$, $W=\oint p\,dV$), the cycles stabilise only if the dissipation per cycle exceeds the logarithm of the amplification, "
+    "a further vacuum transition destabilises them, and no cycle has positive vacuum energy. "
     "The daughter region is cold and empty, and a cyclic reset by the present dark energy is not supported." % (
         len(V), round(bc_med), SV["V4_HL4"], SV["ratio_euclid_to_lorentzian"], XMAX, TR["crossover_T_meV"]["0"],
         pc(PMAP["decoupled"]["excluded"], 0), pc(PMAP["c=0 (equilibrated), z<=1"]["excluded"], 0), pc(PMAP["c=0, z<=10"]["excluded"], 0),
@@ -151,7 +157,7 @@ add(("p", "In the standard cosmological model the late universe approaches de Si
 add(("p", "A further distinction concerns the outcome. In a branching or recycling picture (Option A) a parent metastable vacuum nucleates daughter regions by tunneling; each is a bubble inside the parent "
           "spacetime, and whether it is a hot expanding universe, or a universe at all in the sense of \\cite{BGG,FG,FGG}, is a separate question. In a genuinely cyclic cosmology (Option B) the same region "
           "expands, contracts, bounces and reheats, which needs a dynamical bounce beyond tunneling and raises problems of stability and entropy \\cite{Tolman,PS}. This paper addresses Option A with the "
-          "Coleman--De Luccia theory and treats Option B only by stating, in Section 5.4, what it would require."))
+          "Coleman--De Luccia theory and tests Option B in Section 5.6 with an effective bounce."))
 add(("p", "Four claims are tested. (i) A scalar potential with a metastable minimum at the dark-energy scale can nucleate bubbles of lower-energy vacuum at a rate "
           "that is neither negligible nor already excluded. (ii) The nucleated region reheats into a hot expanding universe. (iii) The "
           "transition is triggered, or enhanced, by the dilution of matter in the late universe. (iv) Cosmological cooling, acting on a scalar coupled to the CMB, makes the transition more probable at late times. The analysis is conditional: it takes the dark-energy density as the "
@@ -170,6 +176,8 @@ add(("bullets", [
     "rate, and prior maps showing that cooling cannot raise the late-time transition probability (Sections 4.6--4.8).",
     "Lorentzian simulations of the daughter region with two fields, dissipation and gravity, a reservoir hidden by a negative offset, hilltop flattening, repeated transitions and entropy accounting, and "
     "the resulting criteria for a viable daughter universe (Section 5.5).",
+    "A test of the same region oscillating (Option B) with an effective bounce: validated cycles, a hysteresis law for the turnaround radius, a stability boundary set by dissipation against amplification over $10^2$--$10^3$ cycles, "
+    "and the effect of a vacuum transition on the cycles (Section 5.6).",
 ]))
 add(("h2", "1.1 Relation to previous work"))
 add(("p", "The ingredients are established, and the paper claims novelty only for the specific combination and the quantitative results for the dark-energy vacuum. "
@@ -477,7 +485,7 @@ add(("p", "The distinction between daughter regions and a cyclic cosmology (Sect
           "bounded by the wall inside the parent de Sitter space and still causally connected to it, not a new hot universe. The potential has no further metastable minimum at the true vacuum, so repeated transitions of "
           "the interior would need a different potential; the entropy produced in reheating is bounded by the energy $\\Delta V$ and is carried by an open interior of infinite comoving volume, so no entropy statement can be made "
           "for the daughter as a closed system. A cyclic cosmology (Option B) needs a nonsingular bounce, which in spatially flat general relativity with conventional matter requires a violation of the null energy condition "
-          "($\\dot H=-(\\rho+p)/2M_{\\rm Pl}^2>0$) and raises problems of stability and entropy \\cite{Tolman,PS}; the present model contains no such mechanism. Entropy accounting and causality are computed for the daughter region in Section 5.5; "
+          "($\\dot H=-(\\rho+p)/2M_{\\rm Pl}^2>0$) and raises problems of stability and entropy \\cite{Tolman,PS}; the present model contains no such mechanism, and Section 5.6 adds an effective one to test the cycles that would follow. Entropy accounting and causality are computed for the daughter region in Section 5.5; "
           "the stability of an interior bounce is not."))
 
 # ------------------------------------------------------------------------------------------------ 6 dilution
@@ -525,7 +533,8 @@ add(("bullets", [
     "C5 (geometry). For any sub-Planckian energy the open interior stays curvature dominated, $Y(t)\\le Y(t_0)=%s$, unless it inflates; the single-field potential gives at most $%s$ e-folds (Section 5.3)." % (sci(SC["curvature"][0]["Y0_at_Vf"], 1), sci(efm, 1)),
     "C6 (percolation). A global transition requires $\\Gamma/H^4=O(1)$ or larger, a window of width $\\Delta B=%.1f$ below the survival bound that holds %s%% of the prior volume." % (DB_SURV, pc(BASE["frac_percolating_and_surviving"]["1"], 2)),
     "C7 (thermal consistency). A scalar in equilibrium with the CMB at redshift $z$ keeps its false minimum only if $c<\\theta_c\\lambda f^2/T_\\gamma(z)^2$, i.e. $c<%s$ for a bath coupled back to recombination, and the survival condition then applies to the rate history $\\Gamma(T_\\gamma(t))$ (Section 4.8)." % sci(TB.C_MAX_1100, 1),
-    "C8 (repeated transitions). Over any chain of transitions the energy released telescopes, $\\sum_i\\Delta V_i=\\rho_\\Lambda-V_{\\rm final}\\le\\rho_\\Lambda$, so a second generation cannot raise the temperature above $%.1f$ meV (Section 5.5)." % RH["T_max_meV_at_Vf"]
+    "C8 (repeated transitions). Over any chain of transitions the energy released telescopes, $\\sum_i\\Delta V_i=\\rho_\\Lambda-V_{\\rm final}\\le\\rho_\\Lambda$, so a second generation cannot raise the temperature above $%.1f$ meV (Section 5.5)." % RH["T_max_meV_at_Vf"],
+    "C9 (oscillation). A periodic cycle needs a turnaround (here the decay to $V_t<0$), a bounce beyond general relativity, and dissipation that removes the scalar energy gained at each bounce, $\\Upsilon P\\gtrsim\\ln\\mu$; with these the cycles persist but carry negative vacuum energy throughout (Section 5.6)."
 ]))
 add(("h2", "7.2 Observational tests"))
 add(("bullets", [
@@ -558,7 +567,7 @@ add(("bullets", [
     "probability of a transition in our universe.",
     "The matter-coupling analysis is first order in the tilt shift and does not simulate any specific screened model.",
     "The thermal analysis assumes equilibrium with the CMB (an upper bound on the thermal channel), the leading high-temperature term with one coefficient $c$, and a bath coupled below a stated redshift; it neglects higher-order thermal corrections and the interpolation between the O(4) and O(3) saddles near $T_\\times$, which a periodic-instanton calculation would refine.",
-    "The simulations of Section 5.5 are homogeneous and use a phenomenological dissipation: bubble-wall dynamics, inhomogeneous wall collisions, the microphysics of reheating and the gravitational backreaction of the wall are not simulated, and a nonsingular bounce (Option B) is not modelled."
+    "The simulations of Section 5.5 are homogeneous and use a phenomenological dissipation: bubble-wall dynamics, inhomogeneous wall collisions, the microphysics of reheating and the gravitational backreaction of the wall are not simulated, and the bounce of Option B is an effective loop-quantum-cosmology prescription (with a second prescription as a check), not a derived one."
 ]))
 
 add(("h1", "9. Conclusions"))
@@ -575,6 +584,11 @@ add(("p", "Lorentzian simulations of the daughter region (Section 5.5) support t
           "that crunches after %.1f s when it reaches %.1f MeV, flattening at the dark-energy scale needs a vev above $4M_{\\rm Pl}$ and reheats below %.1f meV, and repeated transitions release no more than $\\rho_\\Lambda$ in total. "
           "A viable hot daughter universe needs a parent vacuum energy at least %s times the observed dark energy, which is excluded, or a cancellation of the same size, which ends in a crunch."
           % (100 * max(abs(r["ratio_sim_over_closed"] - 1) for r in SIM["A_single_field"]["rows"]), RB35["t_crunch_s"], RB35["T_max_MeV"], HILL_T, sci(SIM["C_parent_energy_for_1MeV_over_rho_Lambda"], 1))))
+
+add(("p", "The same region can oscillate only with physics beyond general relativity. With an effective bounce, the decay into anti-de Sitter turns expansion into contraction and radiation-only cycles repeat exactly, "
+          "but a scalar excitation is amplified at every bounce (by factors between %.1f and %.0f in energy per cycle over the range simulated), the growth of successive cycles obeys $\\Delta a_{\\max}=W/3$, and the cycles are stable only when the dissipation per cycle "
+          "exceeds the logarithm of the amplification. A vacuum transition during the cycles pushes them across this boundary. Every cycle has negative vacuum energy and its hot phase comes from compression at a Planck-density bounce, so an oscillating universe "
+          "of this kind does not contain an epoch like the observed one." % (min(MU_LIN), max(MU_LIN))))
 
 # ---------------------------------------------------------------------------------------------------- statements
 add(("h1", "Declarations"))
@@ -641,6 +655,13 @@ REFS += [
     ("FG", "E. Farhi, A.H. Guth, An obstacle to creating a universe in the laboratory. Phys. Lett. B 183, 149--155 (1987). https://doi.org/10.1016/0370-2693(87)90429-1"),
     ("FGG", "E. Farhi, A.H. Guth, J. Guven, Is it possible to create a universe in the laboratory by quantum tunneling? Nucl. Phys. B 339, 417--490 (1990). https://doi.org/10.1016/0550-3213(90)90357-J"),
     ("BGG", "S.K. Blau, E.I. Guendelman, A.H. Guth, Dynamics of false-vacuum bubbles. Phys. Rev. D 35, 1747--1766 (1987). https://doi.org/10.1103/PhysRevD.35.1747"),
+    ("APS06", "A. Ashtekar, T. Pawlowski, P. Singh, Quantum nature of the big bang. Phys. Rev. Lett. 96, 141301 (2006). https://doi.org/10.1103/PhysRevLett.96.141301"),
+    ("AS11", "A. Ashtekar, P. Singh, Loop quantum cosmology: a status report. Class. Quantum Grav. 28, 213001 (2011). https://doi.org/10.1088/0264-9381/28/21/213001"),
+    ("Singh09", "P. Singh, Are loop quantum cosmos never singular? Class. Quantum Grav. 26, 125005 (2009). https://doi.org/10.1088/0264-9381/26/12/125005"),
+    ("NB08", "M. Novello, S.E. Perez Bergliaffa, Bouncing cosmologies. Phys. Rep. 463, 127--213 (2008). https://doi.org/10.1016/j.physrep.2008.04.006"),
+    ("BP15", "D. Battefeld, P. Peter, A critical review of classical bouncing cosmologies. Phys. Rep. 571, 1--66 (2015). https://doi.org/10.1016/j.physrep.2014.12.004"),
+    ("ST12", "V. Sahni, A. Toporensky, Cosmological hysteresis and the cyclic universe. Phys. Rev. D 85, 123542 (2012). https://doi.org/10.1103/PhysRevD.85.123542"),
+    ("KOST", "J. Khoury, B.A. Ovrut, P.J. Steinhardt, N. Turok, Ekpyrotic universe: colliding branes and the origin of the hot big bang. Phys. Rev. D 64, 123522 (2001). https://doi.org/10.1103/PhysRevD.64.123522"),
 ]
 # order references by first citation in the text (tables count: they are cited where they appear)
 import re as _re
@@ -648,7 +669,7 @@ THB, THX = TB.blocks()
 
 
 def _renum(t):
-    t = _re.sub(r"(Table )([6-8])(?![0-9])", lambda m: "%s%d" % (m.group(1), int(m.group(2)) + (2 if int(m.group(2)) < 8 else 6)), t)
+    t = _re.sub(r"(Table )([6-8])(?![0-9])", lambda m: "%s%d" % (m.group(1), int(m.group(2)) + (2 if int(m.group(2)) < 8 else 7)), t)
     t = _re.sub(r"(Fig\. )([6-7])(?![0-9])", lambda m: "%s%d" % (m.group(1), int(m.group(2)) + 2), t)
     return t
 
@@ -671,7 +692,7 @@ B = [_renum_block(b) for b in B]
 _i5 = [k for k, b in enumerate(B) if b[0] == "h1" and b[1].startswith("5. What the nucleated")][0]
 B[_i5:_i5] = THB
 _i6 = [k for k, b in enumerate(B) if b[0] == "h1" and b[1].startswith("6. Matter dilution")][0]
-B[_i6:_i6] = SBK.blocks()
+B[_i6:_i6] = SBK.blocks() + OSB.blocks()
 text_all = " ".join(b[-1] for b in B if b[0] in ("p", "abstract", "pb") and isinstance(b[-1], str)) + " ".join(" ".join(x) for b in B if b[0] == "bullets" for x in [b[1]])
 order = []
 for blk in B:

@@ -13,7 +13,7 @@ from docx.oxml.ns import qn
 GREEK = {"alpha": "α", "beta": "β", "gamma": "γ", "delta": "δ", "epsilon": "ε", "varepsilon": "ε", "zeta": "ζ", "eta": "η", "theta": "θ", "kappa": "κ",
          "lambda": "λ", "mu": "μ", "nu": "ν", "xi": "ξ", "pi": "π", "rho": "ρ", "sigma": "σ", "tau": "τ", "phi": "ϕ", "varphi": "φ", "chi": "χ", "psi": "ψ",
          "omega": "ω", "Gamma": "Γ", "Delta": "Δ", "Lambda": "Λ", "Sigma": "Σ", "Omega": "Ω", "Phi": "Φ", "ell": "ℓ", "hbar": "ℏ", "partial": "∂",
-         "sim": "∼", "sum": "∑", "Upsilon": "Υ", "simeq": "≃", "approx": "≈", "lesssim": "≲", "gtrsim": "≳", "ll": "≪", "gg": "≫", "times": "×", "cdot": "·", "to": "→", "pm": "±",
+         "sim": "∼", "sum": "∑", "Upsilon": "Υ", "oint": "∮", "mu": "μ", "simeq": "≃", "approx": "≈", "lesssim": "≲", "gtrsim": "≳", "ll": "≪", "gg": "≫", "times": "×", "cdot": "·", "to": "→", "pm": "±",
          "le": "≤", "leq": "≤", "ge": "≥", "geq": "≥", "ne": "≠", "infty": "∞", "propto": "∝", "equiv": "≡", "dots": "…", "ldots": "…", "nabla": "∇",
          "Rightarrow": "⇒", "Longrightarrow": "⇒", "prime": "′", "mid": "|", "langle": "⟨", "rangle": "⟩"}
 FUNCS = {"ln", "log", "exp", "sin", "cos", "arcsin", "max", "min"}

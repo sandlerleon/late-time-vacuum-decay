@@ -28,6 +28,8 @@ unless every check passes.
  V22 interior simulation, single field: closed form reproduced, constraint residual of the gravitational scan, flat-like epoch only for g >~ 1e2
  V23 two-field reservoir: crunch time equals the AdS value, temperature at 1 s far below 1 MeV for every depth, envelope
  V24 hilltop flattening, repeated transitions (sum rule) and entropy
+ V25 Option B cycles: periodicity, bounce, scaling of the period, constraint, shape against a sinusoid
+ V26 Option B validation: integrators, bounce continuity, hysteresis law, 1000-cycle stability, effect of a transition
 """
 import json
 import os
@@ -234,5 +236,24 @@ ok24 = (all(np.diff(Nf) > 0) and [r["w_over_M"] for r in rowsC if r["N_flatness"
         and max(r["max_residual"] for r in rowsC) < 1e-7 and all(abs(c["total_released_over_rho"] - 1.0) < 1e-12 and c["T_max_total_meV"] < 2.2 for c in ch)
         and ent["ratio_to_bound"] < 1e-60 and ent["S_constant_after_reheating"])
 rec("V24_hilltop_chain_entropy", ok24, N_flat=[round(x, 1) for x in Nf], T_hilltop_max_meV=max(r["T_max_meV"] for r in rowsC), entropy_ratio_to_bound=ent["ratio_to_bound"])
+# V25
+OSCJ = json.load(open(os.path.join(HERE, "oscillation.json"), encoding="utf-8"))
+per = OSCJ["periodic"]
+ok25 = (per["period_spread"] < 1e-4 and per["a_max_closure"] < 1e-4 and abs(OSCJ["scaling"]["period_slope_in_Vt"] + 0.5) < 0.01 and abs(per["rho_bounce_over_rho_c"] - 1) < 1e-2
+        and per["max_residual"] < 1e-3 and per["fundamental_power_fraction"] < 0.05 and per["fraction_of_cycle_with_Hdot_positive"] < 0.01 and per["a_min"] > 0)
+rec("V25_option_B_cycles", ok25, period_spread=per["period_spread"], slope=OSCJ["scaling"]["period_slope_in_Vt"], residual=per["max_residual"], fundamental=per["fundamental_power_fraction"])
+# V26
+OVJ = json.load(open(os.path.join(HERE, "oscillation_validation.json"), encoding="utf-8"))
+good = [v["multiplier_rel_dev"] for k_, v in OVJ["validation_integrators"].items() if "1e-9" not in k_]
+bc = OVJ["bounce_continuity"]
+laws = []
+for lab, ct in OVJ["hysteresis"].items():
+    laws += [abs(c["law"]) / max(abs(c["delta_a_max"]), abs(c["W"]) / 3.0) for c in ct if abs(c["delta_a_max"]) > 1e-3 * c["a_max"] and c["a_max_next"] < 2e4]
+longs = OVJ["long_runs"]
+ok26 = (max(good) < 0.05 and bc["continuity_residual_at_bounces"] < 1e-3 and bc["constraint_residual_at_bounces"] < 1e-3 and (max(laws) if laws else 1) < 0.02
+        and all(l_["cls"] == "stable" and l_["max_abs_G_minus_1_last_500"] < 1e-5 for l_ in longs) and OVJ["transitions"]["A"]["final_cls"] == "stable"
+        and OVJ["transitions"]["C1"]["G"][-1] > 1.01)
+rec("V26_option_B_validation", ok26, integrator_spread=float(max(good)), continuity=bc["continuity_residual_at_bounces"], constraint=bc["constraint_residual_at_bounces"], law=float(max(laws) if laws else -1),
+    long_runs=[l_["cls"] for l_ in longs])
 json.dump(res, open(os.path.join(HERE, "verification.json"), "w", encoding="utf-8"), indent=1)
 print("\nALL PASS" if all(v["passed"] for v in res.values()) else "\nSOME FAILED")
