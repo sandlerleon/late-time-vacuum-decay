@@ -1,0 +1,3245 @@
+{
+ "P": {
+  "turn": false,
+  "t_turn": null,
+  "q0_deceleration": -0.5333045,
+  "outcome": "expanding at t_max",
+  "sol": null
+ },
+ "N": {
+  "0.1": {
+   "turn": true,
+   "t_turn": 3.3377833608649463,
+   "q0_deceleration": 0.6033805,
+   "outcome": "recollapse",
+   "sol": null
+  },
+  "1.0": {
+   "turn": true,
+   "t_turn": 0.7052334143403918,
+   "q0_deceleration": 1.5333955,
+   "outcome": "recollapse",
+   "sol": null
+  },
+  "10.0": {
+   "turn": true,
+   "t_turn": 0.09245962204399014,
+   "q0_deceleration": 10.8335455,
+   "outcome": "recollapse",
+   "sol": null
+  }
+ },
+ "rows": [
+  {
+   "a_c": 1.25,
+   "mu": 3.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994253507587,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 3.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 69.23873751860722,
+    "ln_a_end": null,
+    "t_turn": 69.23873751860722,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 69.94292178950667,
+    "ln_a_end": null,
+    "t_turn": 69.94292178950667,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 209.82876536852,
+    "ln_a_end": 174.22286949871585,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 209.82876536852,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 3.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": false,
+    "t_end": 68.66608016466049,
+    "ln_a_end": null,
+    "t_turn": 68.66608016466049,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": false,
+    "t_end": 69.37026443551056,
+    "ln_a_end": null,
+    "t_turn": 69.37026443551056,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 208.1107933065317,
+    "ln_a_end": 172.79695268736194,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 208.1107933065317,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 3.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 71.7334229930416,
+    "ln_a_end": null,
+    "t_turn": 71.7334229930416,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 72.43760727777567,
+    "ln_a_end": null,
+    "t_turn": 72.43760727777567,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 217.312821833327,
+    "ln_a_end": 180.43463636408524,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 217.312821833327,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 10.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254611507,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 10.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 15.671526525508686,
+    "ln_a_end": null,
+    "t_turn": 15.671526525508686,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 16.212724646879646,
+    "ln_a_end": null,
+    "t_turn": 16.212724646879646,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 48.638173940638936,
+    "ln_a_end": 40.434678625286764,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 48.638173940638936,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 10.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 16.229855492098974,
+    "ln_a_end": null,
+    "t_turn": 16.229855492098974,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 16.771053613561552,
+    "ln_a_end": null,
+    "t_turn": 16.771053613561552,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 50.31316084068466,
+    "ln_a_end": 41.82491775232152,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 50.31316084068466,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 30.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465039,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 10.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 18.786590138327213,
+    "ln_a_end": null,
+    "t_turn": 18.786590138327213,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 19.327788260488155,
+    "ln_a_end": null,
+    "t_turn": 19.327788260488155,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 57.983364781464466,
+    "ln_a_end": 48.19118702315395,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 57.983364781464466,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 30.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 4.842150206019292,
+    "ln_a_end": null,
+    "t_turn": 4.842150206019292,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 5.354449944360724,
+    "ln_a_end": null,
+    "t_turn": 5.354449944360724,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650395,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 30.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 5.435829049148263,
+    "ln_a_end": null,
+    "t_turn": 5.435829049148263,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 5.948128720424048,
+    "ln_a_end": null,
+    "t_turn": 5.948128720424048,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465039,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 30.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 8.076568826732826,
+    "ln_a_end": null,
+    "t_turn": 8.076568826732826,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 8.588868569262456,
+    "ln_a_end": null,
+    "t_turn": 8.588868569262456,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 25.766605707787367,
+    "ln_a_end": 21.451276992113893,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 25.766605707787367,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 100.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465039,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 100.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 1.4863149877917892,
+    "ln_a_end": null,
+    "t_turn": 1.4863149877917892,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 1.9507414877733333,
+    "ln_a_end": null,
+    "t_turn": 1.9507414877733333,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465039,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 100.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 2.0971560593149667,
+    "ln_a_end": null,
+    "t_turn": 2.0971560593149667,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 2.5645018356071967,
+    "ln_a_end": null,
+    "t_turn": 2.5645018356071967,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465039,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 300.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650367,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 3.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994253997282,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 100.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 4.706078299679967,
+    "ln_a_end": null,
+    "t_turn": 4.706078299679967,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 5.172141381197993,
+    "ln_a_end": null,
+    "t_turn": 5.172141381197993,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465039,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 3.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 71.7334229930416,
+    "ln_a_end": null,
+    "t_turn": 71.7334229930416,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 74.40750528824985,
+    "ln_a_end": null,
+    "t_turn": 74.40750528824985,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 223.22251586474954,
+    "ln_a_end": 185.3396824151941,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 223.22251586474954,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 3.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 69.23873751860722,
+    "ln_a_end": null,
+    "t_turn": 69.23873751860722,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 71.9128198159139,
+    "ln_a_end": null,
+    "t_turn": 71.9128198159139,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 215.73845944774172,
+    "ln_a_end": 179.1279155893187,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 215.73845944774172,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 300.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 0.5636450586581162,
+    "ln_a_end": null,
+    "t_turn": 0.5636450586581162,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 0.9994760623799218,
+    "ln_a_end": null,
+    "t_turn": 0.9994760623799218,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650413,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 3.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": false,
+    "t_end": 68.66608016466049,
+    "ln_a_end": null,
+    "t_turn": 68.66608016466049,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": false,
+    "t_end": 71.34016246220534,
+    "ln_a_end": null,
+    "t_turn": 71.34016246220534,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 214.02048738661603,
+    "ln_a_end": 177.70199877863965,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 214.02048738661603,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 10.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425464976,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 10.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 18.786590138327213,
+    "ln_a_end": null,
+    "t_turn": 18.786590138327213,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 19.654515381378012,
+    "ln_a_end": null,
+    "t_turn": 19.654515381378012,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 58.963546144134035,
+    "ln_a_end": 49.00473755427977,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 58.963546144134035,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 10.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 16.229855492098974,
+    "ln_a_end": null,
+    "t_turn": 16.229855492098974,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 17.097780733015203,
+    "ln_a_end": null,
+    "t_turn": 17.097780733015203,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 51.29334219904561,
+    "ln_a_end": 42.638468279856625,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 51.29334219904561,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 10.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 15.671526525508686,
+    "ln_a_end": null,
+    "t_turn": 15.671526525508686,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 16.539451766470094,
+    "ln_a_end": null,
+    "t_turn": 16.539451766470094,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 49.61835529941028,
+    "ln_a_end": 41.24822915315933,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 49.61835529941028,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 300.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 1.184711325369747,
+    "ln_a_end": null,
+    "t_turn": 1.184711325369747,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 1.621683004847722,
+    "ln_a_end": null,
+    "t_turn": 1.621683004847722,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650367,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 30.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650377,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 30.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 4.842150206019292,
+    "ln_a_end": null,
+    "t_turn": 4.842150206019292,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 5.515626132701879,
+    "ln_a_end": null,
+    "t_turn": 5.515626132701879,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650406,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 30.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 5.435829049148263,
+    "ln_a_end": null,
+    "t_turn": 5.435829049148263,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 6.109304903329743,
+    "ln_a_end": null,
+    "t_turn": 6.109304903329743,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650377,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 30.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 8.076568826732826,
+    "ln_a_end": null,
+    "t_turn": 8.076568826732826,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 8.750044766326557,
+    "ln_a_end": null,
+    "t_turn": 8.750044766326557,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 26.25013429897967,
+    "ln_a_end": 21.852605722803528,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 26.25013429897967,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 100.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650367,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 100.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 2.0971560593149667,
+    "ln_a_end": null,
+    "t_turn": 2.0971560593149667,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 2.7999334821777246,
+    "ln_a_end": null,
+    "t_turn": 2.7999334821777246,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650367,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 100.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 1.4863149877917892,
+    "ln_a_end": null,
+    "t_turn": 1.4863149877917892,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 2.1859014684310503,
+    "ln_a_end": null,
+    "t_turn": 2.1859014684310503,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465038,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 100.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 4.706078299679967,
+    "ln_a_end": null,
+    "t_turn": 4.706078299679967,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 5.403746784432068,
+    "ln_a_end": null,
+    "t_turn": 5.403746784432068,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650313,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 300.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465042,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 3.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425458107,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 1.25,
+   "mu": 300.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 3.803404352206727,
+    "ln_a_end": null,
+    "t_turn": 3.803404352206727,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 4.24446359781865,
+    "ln_a_end": null,
+    "t_turn": 4.24446359781865,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650377,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 3.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 69.23873751860722,
+    "ln_a_end": null,
+    "t_turn": 69.23873751860722,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 70.42347081657596,
+    "ln_a_end": null,
+    "t_turn": 70.42347081657596,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 211.27041244972787,
+    "ln_a_end": 175.41943658719973,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 211.27041244972787,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 3.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 71.7334229930416,
+    "ln_a_end": null,
+    "t_turn": 71.7334229930416,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 72.91815629530122,
+    "ln_a_end": null,
+    "t_turn": 72.91815629530122,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 218.75446888590363,
+    "ln_a_end": 181.63120342919984,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 218.75446888590363,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 10.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650377,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 3.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": false,
+    "t_end": 68.66608016466049,
+    "ln_a_end": null,
+    "t_turn": 68.66608016466049,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": false,
+    "t_end": 69.85081346282396,
+    "ln_a_end": null,
+    "t_turn": 69.85081346282396,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 209.5524403884719,
+    "ln_a_end": 173.9935197763632,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 209.5524403884719,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 300.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 1.184711325369747,
+    "ln_a_end": null,
+    "t_turn": 1.184711325369747,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 1.8242128792809653,
+    "ln_a_end": null,
+    "t_turn": 1.8242128792809653,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465042,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 10.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 16.229855492098974,
+    "ln_a_end": null,
+    "t_turn": 16.229855492098974,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 17.56815855217179,
+    "ln_a_end": null,
+    "t_turn": 17.56815855217179,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 52.70447565651537,
+    "ln_a_end": 43.80970904955812,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 52.70447565651537,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 300.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 0.5636450586581162,
+    "ln_a_end": null,
+    "t_turn": 0.5636450586581162,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 1.2031399280683868,
+    "ln_a_end": null,
+    "t_turn": 1.2031399280683868,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465037,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 10.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 18.786590138327213,
+    "ln_a_end": null,
+    "t_turn": 18.786590138327213,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 20.124893197366063,
+    "ln_a_end": null,
+    "t_turn": 20.124893197366063,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 60.37467959209819,
+    "ln_a_end": 50.1759783160919,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 60.37467959209819,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 10.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 15.671526525508686,
+    "ln_a_end": null,
+    "t_turn": 15.671526525508686,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 17.009829585637863,
+    "ln_a_end": null,
+    "t_turn": 17.009829585637863,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 51.029488756913594,
+    "ln_a_end": 42.41946992288866,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 51.029488756913594,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 30.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650413,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 30.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 5.435829049148263,
+    "ln_a_end": null,
+    "t_turn": 5.435829049148263,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 6.4542209594212,
+    "ln_a_end": null,
+    "t_turn": 6.4542209594212,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650413,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 30.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 4.842150206019292,
+    "ln_a_end": null,
+    "t_turn": 4.842150206019292,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 5.860542214619278,
+    "ln_a_end": null,
+    "t_turn": 5.860542214619278,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650434,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 30.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 8.076568826732826,
+    "ln_a_end": null,
+    "t_turn": 8.076568826732826,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 9.094960819012579,
+    "ln_a_end": null,
+    "t_turn": 9.094960819012579,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 27.28488245703774,
+    "ln_a_end": 22.711446693991743,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 27.28488245703774,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 100.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465037,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 100.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 1.4863149877917892,
+    "ln_a_end": null,
+    "t_turn": 1.4863149877917892,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 2.4963642280852283,
+    "ln_a_end": null,
+    "t_turn": 2.4963642280852283,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650377,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 100.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 2.0971560593149667,
+    "ln_a_end": null,
+    "t_turn": 2.0971560593149667,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 3.110528482077638,
+    "ln_a_end": null,
+    "t_turn": 3.110528482077638,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465037,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 1.5,
+   "mu": 300.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 3.803404352206727,
+    "ln_a_end": null,
+    "t_turn": 3.803404352206727,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 4.445291665254919,
+    "ln_a_end": null,
+    "t_turn": 4.445291665254919,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650395,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 100.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 4.706078299679967,
+    "ln_a_end": null,
+    "t_turn": 4.706078299679967,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 5.713261495310189,
+    "ln_a_end": null,
+    "t_turn": 5.713261495310189,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465039,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 3.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650143,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 3.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 71.7334229930416,
+    "ln_a_end": null,
+    "t_turn": 71.7334229930416,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 73.64647949590437,
+    "ln_a_end": null,
+    "t_turn": 73.64647949590437,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 220.93943848771312,
+    "ln_a_end": 183.44472819945005,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 220.93943848771312,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 3.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 69.23873751860722,
+    "ln_a_end": null,
+    "t_turn": 69.23873751860722,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 71.15179400847434,
+    "ln_a_end": null,
+    "t_turn": 71.15179400847434,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 213.45538202542303,
+    "ln_a_end": 177.23296133574908,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 213.45538202542303,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 300.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650452,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 3.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": false,
+    "t_end": 68.66608016466049,
+    "ln_a_end": null,
+    "t_turn": 68.66608016466049,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": false,
+    "t_end": 70.57913665446682,
+    "ln_a_end": null,
+    "t_turn": 70.57913665446682,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 211.73740996340047,
+    "ln_a_end": 175.8070445242703,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 211.73740996340047,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 10.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650395,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 10.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 18.786590138327213,
+    "ln_a_end": null,
+    "t_turn": 18.786590138327213,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 20.33018383400269,
+    "ln_a_end": null,
+    "t_turn": 20.33018383400269,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 60.99055150200807,
+    "ln_a_end": 50.6871520013171,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 60.99055150200807,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 10.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 16.229855492098974,
+    "ln_a_end": null,
+    "t_turn": 16.229855492098974,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 17.77344918979537,
+    "ln_a_end": null,
+    "t_turn": 17.77344918979537,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 53.320347569386115,
+    "ln_a_end": 44.320882737240886,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 53.320347569386115,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 300.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 0.5636450586581162,
+    "ln_a_end": null,
+    "t_turn": 0.5636450586581162,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 1.542939784239944,
+    "ln_a_end": null,
+    "t_turn": 1.542939784239944,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650416,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 300.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 1.184711325369747,
+    "ln_a_end": null,
+    "t_turn": 1.184711325369747,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 2.163640937351361,
+    "ln_a_end": null,
+    "t_turn": 2.163640937351361,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650452,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 10.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 15.671526525508686,
+    "ln_a_end": null,
+    "t_turn": 15.671526525508686,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 17.215120223255152,
+    "ln_a_end": null,
+    "t_turn": 17.215120223255152,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 51.64536066976545,
+    "ln_a_end": 42.93064361055576,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 51.64536066976545,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 30.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465041,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 30.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 5.435829049148263,
+    "ln_a_end": null,
+    "t_turn": 5.435829049148263,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 6.991144066385937,
+    "ln_a_end": null,
+    "t_turn": 6.991144066385937,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.973432199157813,
+    "ln_a_end": 17.472942979951394,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.973432199157813,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 30.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 4.842150206019292,
+    "ln_a_end": null,
+    "t_turn": 4.842150206019292,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 6.397465350184338,
+    "ln_a_end": null,
+    "t_turn": 6.397465350184338,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465043,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 30.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 8.076568826732826,
+    "ln_a_end": null,
+    "t_turn": 8.076568826732826,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 9.631883914975399,
+    "ln_a_end": null,
+    "t_turn": 9.631883914975399,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 28.895651744926198,
+    "ln_a_end": 24.048385202939183,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 28.895651744926198,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 100.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650388,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 2.0,
+   "mu": 300.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 3.803404352206727,
+    "ln_a_end": null,
+    "t_turn": 3.803404352206727,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 4.784241624547637,
+    "ln_a_end": null,
+    "t_turn": 4.784241624547637,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650452,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 100.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 1.4863149877917892,
+    "ln_a_end": null,
+    "t_turn": 1.4863149877917892,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 3.008492521660116,
+    "ln_a_end": null,
+    "t_turn": 3.008492521660116,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465046,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 100.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 2.0971560593149667,
+    "ln_a_end": null,
+    "t_turn": 2.0971560593149667,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 3.6226680313180997,
+    "ln_a_end": null,
+    "t_turn": 3.6226680313180997,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650388,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 100.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 4.706078299679967,
+    "ln_a_end": null,
+    "t_turn": 4.706078299679967,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 6.224994884362759,
+    "ln_a_end": null,
+    "t_turn": 6.224994884362759,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650434,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 3.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650395,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 3.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 71.7334229930416,
+    "ln_a_end": null,
+    "t_turn": 71.7334229930416,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 74.29444168503369,
+    "ln_a_end": null,
+    "t_turn": 74.29444168503369,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 222.88332505510107,
+    "ln_a_end": 185.05815405038436,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 222.88332505510107,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 3.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 69.23873751860722,
+    "ln_a_end": null,
+    "t_turn": 69.23873751860722,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 71.7997562067639,
+    "ln_a_end": null,
+    "t_turn": 71.7997562067639,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 215.3992686202917,
+    "ln_a_end": 178.84638720949255,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 215.3992686202917,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 3.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": false,
+    "t_end": 68.66608016466049,
+    "ln_a_end": null,
+    "t_turn": 68.66608016466049,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": false,
+    "t_end": 71.22709885282384,
+    "ln_a_end": null,
+    "t_turn": 71.22709885282384,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 213.68129655847153,
+    "ln_a_end": 177.42047039818195,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 213.68129655847153,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 10.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 150.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465039,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 300.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650413,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 10.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 18.786590138327213,
+    "ln_a_end": null,
+    "t_turn": 18.786590138327213,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 20.992732000642302,
+    "ln_a_end": null,
+    "t_turn": 20.992732000642302,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 62.978196001926904,
+    "ln_a_end": 52.336896936249794,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 62.978196001926904,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 300.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 0.5636450586581162,
+    "ln_a_end": null,
+    "t_turn": 0.5636450586581162,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 2.0232581771304066,
+    "ln_a_end": null,
+    "t_turn": 2.0232581771304066,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650363,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 10.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 16.229855492098974,
+    "ln_a_end": null,
+    "t_turn": 16.229855492098974,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 18.435997343745026,
+    "ln_a_end": null,
+    "t_turn": 18.435997343745026,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 55.307992031235074,
+    "ln_a_end": 45.97062764057555,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 55.307992031235074,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 300.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 1.184711325369747,
+    "ln_a_end": null,
+    "t_turn": 1.184711325369747,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 2.6438736732409494,
+    "ln_a_end": null,
+    "t_turn": 2.6438736732409494,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650413,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 10.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 15.671526525508686,
+    "ln_a_end": null,
+    "t_turn": 15.671526525508686,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 17.87766837714721,
+    "ln_a_end": null,
+    "t_turn": 17.87766837714721,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 53.63300513144163,
+    "ln_a_end": 44.58038851374691,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 53.63300513144163,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 30.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650423,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 30.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 8.076568826732826,
+    "ln_a_end": null,
+    "t_turn": 8.076568826732826,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 10.210893715969734,
+    "ln_a_end": null,
+    "t_turn": 10.210893715969734,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 30.632681147909203,
+    "ln_a_end": 25.490119607415075,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 30.632681147909203,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 30.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 5.435829049148263,
+    "ln_a_end": null,
+    "t_turn": 5.435829049148263,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 7.5701538593744955,
+    "ln_a_end": null,
+    "t_turn": 7.5701538593744955,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 22.710461578123486,
+    "ln_a_end": 18.914677364492942,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 22.710461578123486,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 30.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 4.842150206019292,
+    "ln_a_end": null,
+    "t_turn": 4.842150206019292,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 6.97647513632815,
+    "ln_a_end": null,
+    "t_turn": 6.97647513632815,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.92942540898445,
+    "ln_a_end": 17.436417344107483,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.92942540898445,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 3.0,
+   "mu": 300.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 3.803404352206727,
+    "ln_a_end": null,
+    "t_turn": 3.803404352206727,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 5.2633870914470435,
+    "ln_a_end": null,
+    "t_turn": 5.2633870914470435,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465048,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 100.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465036,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 100.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 1.4863149877917892,
+    "ln_a_end": null,
+    "t_turn": 1.4863149877917892,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 3.598995500222791,
+    "ln_a_end": null,
+    "t_turn": 3.598995500222791,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650367,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 100.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 2.0971560593149667,
+    "ln_a_end": null,
+    "t_turn": 2.0971560593149667,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 4.213207514273202,
+    "ln_a_end": null,
+    "t_turn": 4.213207514273202,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465036,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 100.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 4.706078299679967,
+    "ln_a_end": null,
+    "t_turn": 4.706078299679967,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 6.815509189656262,
+    "ln_a_end": null,
+    "t_turn": 6.815509189656262,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.446527568968786,
+    "ln_a_end": 17.035612136894436,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.446527568968786,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 300.0,
+   "q": -0.5,
+   "U": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "D": {
+    "turn": false,
+    "roll": true,
+    "t_end": 40.0,
+    "ln_a_end": null,
+    "t_turn": null,
+    "outcome": "released; no turnaround possible (V0 >= -q Vc > 0)"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650523,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": false,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 300.0,
+   "q": 10.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 0.5636450586581162,
+    "ln_a_end": null,
+    "t_turn": 0.5636450586581162,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 2.6402209823642053,
+    "ln_a_end": null,
+    "t_turn": 2.6402209823642053,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650438,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 300.0,
+   "q": 1.0,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 1.184711325369747,
+    "ln_a_end": null,
+    "t_turn": 1.184711325369747,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 3.2605587913012717,
+    "ln_a_end": null,
+    "t_turn": 3.2605587913012717,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.664994254650523,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  },
+  {
+   "a_c": 5.0,
+   "mu": 300.0,
+   "q": 0.1,
+   "U": {
+    "turn": true,
+    "roll": true,
+    "t_end": 3.803404352206727,
+    "ln_a_end": null,
+    "t_turn": 3.803404352206727,
+    "outcome": "recollapse"
+   },
+   "D": {
+    "turn": true,
+    "roll": true,
+    "t_end": 5.878208362948783,
+    "ln_a_end": null,
+    "t_turn": 5.878208362948783,
+    "outcome": "recollapse"
+   },
+   "F": {
+    "turn": false,
+    "roll": false,
+    "t_end": 20.0,
+    "ln_a_end": 16.66499425465042,
+    "t_turn": null,
+    "outcome": "expanding at t_max (H = 0.83)"
+   },
+   "F_horizon": 20.0,
+   "dilution_causes_recollapse": true,
+   "F_held": true
+  }
+ ],
+ "summary": {
+  "runs": 100,
+  "q_positive": 75,
+  "dilution_causes_recollapse": 75,
+  "frozen_held_all": true,
+  "D_recollapse_q_positive": 75,
+  "D_recollapse_q_negative": 0,
+  "D_released_q_negative": 25,
+  "U_rolls_all": false,
+  "U_never_held": true
+ }
+}

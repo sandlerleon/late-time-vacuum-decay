@@ -208,7 +208,7 @@ def blocks():
     add(("h2", "6.7 What the cycle requires and how it can fail"))
     add(("p", "The calculation identifies four ingredients, each necessary: a vacuum held by matter and released by dilution (which gives the dark-energy epoch and the turnaround), a "
               "nonsingular bounce, dissipation that thermalizes the scalar energy in the hot contraction, and re-thermalization with freeze-out that resets the matter-to-entropy "
-              "ratio and, through the same coupling, the vacuum. Removing the third or the fourth destroys the cycle (Table 17). The result does not depend on the details within the "
+              "ratio and, through the same coupling, the vacuum. Removing the third or the fourth destroys the cycle (Table 17). Here the last two are prescribed (a reset at freeze-out and the adiabatic result of the restoration); Section 6.8 obtains them from the equations and finds an additional condition on the bounce temperature. The result does not depend on the details within the "
               "ranges tested: $C_T=0.1$--$10$, $\\rho_c=10^{14}$--$10^{16}V_c$ (with $G_n=%.1f$, $%.1f$ and $%.1f$, converging), $\\mu=30$ and $100H_0$, $q=0.3$ and 1, $a_c=2$ and 3."
               % (gm([c.get("G") for c in by(rho_c_over_Vc=1e14, c_T=1.0, mu=30.0, q=1.0, a_c=2.0, reset=True)["cycles"][1:]]),
                  gm([c.get("G") for c in by(rho_c_over_Vc=1e15)["cycles"][1:]]), gm([c.get("G") for c in by(rho_c_over_Vc=1e16)["cycles"][1:]]))))
@@ -219,8 +219,8 @@ def blocks():
               "form domain walls; for $\\mu\\gtrsim300H_0$ and $a_c\\lesssim2$ the largest, emptiest voids reach that condition, which bounds the parameter space from void "
               "statistics. In the future, the dark-matter mass grows by $A(v)$ after the release and the recollapse follows within tens of Gyr (Table 16)."))
     add(("p", "The limits are equally definite. The bounce is an effective prescription, not a derivation; $\\rho_c$ is $10^{108}$ times below the Planck value in the simulations; the "
-              "hot-phase restoration is applied through its adiabatic result and freeze-out is instantaneous; the dynamics are homogeneous, so the growth of inhomogeneities and "
-              "anisotropies in the contraction, which can dominate a contracting universe, is not followed; and $a_c\\sim1$ requires $\\mu^2M^2\\approx\\rho_{\\rm dm,0}$, a coincidence "
+              "hot-phase restoration is applied through its adiabatic result and freeze-out is instantaneous (both removed in Section 6.8); the dynamics are homogeneous, so the growth of inhomogeneities in "
+              "the contraction, which can dominate a contracting universe, is not followed (Bianchi I shear is treated in Section 6.10); and $a_c\\sim1$ requires $\\mu^2M^2\\approx\\rho_{\\rm dm,0}$, a coincidence "
               "of the same kind as that of the cosmological constant. The calculation shows that a cyclic hot big bang is consistent within this model with the stated ingredients, and "
               "which ingredients it cannot do without; it does not show that the universe is cyclic."))
     return B

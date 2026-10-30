@@ -241,3 +241,5 @@ if __name__ == "__main__":
     _mo.fig11(); _mo.fig12()
     import make_dil_figures as _md
     _md.fig13(); _md.fig14(); _md.fig15(); _md.fig16()
+    import make_cyc_figures as _mc
+    _mc.fig17(); _mc.fig18(); _mc.fig19(); _mc.fig20(); _mc.fig21()

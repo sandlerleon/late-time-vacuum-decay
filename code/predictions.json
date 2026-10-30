@@ -1,0 +1,83 @@
+{
+ "dark_sector": {
+  "one_plus_w_today_bound": 7.999999999999998e-120,
+  "t_turn_Gyr": 93.688919542078,
+  "A_v": 85.23401564332902,
+  "note": "w = -1 until the release; the release happens at a ~ a_c; the turnaround follows"
+ },
+ "perturbations": {
+  "mode_exit": {
+   "ln_a0_next": 5.716178572918761,
+   "next_cycle_reaches_T0": true,
+   "modes": [
+    {
+     "k_over_a0H0": 1.0,
+     "exits": true,
+     "T_exit": 24.82770686899056,
+     "w_exit": 0.33331874941821915,
+     "n_s": 2.999956247297529,
+     "ln_a_exit": -0.09045509271824458
+    },
+    {
+     "k_over_a0H0": 3.1622776601683795,
+     "exits": true,
+     "T_exit": 80.47272407430802,
+     "w_exit": 0.33332997019892685,
+     "n_s": 2.9999899105458825,
+     "ln_a_exit": -1.2664131380029375
+    },
+    {
+     "k_over_a0H0": 10.0,
+     "exits": true,
+     "T_exit": 241.00105335960595,
+     "w_exit": 0.3333322215124675,
+     "n_s": 2.9999966645318397,
+     "ln_a_exit": -2.3632961463919644
+    },
+    {
+     "k_over_a0H0": 31.622776601683793,
+     "exits": true,
+     "T_exit": 1075.8149927566046,
+     "w_exit": 0.33333308436409187,
+     "n_s": 2.999999253091997,
+     "ln_a_exit": -3.8593285994241597
+    },
+    {
+     "k_over_a0H0": 100.0,
+     "exits": true,
+     "T_exit": 3108.446415042476,
+     "w_exit": 0.3333332471669435,
+     "n_s": 2.9999997415007975,
+     "ln_a_exit": -4.920373086014248
+    },
+    {
+     "k_over_a0H0": 316.22776601683796,
+     "exits": true,
+     "T_exit": 8441.64969766186,
+     "w_exit": 0.33333330160452673,
+     "n_s": 2.999999904813576,
+     "ln_a_exit": -5.919427718102304
+    },
+    {
+     "k_over_a0H0": 1000.0,
+     "exits": true,
+     "T_exit": 32839.64582249883,
+     "w_exit": 0.3333333251772393,
+     "n_s": 2.9999999755317175,
+     "ln_a_exit": -7.277886388303941
+    }
+   ]
+  },
+  "rho_c_over_MPl4": 3.489970864657691e-77,
+  "amplitude_estimate": 3.489970864657691e-77,
+  "observed_amplitude": 2.1e-09,
+  "rho_c_needed_over_MPl4": 2.1e-09,
+  "T_b_needed_GeV": 1.6483665361479692e+16
+ },
+ "sigv_cm3s": 8.045878616669182e-28,
+ "gravitational_waves": {
+  "tensor_amplitude_estimate": 3.489970864657691e-77,
+  "r_bound": "r ~ P_t/P_s ~ O(1) of a spectrum that is itself ~1e-81: no observable primordial background",
+  "transition": "homogeneous roll: no bubble collisions, no GW from the release"
+ }
+}

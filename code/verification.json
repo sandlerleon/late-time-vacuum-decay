@@ -232,5 +232,41 @@
   "runs": 8,
   "max_spread_between_cycles": 0.0005942593226494042,
   "controls_fail": true
+ },
+ "V29_continuous_cycles": {
+  "passed": true,
+  "cycles": 100,
+  "max_lnG_minus_entropy": 0.010510270726254767,
+  "max_residual": 5.292622283865624e-06
+ },
+ "V30_causal_test": {
+  "passed": true,
+  "runs": 100,
+  "q_positive": 75,
+  "dilution_causes_recollapse": 75,
+  "frozen_held_all": true,
+  "D_recollapse_q_positive": 75,
+  "D_recollapse_q_negative": 0,
+  "D_released_q_negative": 25,
+  "U_rolls_all": false,
+  "U_never_held": true
+ },
+ "V31_stability_bounce_relics": {
+  "passed": true,
+  "s_max_no_ek": 1.6557476244528297e-27,
+  "s_max_ek": [
+   1.663678238554056e-13,
+   3.508859797842641e-13,
+   1.0233160024924844e-11
+  ],
+  "R_over_rho_c": 3.9999719154339277,
+  "f_V_bounce": 0.0004909715756974892
+ },
+ "V32_cycle_fixed_point": {
+  "passed": true,
+  "fixed_point": 0.3756286120497493,
+  "slope": -0.13584669702569763,
+  "held_rms": 0.02020565180567417,
+  "admissibility_max_held_change": 0.003288833590715301
  }
 }

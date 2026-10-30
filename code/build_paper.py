@@ -20,6 +20,7 @@ import thermal_blocks as TB
 import sim_blocks as SBK
 import osc_blocks as OSB
 import dil_blocks as DIL
+import cyc_blocks as CYB
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, ".."))
@@ -43,7 +44,7 @@ DOI_PAPER, DOI_CODE = "10.5281/zenodo.23717617", "10.5281/zenodo.23717619"      
 if os.path.exists(os.path.join(HERE, "dois.json")):
     _d = J("dois.json")
     DOI_PAPER, DOI_CODE = _d["paper"], _d["code"]
-TITLE = "A Cyclic Hot Big Bang Triggered by Matter Dilution: Metastable Dark Energy, Vacuum Release, Recollapse and Self-Similar Nonsingular Cycles"
+TITLE = "A Cyclic Hot Big Bang Triggered by Matter Dilution: Metastable Dark Energy, Vacuum Release, Recollapse and Nonsingular Cycles without Resets"
 
 
 def chk(cond, msg):
@@ -120,21 +121,22 @@ chk(BM["cases"][0]["beta_linear"] > 1e26 and BM["cases"][1]["beta_linear"] < 1e3
 # ------------------------------------------------------------------------------------------------------- abstract
 HCB = DIL.BASE["cycles"][1]
 ABSTRACT = (
-    "Can the present dark energy end the cosmological expansion and start a new hot big bang? We first test the direct route, tunneling of a metastable dark-energy vacuum, with the "
-    "Coleman--De Luccia bounce (error budget, negative modes, %d executable checks), survival on the Lorentzian past light cone ($\\Gamma/H_\\Lambda^4<%.0f$), the thermal channel "
-    "(an exact rescaling $\\eta_{\\rm eff}=\\eta/(1-2\\theta)^{3/2}$; cooling cannot raise the late-time rate) and Lorentzian simulations of the nucleated region: a daughter region "
-    "reheats to at most $%.1f$ meV and stays curvature dominated, and an oscillating region with an effective bounce has unstable cycles with negative vacuum energy throughout. "
-    "Tunneling of the present dark energy does not produce a new hot epoch. We then show what does, within an explicit model. A scalar coupled to dark matter, "
-    "$V_{\\rm eff}=V_0(\\varphi)+\\rho_*A(\\varphi)$, is held at a positive vacuum energy, the observed dark energy, while the dark-matter density exceeds a critical value; "
-    "dilution releases it into a negative vacuum and the expansion turns around. Over %d coupled models with identical initial data at recombination, every one reproduces the "
-    "observed $\\Lambda$CDM past and recollapses or settles, while the uncoupled control rolls before today for $\\mu\\ge%.0fH_0$; cooling cannot play the same role (the coupling "
-    "required is too weak ever to equilibrate), and a coupling centred on the false vacuum lets vacua that survival would exclude decay in the near future. With an effective "
-    "loop-quantum-cosmology bounce, thermal dissipation $\\Upsilon\\propto T^3$ and the re-thermalization and freeze-out of dark matter at the hot bounce, the cycles become "
-    "self-similar: every cycle has a radiation-dominated bounce, a matter era, a dark-energy epoch of %.1f e-folds and a release at the same temperature, while the entropy grows "
-    "by a factor $%s$ per cycle and enlarges the next cycle by exactly $(S_{n+1}/S_n)^{1/3}=%.1f$. Without the dissipation or the freeze-out reset the cycles fail. "
-    "The model predicts $w=-1$ until the release, no fifth force today and a future recollapse; it is bounded by the deepest cosmic voids." % (
-        len(V), XMAX, RH["T_max_meV_at_Vf"], DIL.N_C, DIL.CTRL_BEFORE[0], HCB["held_accelerated_efolds"], DIL.texsci(DIL.gm(DIL.GS) ** 3, 1), DIL.gm(DIL.GS)))
-KEYWORDS = "cyclic cosmology; nonsingular bounce; dark energy; false vacuum decay; symmetron; coupled dark matter; recollapse; entropy; freeze-out; falsifiability"
+    "Can the present dark energy end the cosmological expansion and start a new hot big bang? Tunneling of a metastable dark-energy vacuum does not: with the Coleman--De Luccia "
+    "bounce, survival on the past light cone ($\\Gamma/H_\\Lambda^4<%.0f$), the thermal channel and Lorentzian simulations, a daughter region reheats to at most $%.1f$ meV and stays "
+    "curvature dominated. A vacuum held by matter does. A scalar coupled to dark matter, $V_{\\rm eff}=V_0(\\varphi)+\\rho_*A(\\varphi)$, sits at the observed dark-energy density while "
+    "the dark-matter density exceeds a critical value; dilution releases it into a negative vacuum and the expansion turns around after an exact $\\Lambda$CDM past. An intervention "
+    "that freezes the matter density seen by the field keeps every one of %d models expanding forever, while the diluting model recollapses for every negative release vacuum: "
+    "dilution is the cause. We then follow the cycle with no variable reset: an effective loop-quantum-cosmology bounce, dissipation $\\Upsilon\\propto T^3$, and dark matter with "
+    "its own Boltzmann equation and field-dependent mass. In %d consecutive cycles the dark matter is re-thermalized at the bounce and freezes out again ($Y/\\kappa=%s$), the "
+    "field is restored and held, and each cycle has a radiation-dominated bounce, a matter era, a dark-energy epoch of $%s$ e-folds, a release and a turnaround; the entropy "
+    "grows, and the next cycle is larger by $(S_{n+1}/S_n)^{1/3}$ to $%s$. This requires a bounce hot enough to re-thermalize the dark matter: with a colder bounce the dark "
+    "matter annihilates in the contraction and the next cycle is empty, a failure that prescribed resets in an earlier version of this model had hidden. Black holes of the previous "
+    "cycle bound the bounce from above (percolation above $\\sim%.1f$ GeV) and BBN from below. Inherited shear is diluted by the entropy growth, while shear regenerated each "
+    "cycle must be below $%s$ of the matter density at the turnaround unless an ekpyrotic phase widens the margin. The model predicts $w=-1$ until the release and a thermal-relic "
+    "dark matter; the observed primordial perturbations are not produced by the cycle and need a separate mechanism. These results describe a model, not evidence of repeated big bangs." % (
+        XMAX, RH["T_max_meV_at_Vf"], CYB.SUM["runs"], CYB.N_CYC, CYB.pm(CYB.YK), CYB.pm(CYB.HELD), CYB.texsci(CYB.GDEV, 0),
+        CYB.RL["T_perc_E3_MeV"] / 1e3, CYB.texsci(CYB.NOEK["s_max"], 0)))
+KEYWORDS = "cyclic cosmology; nonsingular bounce; dark energy; false vacuum decay; symmetron; coupled dark matter; recollapse; Boltzmann equation; anisotropy; black holes; falsifiability"
 
 B = []
 add = B.append
@@ -163,7 +165,8 @@ add(("p", "Four claims are tested. (i) A scalar potential with a metastable mini
           "that is neither negligible nor already excluded. (ii) The nucleated region reheats into a hot expanding universe. (iii) The "
           "transition is triggered, or enhanced, by the dilution of matter in the late universe. (iv) Cosmological cooling, acting on a scalar coupled to the CMB, makes the transition more probable at late times. The analysis is conditional: it takes the dark-energy density as the "
           "false-vacuum energy and asks what follows. Claims (i), (ii) and (iv) are answered by Sections 3--5; claim (iii) is developed in Section 6 into a cyclic model, whose "
-          "ingredients are standard and whose combination is tested against an uncoupled control and against the requirement that every cycle contain a hot big bang and an epoch like ours."))
+          "ingredients are standard and whose combination is tested against an uncoupled control, against an intervention that removes the dilution, and against the requirement that every "
+          "cycle contain a hot big bang and an epoch like ours without any variable being reset."))
 add(("p", "The contributions are the following."))
 add(("bullets", [
     "A reproducible map from the parameters of an explicit scalar potential to cosmological decay times, with a numerical error budget, an independent "
@@ -182,7 +185,10 @@ add(("bullets", [
     "and the effect of a vacuum transition on the cycles (Section 5.6).",
     "A matter-held vacuum released by dilution: a dark-matter coupling that holds the observed dark energy, the exact energy relation $V_c-V_0(v)=(A(v)-1)\\rho_{\\rm crit}/2$, "
     "release and recollapse compared with an uncoupled control over a parameter grid, the failure of cooling as a trigger, a tunneling branch in which dilution opens the survival "
-    "window, and self-similar hot cycles with an effective bounce, thermal dissipation and freeze-out, with the conditions under which they fail (Section 6).",
+    "window, and an intervention test showing that dilution causes the turnaround (Sections 6.2--6.5, 6.9).",
+    "Cycles without prescribed steps: an effective bounce, continuous dissipation and dark matter with its own Boltzmann equation and field-dependent mass, followed over 100 cycles with "
+    "no reset, with a failure-mode map (the bounce must re-thermalize the dark matter), Bianchi I shear with and without an ekpyrotic phase, an independent bounce mechanism, the black "
+    "holes of the previous cycle, and the observational consequences, including the negative one for the primordial perturbations (Sections 6.6--6.15).",
 ]))
 add(("h2", "1.1 Relation to previous work"))
 add(("p", "The ingredients are established, and the paper claims novelty only for the specific combination and the quantitative results for the dark-energy vacuum. "
@@ -542,7 +548,8 @@ add(("bullets", [
     "C8 (repeated transitions). Over any chain of transitions the energy released telescopes, $\\sum_i\\Delta V_i=\\rho_\\Lambda-V_{\\rm final}\\le\\rho_\\Lambda$, so a second generation cannot raise the temperature above $%.1f$ meV (Section 5.5)." % RH["T_max_meV_at_Vf"],
     "C9 (oscillation). A periodic cycle needs a turnaround (here the decay to $V_t<0$), a bounce beyond general relativity, and dissipation that removes the scalar energy gained at each bounce, $\\Upsilon P\\gtrsim\\ln\\mu$; with these the cycles persist but carry negative vacuum energy throughout (Section 5.6).",
     "C10 (held vacuum). The vacuum is held today only if $a_c>1$, i.e. $\\mu^2M^2<\\rho_{\\rm dm,0}$, and a release into a negative vacuum needs $A(v)-1=2(V_c-V_0(v))/\\rho_{\\rm crit}>2V_c/\\rho_{\\rm crit}$, a dark-matter mass that grows severalfold after the release (Section 6.2).",
-    "C11 (hot cycles). A cycle with a hot big bang and a dark-energy epoch needs a bounce hotter than dark-matter freeze-out, dissipation that thermalizes the scalar energy in the contraction, and re-thermalization of the dark matter; the entropy then grows each cycle and the cycles grow as $(S_{n+1}/S_n)^{1/3}$ with a fixed local history (Section 6.6)."
+    "C11 (hot cycles). A cycle with a hot big bang and a dark-energy epoch needs a bounce at a fixed density that re-thermalizes the dark matter, $T_b\\gtrsim m_{\\rm eff}/5$, and dissipation that thermalizes the scalar energy; the dark-matter abundance and the vacuum restoration then follow from the equations without resets, and the cycles grow as $(S_{n+1}/S_n)^{1/3}$ (Sections 6.8, 6.13).",
+    "C12 (bounce window, anisotropy). The bounce must lie between BBN (5 MeV) and the percolation of the black holes of the previous cycle (about %.1f GeV), and shear regenerated in a cycle must stay below $%s$ of the matter density at the turnaround, or an ekpyrotic phase must dilute it (Sections 6.10, 6.12)." % (CYB.RL["T_perc_E3_MeV"] / 1e3, CYB.texsci(CYB.NOEK["s_max"], 0))
 ]))
 add(("h2", "7.2 Observational tests"))
 add(("bullets", [
@@ -550,6 +557,8 @@ add(("bullets", [
     "O2 (reset window). A transition on cosmological time scales requires $B_c\\lesssim B\\lesssim B_c+%.0f$ for decay within $10^{20}$ yr; this holds for %s%% of the prior volume. An action above $B_c+%.0f$ puts the decay beyond $10^{100}$ yr." % (DB_20, pc(BASE["frac_decay_by"]["1e+20"], 2), DB_WINDOW),
     "O3 (hot epoch). A hot universe in the nucleated region requires $\\rho_{\\rm reh}\\gtrsim(1\\ \\mathrm{MeV})^4$, which is %s times the dark-energy density; the bound of Section 5 excludes it for decay of the present dark energy in this framework." % sci(RH["rho_needed_for_bbn_over_Vf"], 1),
     "O4 (trigger). Matter dilution changes a tunneling rate only for $\\Delta\\ln m\\gtrsim10^{-3}$ between the vacua (Section 6.1); a vacuum held by a quadratic dark-matter coupling is released classically, has no fifth force while held, and gives $w=-1$ exactly until the release (Sections 6.2--6.3), so a confirmed evolution of the dark energy would disfavor it.",
+    "O8 (dark matter). The dark matter must be a thermal relic re-thermalized at the bounce, with a mass below a few hundred MeV for a bounce below the percolation bound; a non-thermal dark matter would exclude the cycle (Section 6.14).",
+    "O9 (perturbations). The scales observed today leave the Hubble radius in a radiation-dominated contraction, which gives $n_s\\approx3$ with an amplitude $\\sim\\rho_c/M_{\\rm Pl}^4$; the observed spectrum must come from a mechanism outside the model, which therefore makes no prediction for $n_s$, $f_{\\rm NL}$ or $r$ (Section 6.14).",
     "O7 (voids). A void with density below $\\rho_{\\rm dm,0}/a_c^3$ and radius above the Compton length $\\pi/\\mu$ releases the vacuum locally today and forms domain walls; void statistics bound $\\mu\\gtrsim300H_0$ with $a_c\\lesssim2$ (Section 6.7).",
     "O5 (signals). A solitary transition produces no signal in our patch; bubble collisions \\cite{FKMS,Kleban,AJ} require a population and $\\Gamma/H^4=O(1)$ (C6). The vacuum is indistinguishable from a cosmological constant ($w=-1$) until it decays. A measured evolution of the dark energy, which recent baryon-acoustic-oscillation analyses combined with the CMB and supernovae prefer at the level of a few standard deviations depending on the supernova sample \\cite{DESI}, would favor a rolling field and not a metastable vacuum. No observational discriminant of the cyclic reset is available from this model.",
     "O6 (cooling). If the scalar is coupled to the CMB the decay probability was larger in the past and falls as the universe cools: equilibrated scenarios with $c\\ge0$ lift the excluded prior mass from %s%% to %s--%s%% and leave no survival-consistent draw that decays within $10^{20}$ yr, so the absence of a transition so far constrains the coupling of the scalar to the CMB as well as its potential (Section 4.8)." % (pc(PMAP["decoupled"]["excluded"], 0), pc(PMAP["c=0 (equilibrated), z<=1"]["excluded"], 0), pc(PMAP["c=0, z<=10"]["excluded"], 0))
@@ -575,18 +584,20 @@ add(("bullets", [
     "probability of a transition in our universe.",
     "The matter-coupling analysis is first order in the tilt shift and does not simulate any specific screened model.",
     "The thermal analysis assumes equilibrium with the CMB (an upper bound on the thermal channel), the leading high-temperature term with one coefficient $c$, and a bath coupled below a stated redshift; it neglects higher-order thermal corrections and the interpolation between the O(4) and O(3) saddles near $T_\\times$, which a periodic-instanton calculation would refine.",
-    "The cycles of Section 6 rest on an effective bounce (not a derivation), on $\\rho_c$ 108 orders of magnitude below the Planck density (with the dependence reported and converging), on the adiabatic result of the hot-phase restoration and an instantaneous freeze-out, and on homogeneous dynamics: the growth of inhomogeneities and anisotropies during the contraction, which can dominate a contracting universe, is not followed. The value $a_c\\sim1$ requires $\\mu^2M^2\\approx\\rho_{\\rm dm,0}$, a coincidence like that of the cosmological constant.",
+    "The cycles of Section 6 rest on an effective bounce (not a derivation) at 18--180 MeV, far below the Planck density, on a phenomenological dissipation $\\Upsilon=C_TT^3$, on a single dark-matter species with Maxwell--Boltzmann statistics, and on homogeneous dynamics with Bianchi I shear as the only anisotropy. Inhomogeneities, the mixmaster behaviour of more general anisotropy, and the perturbation spectrum are not followed. The self-similar cycles of Section 6.6 used prescribed resets, and the continuous cycles of Section 6.8 replace them. The value $a_c\\sim1$ requires $\\mu^2M^2\\approx\\rho_{\\rm dm,0}$, a coincidence like that of the cosmological constant.",
     "The simulations of Section 5.5 are homogeneous and use a phenomenological dissipation: bubble-wall dynamics, inhomogeneous wall collisions, the microphysics of reheating and the gravitational backreaction of the wall are not simulated, and the bounce of Option B is an effective loop-quantum-cosmology prescription (with a second prescription as a check), not a derived one."
 ]))
 
 add(("h1", "9. Conclusions"))
 add(("p", "The present dark energy can end the expansion and start a new hot big bang, but not by tunneling. If it is the energy of a vacuum held in place by dark matter, the "
-          "dilution of the matter releases it into a negative vacuum and the expansion turns around, with a $\\Lambda$CDM past ($w=-1$, no fifth force) that an uncoupled field "
-          "cannot reproduce. With an effective bounce, thermal dissipation in the hot contraction and the re-thermalization and freeze-out of dark matter, the cycles are self-similar: "
-          "each has a radiation-dominated bounce, a matter era, a dark-energy epoch of %.1f e-folds and a release at the same temperature, and the entropy produced, as the second law "
-          "requires, enlarges the next cycle by exactly $(S_{n+1}/S_n)^{1/3}=%.1f$. Each ingredient is necessary: without the dissipation or the freeze-out the cycles fail. Cooling "
-          "cannot replace dilution as the trigger. The remaining sections of this conclusion summarize why the direct route fails, which is what makes these ingredients necessary."
-          % (DIL.BASE["cycles"][1]["held_accelerated_efolds"], DIL.gm(DIL.GS))))
+          "dilution of the matter releases it into a negative vacuum and the expansion turns around, with a $\\Lambda$CDM past ($w=-1$, no fifth force); an intervention that "
+          "freezes the matter density seen by the field removes the turnaround, so dilution is its cause. With an effective bounce, thermal dissipation and dark matter that "
+          "obeys its own Boltzmann equation, %d consecutive cycles were followed with no variable reset: in each, the dark matter is re-thermalized and freezes out to the "
+          "observed ratio, the vacuum is restored, held and released, and the entropy produced enlarges the next cycle by $(S_{n+1}/S_n)^{1/3}$. The conditions are explicit: "
+          "a bounce at a fixed density, hot enough to re-thermalize the dark matter and cold enough to keep the black holes of the previous cycle from percolating; dissipation; "
+          "a thermal-relic dark matter; and an anisotropy that is inherited rather than regenerated. With a colder bounce the cycle fails. The model does not produce the observed "
+          "primordial perturbations, and it is a model: it shows what a cyclic hot big bang requires, not that the universe has one."
+          % CYB.N_CYC))
 add(("p", "A late-time false-vacuum transition of the present dark energy is a well-defined calculation, and for the explicit potential studied it can be done to a stated precision. The quantum decay is a flat-space "
           "process controlled by the action $B=b(\\eta)/\\lambda$, which must lie near $B_c\\approx%d$ for the transition to be neither excluded nor effectively absent; with survival evaluated on the past light cone the bound is weak "
           "($\\Gamma/H^4<%.0f$) and the window is set by the action itself. Cosmological cooling does not help: a thermal mass rescales the potential exactly, the thermal O(3) channel dominates above %.2f meV and falls "
@@ -680,6 +691,14 @@ REFS += [
     ("KOST", "J. Khoury, B.A. Ovrut, P.J. Steinhardt, N. Turok, Ekpyrotic universe: colliding branes and the origin of the hot big bang. Phys. Rev. D 64, 123522 (2001). https://doi.org/10.1103/PhysRevD.64.123522"),
     ("Amendola", "L. Amendola, Coupled quintessence. Phys. Rev. D 62, 043511 (2000). https://doi.org/10.1103/PhysRevD.62.043511"),
     ("HKLM11", "K. Hinterbichler, J. Khoury, A. Levy, A. Matas, Symmetron cosmology. Phys. Rev. D 84, 103521 (2011). https://doi.org/10.1103/PhysRevD.84.103521"),
+    ("GG91", "P. Gondolo, G. Gelmini, Cosmic abundances of stable particles: improved analysis. Nucl. Phys. B 360, 145--179 (1991). https://doi.org/10.1016/0550-3213(91)90438-4"),
+    ("KOST01", "J. Khoury, B.A. Ovrut, P.J. Steinhardt, N. Turok, The ekpyrotic universe: Colliding branes and the origin of the hot big bang. Phys. Rev. D 64, 123522 (2001). https://doi.org/10.1103/PhysRevD.64.123522"),
+    ("EWST04", "J.K. Erickson, D.H. Wesley, P.J. Steinhardt, N. Turok, Kasner and mixmaster behavior in universes with equation of state w >= 1. Phys. Rev. D 69, 063514 (2004). https://doi.org/10.1103/PhysRevD.69.063514"),
+    ("Wands99", "D. Wands, Duality invariance of cosmological perturbation spectra. Phys. Rev. D 60, 023507 (1999). https://doi.org/10.1103/PhysRevD.60.023507"),
+    ("FB02", "F. Finelli, R. Brandenberger, Generation of a scale-invariant spectrum of adiabatic fluctuations in cosmological models with a contracting phase. Phys. Rev. D 65, 103522 (2002). https://doi.org/10.1103/PhysRevD.65.103522"),
+    ("CH74", "B.J. Carr, S.W. Hawking, Black holes in the early Universe. Mon. Not. R. Astron. Soc. 168, 399--415 (1974). https://doi.org/10.1093/mnras/168.2.399"),
+    ("Sabti20", "N. Sabti, J. Alvey, M. Escudero, M. Fairbairn, D. Blas, Refined bounds on MeV-scale thermal dark sectors from BBN and CMB. J. Cosmol. Astropart. Phys. 01, 004 (2020). https://doi.org/10.1088/1475-7516/2020/01/004"),
+    ("PlanckX", "Planck Collaboration, Y. Akrami et al., Planck 2018 results. X. Constraints on inflation. Astron. Astrophys. 641, A10 (2020). https://doi.org/10.1051/0004-6361/201833887"),
     ("Berera95", "A. Berera, Warm inflation. Phys. Rev. Lett. 75, 3218--3221 (1995). https://doi.org/10.1103/PhysRevLett.75.3218"),
     ("KT90", "E.W. Kolb, M.S. Turner, The Early Universe (Addison-Wesley, Redwood City, 1990)"),
 ]
@@ -714,7 +733,7 @@ B[_i5:_i5] = THB
 _i6 = [k for k, b in enumerate(B) if b[0] == "h1" and b[1].startswith("6. Matter dilution")][0]
 B[_i6:_i6] = SBK.blocks() + OSB.blocks()
 _i7 = [k for k, b in enumerate(B) if b[0] == "h1" and b[1].startswith("7. Consistency")][0]
-B[_i7:_i7] = DIL.blocks()
+B[_i7:_i7] = DIL.blocks() + CYB.blocks()
 text_all = " ".join(b[-1] for b in B if b[0] in ("p", "abstract", "pb") and isinstance(b[-1], str)) + " ".join(" ".join(x) for b in B if b[0] == "bullets" for x in [b[1]])
 order = []
 for blk in B:

@@ -1,0 +1,342 @@
+{
+ "rows": [
+  {
+   "variant": "baseline",
+   "settings": {},
+   "status": "completed",
+   "classification": "working",
+   "max_residual": 5.966740986820968e-06,
+   "projections": {
+    "n": 338,
+    "max_rel": 0.004019650509024197
+   },
+   "cycles": [
+    {
+     "n": 0,
+     "held_accelerated_efolds": 2.8434141038332204,
+     "Y_held_over_kappa": null,
+     "Y_fo_over_kappa": null,
+     "max_matter_fraction": 0.3110089999966091,
+     "lnG": 7.784041491164211,
+     "phi_bounce_over_v": 0.35727452527132847,
+     "bounce_x": 0.5890513360221925,
+     "T_bounce": 93815674995.3405,
+     "T_release": 0.03717479999327498
+    },
+    {
+     "n": 1,
+     "held_accelerated_efolds": 5.385460194448206,
+     "Y_held_over_kappa": 1.1621577726326369,
+     "Y_fo_over_kappa": 61.2035879176405,
+     "max_matter_fraction": 0.9959267002087919,
+     "lnG": 7.663803812588089,
+     "phi_bounce_over_v": 0.378213434798788,
+     "bounce_x": 0.6527825781457154,
+     "T_bounce": 93853667624.86333,
+     "T_release": 0.0623990022831188
+    },
+    {
+     "n": 2,
+     "held_accelerated_efolds": 5.288801051905883,
+     "Y_held_over_kappa": 0.9898088475166453,
+     "Y_fo_over_kappa": 61.79653699807063,
+     "max_matter_fraction": 0.9952079316989872,
+     "lnG": 7.66553862470343,
+     "phi_bounce_over_v": 0.3753609183439215,
+     "bounce_x": 0.6438899001791838,
+     "T_bounce": 93848385021.70293,
+     "T_release": 0.03973806452394914
+    },
+    {
+     "n": 3,
+     "held_accelerated_efolds": 5.273264086470055,
+     "Y_held_over_kappa": 1.0119395885948559,
+     "Y_fo_over_kappa": 61.52042951437319,
+     "max_matter_fraction": 0.9953109068953958,
+     "lnG": null,
+     "phi_bounce_over_v": 0.3756796064114772,
+     "bounce_x": 0.6448799947171077,
+     "T_bounce": 93848990648.08858,
+     "T_release": 0.03784017168235691
+    }
+   ],
+   "seconds": 160.2474467754364,
+   "max_rel_change_vs_baseline": {
+    "held_accelerated_efolds": 0.0,
+    "Y_held_over_kappa": 0.0,
+    "Y_fo_over_kappa": 0.0,
+    "max_matter_fraction": 0.0,
+    "lnG": 0.0,
+    "phi_bounce_over_v": 0.0,
+    "bounce_x": 0.0,
+    "T_bounce": 0.0,
+    "T_release": 0.0
+   }
+  },
+  {
+   "variant": "rtol 1e-10",
+   "settings": {
+    "rtol": 1e-10
+   },
+   "status": "completed",
+   "classification": "working",
+   "max_residual": 1.5305243248795685e-07,
+   "projections": {
+    "n": 331,
+    "max_rel": 0.0017488410315413816
+   },
+   "cycles": [
+    {
+     "n": 0,
+     "held_accelerated_efolds": 2.8384792924267876,
+     "Y_held_over_kappa": null,
+     "Y_fo_over_kappa": null,
+     "max_matter_fraction": 0.3110089999966091,
+     "lnG": 7.786411602587224,
+     "phi_bounce_over_v": 0.3572508838586543,
+     "bounce_x": 0.5889825466414006,
+     "T_bounce": 93815450962.95792,
+     "T_release": 0.038106354353466605
+    },
+    {
+     "n": 1,
+     "held_accelerated_efolds": 5.369483489668983,
+     "Y_held_over_kappa": 1.1677374004704797,
+     "Y_fo_over_kappa": 61.29351101015605,
+     "max_matter_fraction": 0.9959272974021716,
+     "lnG": 7.661574545442065,
+     "phi_bounce_over_v": 0.37827841073310753,
+     "bounce_x": 0.6529839081680551,
+     "T_bounce": 93854076458.20103,
+     "T_release": 0.03752458575542236
+    },
+    {
+     "n": 2,
+     "held_accelerated_efolds": 5.271407065351764,
+     "Y_held_over_kappa": 0.9913589558744534,
+     "Y_fo_over_kappa": 61.667415344390356,
+     "max_matter_fraction": 0.995205626094804,
+     "lnG": 7.666198807817089,
+     "phi_bounce_over_v": 0.3753111019746182,
+     "bounce_x": 0.6437352354096462,
+     "T_bounce": 93848286159.72623,
+     "T_release": 0.03636200548576397
+    },
+    {
+     "n": 3,
+     "held_accelerated_efolds": 5.264193152505706,
+     "Y_held_over_kappa": 1.009910574937406,
+     "Y_fo_over_kappa": 61.63887126505187,
+     "max_matter_fraction": 0.9953125643642927,
+     "lnG": null,
+     "phi_bounce_over_v": 0.3755245727177,
+     "bounce_x": 0.6443984632699999,
+     "T_bounce": 93848662772.44127,
+     "T_release": 0.02798603533374877
+    }
+   ],
+   "seconds": 154.2912335395813,
+   "max_rel_change_vs_baseline": {
+    "held_accelerated_efolds": 0.003288833590715301,
+    "Y_held_over_kappa": 0.004801093250190291,
+    "Y_fo_over_kappa": 0.0020894642313743494,
+    "max_matter_fraction": 2.316705996596724e-06,
+    "lnG": 0.00029088259571086184,
+    "phi_bounce_over_v": 0.0004126752986622906,
+    "bounce_x": 0.0007466993100304631,
+    "T_bounce": 4.356072043298909e-06,
+    "T_release": 0.39863484378861413
+   }
+  },
+  {
+   "variant": "overdamped threshold 1e4",
+   "settings": {
+    "od_ratio": 10000.0
+   },
+   "status": "completed",
+   "classification": "working",
+   "max_residual": 5.966740986820968e-06,
+   "projections": {
+    "n": 339,
+    "max_rel": 0.001434090053182846
+   },
+   "cycles": [
+    {
+     "n": 0,
+     "held_accelerated_efolds": 2.8434141038332204,
+     "Y_held_over_kappa": null,
+     "Y_fo_over_kappa": null,
+     "max_matter_fraction": 0.3110089999966091,
+     "lnG": 7.784041298519676,
+     "phi_bounce_over_v": 0.35727452527132847,
+     "bounce_x": 0.5890513360221925,
+     "T_bounce": 93815674995.3405,
+     "T_release": 0.03717479999327498
+    },
+    {
+     "n": 1,
+     "held_accelerated_efolds": 5.3854601970521205,
+     "Y_held_over_kappa": 1.1621576283200516,
+     "Y_fo_over_kappa": 61.2035879176405,
+     "max_matter_fraction": 0.9959267001441823,
+     "lnG": 7.663847101217609,
+     "phi_bounce_over_v": 0.37821337738806443,
+     "bounce_x": 0.6527811850670485,
+     "T_bounce": 93853841979.74478,
+     "T_release": 0.06239931055385922
+    },
+    {
+     "n": 2,
+     "held_accelerated_efolds": 5.288587725818598,
+     "Y_held_over_kappa": 0.9902267737124191,
+     "Y_fo_over_kappa": 61.79780738777897,
+     "max_matter_fraction": 0.9952079171751783,
+     "lnG": 7.664536963235545,
+     "phi_bounce_over_v": 0.37543727496897444,
+     "bounce_x": 0.6441316042558083,
+     "T_bounce": 93847866278.70972,
+     "T_release": 0.03717960120110727
+    },
+    {
+     "n": 3,
+     "held_accelerated_efolds": 5.289104327206541,
+     "Y_held_over_kappa": 1.008320331255236,
+     "Y_fo_over_kappa": 61.51706071293102,
+     "max_matter_fraction": 0.9953083176547889,
+     "lnG": null,
+     "phi_bounce_over_v": 0.3754799644791076,
+     "bounce_x": 0.6442608252527348,
+     "T_bounce": 93848440552.6346,
+     "T_release": 0.048339263261517454
+    }
+   ],
+   "seconds": 185.74185872077942,
+   "max_rel_change_vs_baseline": {
+    "held_accelerated_efolds": 0.003003877764652163,
+    "Y_held_over_kappa": 0.003576554747349525,
+    "Y_fo_over_kappa": 5.475906895913152e-05,
+    "max_matter_fraction": 2.6014389965522966e-06,
+    "lnG": 0.00013067072216654818,
+    "phi_bounce_over_v": 0.0005314154107980418,
+    "bounce_x": 0.0009601312948845919,
+    "T_bounce": 5.861495687708995e-06,
+    "T_release": 0.27745887802236835
+   }
+  },
+  {
+   "variant": "projection every 4th chunk",
+   "settings": {
+    "proj_every": 4
+   },
+   "status": "completed",
+   "classification": "working",
+   "max_residual": 0.0002921715632932931,
+   "projections": {
+    "n": 83,
+    "max_rel": 0.0001461216982294733
+   },
+   "cycles": [
+    {
+     "n": 0,
+     "held_accelerated_efolds": 2.8434141038332195,
+     "Y_held_over_kappa": null,
+     "Y_fo_over_kappa": null,
+     "max_matter_fraction": 0.3110089999966091,
+     "lnG": 7.78328001131298,
+     "phi_bounce_over_v": 0.35728259574257704,
+     "bounce_x": 0.5890747182615198,
+     "T_bounce": 93815767620.02773,
+     "T_release": 0.03717479280102405
+    },
+    {
+     "n": 1,
+     "held_accelerated_efolds": 5.386066599042154,
+     "Y_held_over_kappa": 1.1622713877823976,
+     "Y_fo_over_kappa": 61.20504350063354,
+     "max_matter_fraction": 0.9959264024029355,
+     "lnG": 7.664833040819424,
+     "phi_bounce_over_v": 0.3781858410495697,
+     "bounce_x": 0.6526946079342825,
+     "T_bounce": 93853850636.48282,
+     "T_release": 0.06181682465883871
+    },
+    {
+     "n": 2,
+     "held_accelerated_efolds": 5.288468291105926,
+     "Y_held_over_kappa": 0.9909384390464531,
+     "Y_fo_over_kappa": 61.798168324140555,
+     "max_matter_fraction": 0.995208889291448,
+     "lnG": 7.665369113980656,
+     "phi_bounce_over_v": 0.3753725219692585,
+     "bounce_x": 0.6439261772763775,
+     "T_bounce": 93848371841.64569,
+     "T_release": 0.03405188677496178
+    },
+    {
+     "n": 3,
+     "held_accelerated_efolds": 5.288290672851403,
+     "Y_held_over_kappa": 1.0114047462170577,
+     "Y_fo_over_kappa": 61.5197747942519,
+     "max_matter_fraction": 0.9953104937142278,
+     "lnG": null,
+     "phi_bounce_over_v": 0.3754543009378513,
+     "bounce_x": 0.6441799574643956,
+     "T_bounce": 93848558995.18353,
+     "T_release": 0.04048463432024649
+    }
+   ],
+   "seconds": 151.66037845611572,
+   "max_rel_change_vs_baseline": {
+    "held_accelerated_efolds": 0.0028495797166507852,
+    "Y_held_over_kappa": 0.0011412218961688314,
+    "Y_fo_over_kappa": 2.639834122053486e-05,
+    "max_matter_fraction": 9.62203405174833e-07,
+    "lnG": 0.00013429730933922635,
+    "phi_bounce_over_v": 0.0005997277195267658,
+    "bounce_x": 0.0010855310421269415,
+    "T_bounce": 4.599441102870472e-06,
+    "T_release": 0.14309146197999756
+   }
+  },
+  {
+   "variant": "no projection",
+   "settings": {
+    "proj_every": 1000000000
+   },
+   "status": "integration failed: evaluation budget exceeded",
+   "classification": "F6 integration failed: evaluation budget exceeded",
+   "max_residual": 2.764363530561299e+37,
+   "projections": {
+    "n": 0,
+    "max_rel": 0.0
+   },
+   "cycles": [
+    {
+     "n": 0,
+     "held_accelerated_efolds": 2.8434141038332195,
+     "Y_held_over_kappa": null,
+     "Y_fo_over_kappa": null,
+     "max_matter_fraction": 0.3110089999966091,
+     "lnG": null,
+     "phi_bounce_over_v": 0.3572390751455485,
+     "bounce_x": 0.5889468269104933,
+     "T_bounce": 93815555946.93324,
+     "T_release": 0.03717479280102405
+    }
+   ],
+   "seconds": 3999.3171079158783,
+   "max_rel_change_vs_baseline": {}
+  }
+ ],
+ "baseline_cycle_scatter": {
+  "held_accelerated_efolds": 0.009337112661669339,
+  "Y_held_over_kappa": 0.0725982954770894,
+  "Y_fo_over_kappa": 0.00393876080642286,
+  "max_matter_fraction": 0.00031879636924825555,
+  "lnG": 0.00011316937581881151,
+  "phi_bounce_over_v": 0.003390440164724437,
+  "bounce_x": 0.006148579709796754,
+  "T_bounce": 2.515153141923754e-05,
+  "T_release": 0.2391119426798275
+ }
+}

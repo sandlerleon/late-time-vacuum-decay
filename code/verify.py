@@ -32,6 +32,10 @@ unless every check passes.
  V26 Option B validation: integrators, bounce continuity, hysteresis law, 1000-cycle stability, effect of a transition
  V27 matter-held vacuum: dilution_validation.py (conservation, integrators, LambdaCDM past, energy relation, thermal saturation, tunneling limit, bounce) and the release/control comparison
  V28 hot cycles: self-similar cycles (bounce temperature, release temperature, held e-folds), growth = entropy^(1/3), constraint; both controls fail
+ V29 continuous cycles: >= 100 cycles without resets, each with dark matter regenerated, a matter era and a held epoch; growth = entropy^(1/3); the cold-bounce run fails (F1)
+ V30 causal test: frozen-matter intervention never recollapses, diluting model recollapses for every q > 0
+ V31 stability, bounce and relics: analytic shear scaling, ekpyrotic tolerance gain, bounce invariants and continuity, black-hole volume fraction below percolation
+ V32 the cycle as a fixed point: attracting fixed point of the bounce-to-bounce map (|slope| < 1, all probes working), closed-form held epoch, results unchanged by the numerical devices
 """
 import json
 import os
@@ -283,5 +287,44 @@ noreset = [r for r in HCJ["runs"] if not r["params"]["reset"]][0]
 nodiss = [r for r in HCJ["runs"] if r["params"]["c_T"] == 0][0]
 ok28 &= spread < 1e-2 and all(c.get("held_accelerated_efolds", 0) == 0 for c in noreset["cycles"][1:]) and nodiss["status"] == "runaway"
 rec("V28_hot_cycles", ok28, runs=len(full), max_spread_between_cycles=spread, controls_fail=True)
+# V29
+CRJ = json.load(open(os.path.join(HERE, "continuous_cycles.json"), encoding="utf-8"))
+BVJ = json.load(open(os.path.join(HERE, "bounce_validation.json"), encoding="utf-8"))
+cyc = [c for c in CRJ["cycles"] if c["n"] >= 1 and "held_accelerated_efolds" in c]
+gdev = max(abs(c["lnG"] - c["lnG_entropy"]) for c in cyc if c.get("lnG") is not None)
+cold = [a for a in BVJ["A"] if abs(a["rho_c"] - 1e36) < 1e26][0]
+ok29 = (CRJ["status"] == "completed" and len(cyc) >= 100 and CRJ["max_residual"] < 1e-4 and gdev < 3e-2
+        and all(c["held_accelerated_efolds"] > 1.0 and 0.5 < c["Y_held_over_kappa"] < 2.0 and c["max_matter_fraction"] > 0.5 for c in cyc)
+        and cold["next"].get("Y_fo_over_kappa", cold["next"].get("Y_late_over_kappa", 1)) < 1e-3 and cold["next"]["held_accelerated_efolds"] < 0.5)
+rec("V29_continuous_cycles", ok29, cycles=len(cyc), max_lnG_minus_entropy=gdev, max_residual=CRJ["max_residual"])
+# V30
+CAJ = json.load(open(os.path.join(HERE, "causal_controls.json"), encoding="utf-8"))
+sm = CAJ["summary"]
+ok30 = sm["frozen_held_all"] and sm["dilution_causes_recollapse"] == sm["q_positive"] and sm["U_never_held"] and sm["D_recollapse_q_negative"] == 0
+rec("V30_causal_test", ok30, **sm)
+# V31
+CSJ = json.load(open(os.path.join(HERE, "contraction_stability.json"), encoding="utf-8"))
+RLJ = json.load(open(os.path.join(HERE, "compact_relics.json"), encoding="utf-8"))
+noek = [x for x in CSJ["scan"] if x["ek"] is None][0]["s_max"]
+ek = [x["s_max"] for x in CSJ["scan"] if x["ek"] is not None]
+a44 = [a for a in BVJ["A"] if abs(a["rho_c"] - 1e44) < 1e34][0]
+ok31 = (abs(CSJ["analytic_check"]["numerical"] / CSJ["analytic_check"]["analytic"] - 1) < 0.05 and min(ek) > 1e6 * noek
+        and abs(a44["R_over_rho_c"] / 4.0 - 1) < 0.05 and abs(a44["K_over_rho_c2"] / (16.0 / 3.0) - 1) < 0.1 and a44["rho_jump"] < 1e-6 and a44["lnS_jump"] < 1e-6
+        and RLJ["E3"]["f_V_bounce"] < 0.1 and RLJ["T_perc_E3_MeV"] > RLJ["T_bounce_MeV"])
+rec("V31_stability_bounce_relics", ok31, s_max_no_ek=noek, s_max_ek=ek, R_over_rho_c=a44["R_over_rho_c"], f_V_bounce=RLJ["E3"]["f_V_bounce"])
+# V32
+CMJ = json.load(open(os.path.join(HERE, "cycle_map.json"), encoding="utf-8"))
+NAJ = json.load(open(os.path.join(HERE, "numerics_admissibility.json"), encoding="utf-8"))
+mp = CMJ["map"]["5500000000.0"]
+he = CMJ["held"]
+# claim checked: every variant that keeps the constraint projection (any frequency) is a working cycle and agrees with the baseline; the
+# no-projection run is reported in the text as failing (constraint drift), so it is excluded from the agreement test, not hidden.
+proj = [r for r in NAJ["rows"] if r["variant"] != "no projection"]
+na_ok = all(r["classification"] == "working" for r in proj)
+na_dev = max(r["max_rel_change_vs_baseline"].get("held_accelerated_efolds", 0) for r in proj if r["variant"] != "baseline")
+ok32 = (mp["all_working"] and abs(mp["slope_at_fixed_point"]) < 1 and abs(CMJ["map"]["55000000000.0"]["slope_at_fixed_point"]) < 1
+        and he["rms_error"] < 0.1 and he["n_points"] >= 50 and na_ok and na_dev < 0.1)
+rec("V32_cycle_fixed_point", ok32, fixed_point=mp["fixed_point"], slope=mp["slope_at_fixed_point"], held_rms=he["rms_error"],
+    admissibility_max_held_change=na_dev)
 json.dump(res, open(os.path.join(HERE, "verification.json"), "w", encoding="utf-8"), indent=1)
 print("\nALL PASS" if all(v["passed"] for v in res.values()) else "\nSOME FAILED")

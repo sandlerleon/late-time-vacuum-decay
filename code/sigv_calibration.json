@@ -1,0 +1,40 @@
+{
+ "note": "<sigma v> = scale x radiation-background calibration; scale fixed by the held-epoch abundance of the attractor cycle",
+ "rows": [
+  {
+   "m_dm": 5500000000.0,
+   "scale": 0.0147261561098029,
+   "Y_held_over_kappa": 1.0008742180557506,
+   "iterations": [
+    {
+     "scale": 1.0,
+     "Y_held_over_kappa": 0.14499,
+     "status": "seed"
+    },
+    {
+     "scale": 0.14499,
+     "Y_held_over_kappa": 0.35548,
+     "status": "seed"
+    },
+    {
+     "scale": 0.015635341165414478,
+     "Y_held_over_kappa": 0.973270786126788,
+     "status": "completed",
+     "per_cycle": [
+      0.9644863786155213,
+      0.9820551936380547
+     ]
+    },
+    {
+     "scale": 0.0147261561098029,
+     "Y_held_over_kappa": 1.0008742180557506,
+     "status": "completed",
+     "per_cycle": [
+      0.9898088475166453,
+      1.0119395885948559
+     ]
+    }
+   ]
+  }
+ ]
+}

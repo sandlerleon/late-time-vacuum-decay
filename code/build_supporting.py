@@ -32,13 +32,15 @@ TR, TT = J("thermal_results.json"), J("thermal_tables.json")
 SM = J("interior_sim.json")
 DVJ, SCJ, HCJ = J("dilution_validation.json"), J("turnaround_scan.json"), J("hot_cycles.json")
 OSC, OSV = J("oscillation.json"), J("oscillation_validation.json")
+CRJ, CSCN, CAUJ, CSTJ, BVJ, RLJ, PRJ = (J("continuous_cycles.json"), J("cycle_scan.json"), J("causal_controls.json"), J("contraction_stability.json"), J("bounce_validation.json"), J("compact_relics.json"), J("predictions.json"))
+import cyc_blocks as CYB
 assert all(v["passed"] for v in V.values())
 GITHUB = "https://github.com/sandlerleon/late-time-vacuum-decay"
 DOI_PAPER, DOI_CODE = "10.5281/zenodo.23717617", "10.5281/zenodo.23717619"
 if os.path.exists(os.path.join(HERE, "dois.json")):
     _d = J("dois.json")
     DOI_PAPER, DOI_CODE = _d["paper"], _d["code"]
-TITLE = "A Cyclic Hot Big Bang Triggered by Matter Dilution: Metastable Dark Energy, Vacuum Release, Recollapse and Self-Similar Nonsingular Cycles"
+TITLE = "A Cyclic Hot Big Bang Triggered by Matter Dilution: Metastable Dark Energy, Vacuum Release, Recollapse and Nonsingular Cycles without Resets"
 BASE = MC["baseline"]
 A_, B_, G_, D_ = CV["A_flat_shooting"], CV["B_boundary_value"], CV["C_gravity_coefficient"], CV["D_negative_mode"]
 
@@ -72,6 +74,10 @@ DESC = {
     "V26_option_B_validation": "Option B: integrator agreement, bounce continuity, hysteresis law, 1000-cycle stability, effect of a transition",
     "V27_matter_held_vacuum": "Matter-held vacuum: ten validation checks, LambdaCDM past for every coupled model, control rolls before today at mu = 300 H0",
     "V28_hot_cycles": "Hot cycles: self-similar bounce and release temperatures and held e-folds, growth = entropy^(1/3), constraint; both controls fail",
+    "V29_continuous_cycles": "Continuous cycles without resets: >= 100 cycles each with dark matter regenerated, a matter era and a held epoch; growth = entropy^(1/3); the cold bounce fails",
+    "V30_causal_test": "Causal test: the frozen-matter intervention never recollapses; the diluting model recollapses for every q > 0",
+    "V31_stability_bounce_relics": "Shear scaling and ekpyrotic gain, bounce invariants and continuity, black-hole volume fraction below percolation",
+    "V32_cycle_fixed_point": "The cycle as an attracting fixed point of the bounce-to-bounce map, closed-form held epoch, results unchanged by the numerical devices",
 }
 S = []
 add = S.append
@@ -204,6 +210,31 @@ for r in HCJ["runs"]:
                      ("%.4g" % c["T_release"]) if c.get("T_release") else "--", ("%.2f" % c["G"]) if c.get("G") and pp["reset"] and pp["c_T"] > 0 else "--"])
 add(("table", "Table S15. Hot cycles, first four cycles of every run (cycle 0 starts today). Full per-cycle data in hot_cycles.csv.",
      ["Run", "cycle", "$T_{\\rm bounce}$", "peak matter", "held e-folds", "$T_{\\rm rel}$", "$G_n$"], rows, None))
+add(("h2", "S5.5 Continuous cycles, controls, stability, bounce and relics"))
+add(("p", "continuous_cycles.py integrates the cycle of Section 6.8 with state (ln a, H, phi, phi', T, N, integral of rho_r dt, pressure-volume work), in chunks of one doubling or halving "
+          "of the scale factor with the clock restarted in each chunk, absolute tolerances relative to each variable, DOP853 first with LSODA and Radau as fall-backs, the overdamped "
+          "reduction where Upsilon > 1e3 max(m_eff, H, mu) (%d chunks of the baseline run), and constraint projection of H away from the turning points (largest correction %s). "
+          "cycle_scan.py maps the outcome over dark-matter mass and bounce density; causal_controls.py, contraction_stability.py, bounce_validation.py, compact_relics.py and "
+          "predictions.py give Sections 6.9-6.14. numerics_admissibility.py repeats three baseline cycles with rtol 1e-10, an overdamped threshold of 1e4, projection at "
+          "every fourth chunk, and no projection; the first three agree with the baseline within the scatter between cycles, while the run without projection fails "
+          "(constraint residual growing without bound, evaluation budget exhausted), which is why projection is kept." % (CRJ.get("overdamped_chunks", 0), tx(CRJ["projections"]["max_rel"], 0))))
+rows = []
+for c in CRJ["cycles"]:
+    if c["n"] < 1 or "held_accelerated_efolds" not in c or (c["n"] > 20 and c["n"] % 10):
+        continue
+    rows.append([str(c["n"]), "%.4f" % c.get("phi_bounce_over_v", 0), "%.3f" % c.get("Y_fo_over_kappa", 0), "%.3f" % c.get("Y_held_over_kappa", 0), "%.3f" % c.get("max_matter_fraction", 0),
+                 "%.3f" % c["held_accelerated_efolds"], "%.4f" % c["lnG"] if c.get("lnG") else "--", "%.4f" % c["lnG_entropy"] if c.get("lnG_entropy") else "--"])
+add(("table", "Table S16. Continuous cycles (baseline), cycles 1-20 and every tenth cycle thereafter; all cycles in continuous_cycles.csv.",
+     ["cycle", "phi_b/v (end)", "Y_fo/kappa", "Y/kappa held", "peak matter", "held e-folds", "ln G", "(1/3) ln S ratio"], rows, None))
+rows = [[CYB.lab(r["params"]), r["classification"], ", ".join("%.2f" % x for x in (r.get("held") or [])[:5] if x is not None),
+         ", ".join("%.2g" % x for x in (r.get("Y") or [])[:5] if x is not None)] for r in sorted(CSCN["rows"], key=lambda r: str(r["params"]))]
+add(("table", "Table S17. Outcome of five continuous cycles per run (cycle_scan.py): held e-folds and Y/kappa of cycles 1-5.", ["Run", "Outcome", "held e-folds", "Y/kappa"], rows, None))
+rows = [["%g" % r["f0"], "%g" % r["rho_end_over_rho_c"], tx(max(r["s_max"], 1e-300), 1)] for r in CSTJ["onset_exit"]]
+add(("table", "Table S18. Ekpyrotic phase (c = 5): largest controlled initial anisotropy against the ekpyrotic fraction at the turnaround and the exit density.",
+     ["f0", "rho_end/rho_c", "s_max"], rows, None))
+rows = [[k, "%.3g" % v["T_MeV"]] for k, v in RLJ["percolation"].items()] + [["bounce", "%.3g" % RLJ["T_bounce_MeV"]]]
+add(("table", "Table S19. Percolation temperature of black-hole populations in the contraction (MeV), including the entropy growth of the cycle, and the bounce temperature of the baseline.",
+     ["Population", "T (MeV)"], rows, None))
 add(("h1", "S6. Monte Carlo specification"))
 add(("p", "Draws: $N=%d$, NumPy PCG64 generator, seed %d. $\\log_{10}\\lambda\\sim U(-2,\\log_{10}4\\pi)$; $\\eta\\sim U(0.03,0.38)$; $\\ln D\\sim N(0,(1.5\\ln10)^2)$; $r_L=1$. Each draw is converted to "
           "$\\ln\\Gamma/H^4$ with Eq. (7), to a decay time, and classified: above the survival bound if $\\Gamma/H_\\Lambda^4\\ge%.2f$ (Section S5); otherwise decaying by $10^{12}$, $10^{20}$, $10^{50}$ or $10^{100}$ yr, or "
@@ -267,13 +298,14 @@ title_plain = TITLE.replace("--", "–")
 para("I submit the manuscript “%s” as a Regular Article (Theoretical Physics) for consideration in The European Physical Journal C." % title_plain)
 HB = HCJ["runs"][0]["cycles"][1]
 GS = [c["G_from_entropy"] for c in HCJ["runs"][0]["cycles"][1:] if c.get("G_from_entropy")]
-para("The paper asks whether the present dark energy can end the cosmological expansion and start a new hot big bang, and answers in two parts. The direct route, tunneling of a metastable dark-energy "
-     "vacuum, fails for reasons that are quantified below. The paper then constructs a route that works within an explicit model: a scalar coupled to dark matter holds the vacuum at the observed "
-     "dark-energy density while the matter density is high, and the dilution of the matter releases it into a negative vacuum, so that the expansion turns around with a LambdaCDM past that an "
-     "uncoupled field cannot reproduce. With an effective loop-quantum-cosmology bounce, thermal dissipation in the hot contraction and the re-thermalization and freeze-out of dark matter, the "
-     "cycles are self-similar: every cycle has a radiation-dominated bounce, a matter era, a dark-energy epoch of %.1f e-folds and a release at the same temperature, while the entropy produced "
-     "enlarges the next cycle by exactly (S_n+1/S_n)^(1/3) = %.1f, as the second law requires. Removing the dissipation or the freeze-out destroys the cycles, and cooling cannot replace dilution as "
-     "the trigger. The model predicts w = -1 until the release, no fifth force today and a future recollapse, and it is bounded by the deepest cosmic voids." % (HB["held_accelerated_efolds"], float(np.median(GS))))
+para("The paper asks whether the present dark energy can end the cosmological expansion and start a new hot big bang. The direct route, tunneling of a metastable dark-energy vacuum, fails "
+     "for reasons that are quantified below. A vacuum held by dark matter and released by dilution does end the expansion: the turnaround follows an exact LambdaCDM past, and an intervention that "
+     "freezes the matter density seen by the field removes it, so dilution is its cause. This revision then removes every prescribed step from the cycle. With an effective bounce, thermal "
+     "dissipation and dark matter that obeys its own Boltzmann equation, %d consecutive cycles were integrated with no reset of any variable; each has a radiation-dominated bounce, a freeze-out "
+     "to the observed dark-matter ratio, a matter era, a dark-energy epoch and a turnaround, and the entropy produced enlarges the next cycle by (S_n+1/S_n)^(1/3). The revision also reports what "
+     "the earlier prescribed resets had hidden: a bounce too cold to re-thermalize the dark matter gives an empty next cycle. It adds the conditions on anisotropy (with and without an ekpyrotic "
+     "phase), an independent bounce mechanism, the black holes of the previous cycle (which bound the bounce temperature from above), a failure-mode map, and the observational consequences, "
+     "including the negative one that the cycle does not produce the observed primordial perturbations." % CYB.N_CYC)
 para("For the direct route the answer is negative. A scalar potential with an explicit metastable minimum is specified, the Coleman–De Luccia bounce is solved numerically in flat space and with Einstein gravity, and the action is converted to a "
      "nucleation rate with the measured dark-energy density as the false-vacuum energy. With all scales set by the dark energy the gravitational parameter is of order 10⁻⁶⁰, so gravity and the Hawking–Moss "
      "channel play no role and the decay is controlled by a single action, which must lie near %d for a transition on cosmological time scales. The survival of the present vacuum is evaluated on the Lorentzian past light "
@@ -291,7 +323,7 @@ para("The same region oscillating (Option B) is tested as well, with an effectiv
      "but a scalar excitation is amplified at every bounce, the turnaround radius follows the energy-balance law Delta a_max = W/3 with W the pressure-volume loop, the cycles are stable only when dissipation per cycle exceeds the logarithm of the amplification, "
      "and a vacuum transition during the cycles destabilises them. Cosmological hysteresis itself is known; the stability boundary, the law in this setting and the effect of a transition are what the paper adds.")
 para("I want to be clear about novelty here as well. The symmetron-type coupling, coupled dark matter, warm-inflation dissipation, thermal freeze-out, the effective bounce and Tolman's growing cycles are "
-     "established and cited. What the paper adds is their combination into a cycle that contains a hot big bang and an epoch like ours, the exact energy relation that fixes how much the dark-matter mass must "
+     "established and cited. What the paper adds is their combination into a cycle that contains a hot big bang and an epoch like ours, followed over 100 cycles without any reset, the exact energy relation that fixes how much the dark-matter mass must "
      "grow at the release, the comparison with an uncoupled control and with cooling as an alternative trigger, the tunneling branch in which dilution opens the survival window, and the identification of the "
      "ingredients without which the cycles fail. The result is a demonstration within a model, with its limits stated (effective bounce, a bounce density far below the Planck value, homogeneous dynamics), "
      "not a claim that the universe is cyclic.")
