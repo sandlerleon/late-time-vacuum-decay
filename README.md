@@ -56,6 +56,8 @@ cd ../manuscript && pdflatex EPJC_Dilution_Triggered_Cycles.tex && pdflatex EPJC
 Every number in the manuscript is read from the JSON files these scripts write. `numerics_admissibility.py reuse` keeps the stored no-projection run,
 which takes about an hour to fail.
 
+**Clean reproducibility check (2026-10-31).** A fresh clone in a new virtual environment (Python 3.11.9, NumPy 2.4.6, SciPy 1.17.1, Matplotlib 3.11.2, packages from `requirements.txt`) reran `dilution_background.py`, `independent_solver.py`, `relic_sensitivity.py`, `verify.py`, `paper1_build.py` and `paper1_supplement.py`: all 563 numbers in the regenerated JSON files are identical to the committed ones, every check passes, and the regenerated LaTeX manuscript is identical to the one in `manuscript/`.
+
 ## Provenance and the companion paper
 
 This repository began as a broader manuscript (versions up to v1.8.2, Zenodo 10.5281/zenodo.23823727 / 23823733) that also contained an analysis of
