@@ -267,7 +267,8 @@
   "fixed_point": 0.3756286120497493,
   "slope": -0.13584669702569763,
   "held_rms": 0.02020565180567417,
-  "admissibility_max_held_change": 0.003288833590715301
+  "admissibility_max_held_change": 0.003288833590715301,
+  "independent_solver_max_change": 0.004622059592835459
  },
  "V33_vacuum_phase": {
   "passed": true,

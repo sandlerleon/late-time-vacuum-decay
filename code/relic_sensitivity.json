@@ -1,0 +1,155 @@
+{
+ "T_bounce_MeV": 171.51519765296473,
+ "f_c_overlap": 0.34,
+ "rows": [
+  {
+   "variant": "baseline (E3)",
+   "f_V_bounce": 0.0004909715756974892,
+   "mass_growth": 2.244693913777812,
+   "seconds": 0.6869182586669922,
+   "T_perc_GeV_fc1": 2.17412157031566,
+   "T_perc_GeV_overlap": 1.5174351173894025
+  },
+  {
+   "variant": "stellar abundance x 1/3",
+   "f_V_bounce": 0.0004908323284726506,
+   "mass_growth": 2.1508737754652225,
+   "seconds": 0.7109179496765137,
+   "T_perc_GeV_fc1": 2.1743271474909474,
+   "T_perc_GeV_overlap": 1.5175786006377054
+  },
+  {
+   "variant": "stellar abundance x 3",
+   "f_V_bounce": 0.0004913893173720053,
+   "mass_growth": 2.282148767434463,
+   "seconds": 0.7451949119567871,
+   "T_perc_GeV_fc1": 2.1735053049352677,
+   "T_perc_GeV_overlap": 1.5170049929922174
+  },
+  {
+   "variant": "supermassive abundance x 1/3",
+   "f_V_bounce": 0.00016363445370987372,
+   "mass_growth": 2.2821487674346663,
+   "seconds": 0.6919174194335938,
+   "T_perc_GeV_fc1": 3.1357711331462625,
+   "T_perc_GeV_overlap": 2.188621511556614
+  },
+  {
+   "variant": "supermassive abundance x 3",
+   "f_V_bounce": 0.001484005370099469,
+   "mass_growth": 2.150873775464612,
+   "seconds": 0.37505316734313965,
+   "T_perc_GeV_fc1": 1.503687019210172,
+   "T_perc_GeV_overlap": 1.0495031739098297
+  },
+  {
+   "variant": "supermassive cut-off 1e9",
+   "f_V_bounce": 0.00018403733254894225,
+   "mass_growth": 2.241905046591458,
+   "seconds": 0.7132229804992676,
+   "T_perc_GeV_fc1": 3.0153238639301447,
+   "T_perc_GeV_overlap": 2.1045549540109576
+  },
+  {
+   "variant": "supermassive cut-off 2e10",
+   "f_V_bounce": 0.004714746373923786,
+   "mass_growth": 2.244594866276635,
+   "seconds": 0.3691706657409668,
+   "T_perc_GeV_fc1": 1.0228607089396102,
+   "T_perc_GeV_overlap": 0.7139089097567954
+  },
+  {
+   "variant": "supermassive centre 1e9",
+   "f_V_bounce": 0.0018020963939410163,
+   "mass_growth": 2.2513024076381343,
+   "seconds": 0.5620954036712646,
+   "T_perc_GeV_fc1": 1.409429213402194,
+   "T_perc_GeV_overlap": 0.9837156362790199
+  },
+  {
+   "variant": "accretion x 0.1",
+   "f_V_bounce": 0.0002092704307986911,
+   "mass_growth": 1.105888928857517,
+   "seconds": 0.5730957984924316,
+   "T_perc_GeV_fc1": 2.8889053867348284,
+   "T_perc_GeV_overlap": 2.016320772720345
+  },
+  {
+   "variant": "accretion x 2",
+   "f_V_bounce": 0.0010048806845609215,
+   "mass_growth": 3.516842213219033,
+   "seconds": 0.5700960159301758,
+   "T_perc_GeV_fc1": 1.712370649563096,
+   "T_perc_GeV_overlap": 1.1951545824811818
+  },
+  {
+   "variant": "accretion x 3",
+   "f_V_bounce": 0.003109069669340819,
+   "mass_growth": 4.8828132661067105,
+   "seconds": 0.5558202266693115,
+   "T_perc_GeV_fc1": 1.1751477050969816,
+   "T_perc_GeV_overlap": 0.8201981067575818
+  },
+  {
+   "variant": "accretion x 10",
+   "f_V_bounce": 217.81633833551913,
+   "mass_growth": 16.16372948735466,
+   "seconds": 0.3654782772064209,
+   "T_perc_GeV_fc1": 0.02850618660941792,
+   "T_perc_GeV_overlap": 0.01989598429755974
+  },
+  {
+   "variant": "no accretion, no mergers (E2)",
+   "f_V_bounce": 0.0001866099658559771,
+   "mass_growth": 1.0000000000000002,
+   "seconds": 0.020127534866333008,
+   "T_perc_GeV_fc1": 3.0014031246586046,
+   "T_perc_GeV_overlap": 2.0948389294247205
+  },
+  {
+   "variant": "no mergers",
+   "f_V_bounce": 0.0004907627048464905,
+   "mass_growth": 2.2446939137780633,
+   "seconds": 0.049001455307006836,
+   "T_perc_GeV_fc1": 2.174429965261906,
+   "T_perc_GeV_overlap": 1.5176503626304452
+  }
+ ],
+ "T_perc_min_GeV": 0.01989598429755974,
+ "T_perc_max_GeV": 3.1357711331462625,
+ "physical_accretion_range_GeV": [
+  0.7139089097567954,
+  3.1357711331462625
+ ],
+ "clustered_overlap_GeV": {
+  "10.0": 0.6823060709149402,
+  "100.0": 0.3258389562758266
+ },
+ "held_viability": {
+  "baseline estimate": {
+   "T_perc_GeV": 2.17412157031566,
+   "joint": 0.0676,
+   "window": 0.660585
+  },
+  "overlap threshold": {
+   "T_perc_GeV": 1.5174351173894025,
+   "joint": 0.05698,
+   "window": 0.621485
+  },
+  "lowest population variant, overlap": {
+   "T_perc_GeV": 0.7139089097567954,
+   "joint": 0.039085,
+   "window": 0.53973
+  },
+  "region overdense by 100, overlap": {
+   "T_perc_GeV": 0.3258389562758266,
+   "joint": 0.024805,
+   "window": 0.454335
+  },
+  "accretion x 10, overlap": {
+   "T_perc_GeV": 0.01989598429755974,
+   "joint": 0.00198,
+   "window": 0.149365
+  }
+ }
+}

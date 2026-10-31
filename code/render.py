@@ -244,10 +244,27 @@ def tex_inline(text):
     return "".join(out)
 
 
+def _tex_text(t):
+    r"""tex_inline with URLs as \url{} so that long links can break at the line end."""
+    parts = re.split(r"(https?://\S+)", t)
+    return "".join((r"\url{%s}" % q.rstrip(".;,)")) + q[len(q.rstrip(".;,)")):] if q.startswith("http") else tex_inline(q) for q in parts)
+
+
+def _tex_eq(e):
+    r"""Long displays with several \qquad-separated parts are set on two lines (one equation number)."""
+    import re as _re
+    parts = [q.strip().rstrip(",") for q in _re.split(r",?\\qquad", e)]
+    if len(e) < 150 or len(parts) < 3:
+        return r"\begin{equation}" + "\n" + e + "\n" + r"\end{equation}"
+    h = (len(parts) + 1) // 2
+    return (r"\begin{equation}\begin{gathered}" + "\n" + r",\qquad ".join(parts[:h]) + r",\\" + "\n" + r",\qquad ".join(parts[h:]) + "\n"
+            + r"\end{gathered}\end{equation}")
+
+
 def render_tex(blocks, path, fig_dir_rel="../figures"):
     L = [r"\documentclass[11pt,a4paper]{article}", r"\usepackage[utf8]{inputenc}", r"\usepackage[T1]{fontenc}", r"\usepackage{amsmath,amssymb}",
-         r"\usepackage{graphicx,booktabs,array,longtable}", r"\usepackage[margin=2.5cm]{geometry}", r"\usepackage{hyperref}", r"\usepackage{setspace}",
-         r"\onehalfspacing", r"\setlength{\parskip}{0.4em}", r"\setlength{\parindent}{0pt}", ""]
+         r"\usepackage{graphicx,booktabs,array,longtable}", r"\usepackage[margin=2.5cm]{geometry}", r"\usepackage{hyperref}", r"\usepackage{xurl}", r"\usepackage{setspace}",
+         r"\emergencystretch=3em", r"\sloppy", r"\onehalfspacing", r"\setlength{\parskip}{0.4em}", r"\setlength{\parindent}{0pt}", ""]
     fignum, tabnum = 0, 0
     body = []
     title, author = "", ""
@@ -269,15 +286,15 @@ def render_tex(blocks, path, fig_dir_rel="../figures"):
             txt = re.sub(r"^\d+\.\d+\s*", "", b[1])
             body.append(r"\subsection{%s}" % tex_inline(txt))
         elif k == "p":
-            body.append(tex_inline(b[1]) + "\n")
+            body.append(_tex_text(b[1]) + "\n")
         elif k == "pb":
-            body.append(r"\noindent\textbf{" + tex_inline(b[1]) + "} " + tex_inline(b[2]) + "\n")
+            body.append(r"\noindent\textbf{" + tex_inline(b[1]) + "} " + _tex_text(b[2]) + "\n")
         elif k == "note":
             body.append(r"\emph{" + tex_inline(b[1]) + "}\n")
         elif k == "bullets":
             body.append(r"\begin{itemize}" + "".join(r"\item " + tex_inline(t) + "\n" for t in b[1]) + r"\end{itemize}")
         elif k == "eq":
-            body.append(r"\begin{equation}" + "\n" + b[1] + "\n" + r"\end{equation}")
+            body.append(_tex_eq(b[1]))
         elif k == "fig":
             fignum += 1
             wfrac = min(1.0, (b[3] if len(b) > 3 else 6.3) / 6.3)
@@ -286,9 +303,9 @@ def render_tex(blocks, path, fig_dir_rel="../figures"):
             tabnum += 1
             header, rows = b[2], b[3]
             n_c = len(header)
-            plain = lambda t: re.sub(r"[$\\{}^_]", "", str(t))
+            plain = lambda t: re.sub(r"[$\\{}^_]", "", re.sub(r"\\times10\^\{?(-?\d+)\}?", r"e\1", str(t)))    # 6\times10^{-6} counts as 6e-6
             lens = [min(60, max([len(plain(header[j]))] + [len(plain(r_[j])) for r_ in rows])) for j in range(n_c)]
-            wide = max(sum(min(60, len(plain(r_[j]))) for j in range(n_c)) for r_ in rows) > 95
+            wide = max(sum(len(plain(r_[j])) for j in range(n_c)) for r_ in rows) > 85
             if wide:
                 tot = float(sum(lens))
                 fr = [max(0.09, l_ / tot) for l_ in lens]
@@ -296,14 +313,16 @@ def render_tex(blocks, path, fig_dir_rel="../figures"):
                 col = "".join(r">{\raggedright\arraybackslash}p{%.3f\dimexpr\textwidth-%d\tabcolsep\relax}" % (f_ / z, 2 * n_c) for f_ in fr)
             else:
                 col = "l" * n_c
-            tb = [r"\begin{table}[htbp]\centering\small", r"\caption{%s}" % tex_inline(re.sub(r"^Table\s*\d+\.\s*", "", b[1])), r"\begin{tabular}{%s}" % col, r"\toprule",
+            tb = [r"\begin{table}[htbp]\centering" + (r"\footnotesize\setlength{\tabcolsep}{3pt}" if n_c >= 8 else r"\small"), r"\caption{%s}" % tex_inline(re.sub(r"^Table\s*\d+\.\s*", "", b[1])), r"\begin{tabular}{%s}" % col, r"\toprule",
                   " & ".join(tex_inline(h) for h in header) + r" \\ \midrule"]
             for r_ in rows:
                 tb.append(" & ".join(tex_inline(str(v)) for v in r_) + r" \\")
             tb += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
             body.append("\n".join(tb))
         elif k == "ref":
-            body.append(r"\noindent\hangindent=1.5em " + tex_inline(b[1]) + r"\par")
+            parts = re.split(r"(https?://\S+)", b[1])          # URLs as \url{} so that they can break at the line end
+            body.append(r"\noindent\hangindent=1.5em " + "".join((r"\url{%s}" % p.rstrip(".")) + ("." if p.endswith(".") else "")
+                                                                  if p.startswith("http") else tex_inline(p) for p in parts) + r"\par")
     L += [r"\title{" + title + "}", r"\author{" + author + "}", r"\date{}", r"\begin{document}", r"\maketitle", ""]
     L += body
     L += [r"\end{document}"]

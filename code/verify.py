@@ -326,10 +326,15 @@ he = CMJ["held"]
 proj = [r for r in NAJ["rows"] if r["variant"] != "no projection"]
 na_ok = all(r["classification"] == "working" for r in proj)
 na_dev = max(r["max_rel_change_vs_baseline"].get("held_accelerated_efolds", 0) for r in proj if r["variant"] != "baseline")
+# independent constraint-preserving solver (independent_solver.py): every setting completes three working cycles and agrees with the projected run
+ISJ = json.load(open(os.path.join(HERE, "independent_solver.json"), encoding="utf-8"))
+cons = [r for r in ISJ["rows"] if r["settings"].get("gravity") == "constrained"]
+is_dev = max(max(r["max_rel_change_vs_projected"].get(k, 1.0) for k in ("ln_a_max", "held_accelerated_efolds", "lnG")) for r in cons) if cons else 1.0
+is_ok = bool(cons) and all(r["classification"] == "working" for r in cons) and is_dev < 0.02
 ok32 = (mp["all_working"] and abs(mp["slope_at_fixed_point"]) < 1 and abs(CMJ["map"]["55000000000.0"]["slope_at_fixed_point"]) < 1
-        and he["rms_error"] < 0.1 and he["n_points"] >= 50 and na_ok and na_dev < 0.1)
+        and he["rms_error"] < 0.1 and he["n_points"] >= 50 and na_ok and na_dev < 0.1 and is_ok)
 rec("V32_cycle_fixed_point", ok32, fixed_point=mp["fixed_point"], slope=mp["slope_at_fixed_point"], held_rms=he["rms_error"],
-    admissibility_max_held_change=na_dev)
+    admissibility_max_held_change=na_dev, independent_solver_max_change=is_dev)
 # V33-V35: density-dependent vacuum interfaces (Section 7)
 PMJ = json.load(open(os.path.join(HERE, "vacuum_phase_map.json"), encoding="utf-8"))
 WWJ = json.load(open(os.path.join(HERE, "vacuum_wall.json"), encoding="utf-8"))

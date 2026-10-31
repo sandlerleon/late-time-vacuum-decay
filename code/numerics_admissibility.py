@@ -7,7 +7,8 @@ chunk -> never). A result that changes beyond the scatter between cycles under t
 Without projection a constraint violation is conserved and acts like a cosmological constant (Section 6.6), so that run also measures how large the
 spurious term becomes.
 
-    python numerics_admissibility.py      (writes numerics_admissibility.json)
+    python numerics_admissibility.py           (writes numerics_admissibility.json)
+    python numerics_admissibility.py reuse     (keeps the stored no-projection row, which takes about an hour to fail)
 """
 import json
 import os
@@ -21,7 +22,7 @@ import continuous_cycles as CC
 HERE = os.path.dirname(os.path.abspath(__file__))
 VARIANTS = [("baseline", {}), ("rtol 1e-10", dict(rtol=1e-10)), ("overdamped threshold 1e4", dict(od_ratio=1e4)),
             ("projection every 4th chunk", dict(proj_every=4)), ("no projection", dict(proj_every=10 ** 9))]
-KEYS = ("held_accelerated_efolds", "Y_held_over_kappa", "Y_fo_over_kappa", "max_matter_fraction", "lnG", "phi_bounce_over_v", "bounce_x", "T_bounce", "T_release")
+KEYS = ("ln_a_max", "t_cycle", "held_accelerated_efolds", "Y_held_over_kappa", "Y_fo_over_kappa", "max_matter_fraction", "lnG", "phi_bounce_over_v", "bounce_x", "T_bounce", "T_release")
 
 
 def job(item):
@@ -33,9 +34,15 @@ def job(item):
 
 
 if __name__ == "__main__":
+    import sys
     t0 = time.time()
-    with Pool(5) as pool:
-        rows = pool.map(job, VARIANTS)
+    reuse = len(sys.argv) > 1 and sys.argv[1] == "reuse"
+    old = json.load(open(os.path.join(HERE, "numerics_admissibility.json"), encoding="utf-8")) if reuse else None
+    todo = [v for v in VARIANTS if not (reuse and v[0] == "no projection")]
+    with Pool(len(todo)) as pool:
+        rows = pool.map(job, todo)
+    if reuse:
+        rows += [r for r in old["rows"] if r["variant"] == "no projection"]
     base = rows[0]
     for r in rows:
         dev = {}

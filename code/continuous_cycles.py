@@ -159,6 +159,9 @@ def make(P, aux):
 
     def rhs(t, y):
         c = parts(y)
+        if aux.get("cons"):                         # constrained formulation: H from the Friedmann constraint, not from y[1]
+            y = np.array(y, dtype=float)
+            y[1] = aux["s"] * np.sqrt(max(constraint(P, c), 0.0))
         if aux["od"]:
             y = np.array(y, dtype=float)
             y[3] = slaved_pi(y, c)
@@ -194,7 +197,7 @@ class _Failed:
     message = "evaluation budget exceeded"
 
 
-def _solve(rhs, dt, y, method, rtol, atol, ms, budget=400000):
+def _solve(rhs, dt, y, method, rtol, atol, ms, budget=400000, events=None):
     """solve_ivp with a cap on right-hand-side evaluations (a stalled chunk is reported as a failure and retried by the caller)."""
     cnt = [0]
 
@@ -204,7 +207,7 @@ def _solve(rhs, dt, y, method, rtol, atol, ms, budget=400000):
             raise _Budget()
         return rhs(t, yy)
     try:
-        return solve_ivp(f, (0.0, dt), y, method=method, rtol=rtol, atol=atol, max_step=ms)
+        return solve_ivp(f, (0.0, dt), y, method=method, rtol=rtol, atol=atol, max_step=ms, events=events)
     except (_Budget, ValueError, np.linalg.LinAlgError):
         return _Failed()
 
@@ -214,12 +217,16 @@ def constraint(P, c):
 
 
 def run(P, n_cycles=6, rtol=1e-8, verbose=False, wall=None, keep_history=True, floor=False, trace=None, y0=None, aux0=None,
-        od_ratio=1e3, proj_every=1):
+        od_ratio=1e3, proj_every=1, gravity="projected", near=0.05):
     """floor=True: the field is not allowed below the de Sitter fluctuation amplitude H/(2 pi) (physical units) once the vacuum is tachyonic.
     The default is the deterministic classical evolution with no floor.
     y0, aux0: start from a given state just after a bounce (cycle_map.py) instead of today.
     od_ratio: the overdamped reduction is used where Upsilon > od_ratio max(m_eff, H, mu); proj_every: project H onto the constraint at every
-    proj_every-th chunk (numerical-admissibility tests, numerics_admissibility.py)."""
+    proj_every-th chunk (numerical-admissibility tests, numerics_admissibility.py).
+    gravity='constrained': an independent formulation of the gravitational equations (independent_solver.py). Away from the turning points H is not
+    a variable but is computed from the constraint, H = s sqrt(rho(1 - rho/rho_c)/3), so the constraint holds identically and nothing is projected;
+    where H^2 falls below (near x natural rate)^2, i.e. close to a turnaround or bounce, H is evolved with the Raychaudhuri equation (the square root
+    has no information about the sign change there). The constraint mismatch accumulated across each such bridge is recorded in 'projections'."""
     aux = dict(Sigma=0.0, g=0.0, od=False)
     rhs, parts = make(P, aux)
     od_chunks = 0
@@ -261,7 +268,31 @@ def run(P, n_cycles=6, rtol=1e-8, verbose=False, wall=None, keep_history=True, f
         if P.bounce == "ghost":
             far = far and abs(c["rg"]) < 0.25 * (rho - c["rg"])
         chunk_no += 1
-        if far and chunk_no % proj_every == 0:
+        cons_events = None
+        if gravity == "constrained":
+            scale0 = np.sqrt(max(abs(c["rho_th"]) + c["K"] + abs(c["V"]) + c["rs"], 1e-12) / 3.0)
+            ok = rho < 0.3 * P.rho_c and hc2 > 0                      # below the bounce event at 0.4 rho_c (hysteresis)
+            if aux.get("cons"):
+                aux["cons"] = ok and hc2 > (1.5 * near * scale0) ** 2      # a chunk that ended at the event threshold hands over to the bridge
+            else:
+                aux["cons"] = ok and hc2 > (2 * near * scale0) ** 2
+                if aux["cons"]:                       # leaving a Raychaudhuri bridge: record the constraint mismatch accumulated across it
+                    proj["n"] += 1
+                    proj["max_rel"] = max(proj["max_rel"], abs(abs(y[1]) / np.sqrt(hc2) - 1))
+            if aux["cons"]:
+                aux["s"] = 1.0 if y[1] >= 0 else -1.0
+                y[1] = aux["s"] * np.sqrt(hc2)
+
+                def ev(t, yy):                        # H^2 falls below (near x the current natural rate)^2: hand over to the Raychaudhuri bridge
+                    cc = parts(yy)
+                    return constraint(P, cc) - near ** 2 * (abs(cc["rho_th"]) + cc["K"] + abs(cc["V"]) + cc["rs"]) / 3.0
+
+                def ev_bounce(t, yy):                 # approach of the bounce density
+                    return 0.4 * P.rho_c - parts(yy)["rho"]
+                ev.terminal, ev.direction = True, -1
+                ev_bounce.terminal, ev_bounce.direction = True, -1
+                cons_events = [ev, ev_bounce]
+        elif far and chunk_no % proj_every == 0:
             proj["n"] += 1
             proj["max_rel"] = max(proj["max_rel"], abs(abs(y[1]) / np.sqrt(hc2) - 1))
             y[1] = np.sign(y[1]) * np.sqrt(hc2)
@@ -292,19 +323,22 @@ def run(P, n_cycles=6, rtol=1e-8, verbose=False, wall=None, keep_history=True, f
             status = "non-finite state"
             break
         # explicit DOP853 first on a small evaluation budget (most chunks are not stiff); LSODA, Radau and shorter chunks as fall-backs
-        sol = _solve(rhs, dt, y, "DOP853", rtol, atol, ms, budget=30000)
+        sol = _solve(rhs, dt, y, "DOP853", rtol, atol, ms, budget=30000, events=cons_events)
         if not sol.success:
-            sol = _solve(rhs, dt, y, "LSODA", rtol, atol, ms)
+            sol = _solve(rhs, dt, y, "LSODA", rtol, atol, ms, events=cons_events)
         tries = 0
         while not sol.success and tries < 8:                  # LSODA occasionally fails or stalls: retry with Radau, then shorter chunks
             tries += 1
             dt_try = dt * 0.5 ** ((tries + 1) // 2)
-            sol = _solve(rhs, dt_try, y, "Radau" if tries % 2 else "LSODA", rtol, atol, ms)
+            sol = _solve(rhs, dt_try, y, "Radau" if tries % 2 else "LSODA", rtol, atol, ms, events=cons_events)
             retries += 1
         if not sol.success:
             status = "integration failed: " + sol.message
             break
         Y = sol.y
+        if aux.get("cons"):
+            for i in range(Y.shape[1]):
+                Y[1, i] = aux["s"] * np.sqrt(max(constraint(P, parts(Y[:, i])), 0.0))
         if aux["od"]:
             for i in range(Y.shape[1]):
                 Y[3, i] = rhs.slaved_pi(Y[:, i], parts(Y[:, i]))

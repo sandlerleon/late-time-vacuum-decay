@@ -45,13 +45,13 @@ def population(lgM, omega=(1e-4, 7.6e-6), centre=(1.0, 8.0), width=(0.5, 1.0), c
     return om
 
 
-def evolve(hist, experiment="E3", n_bins=120, lg_range=(-1.0, 13.0), merge=True):
+def evolve(hist, experiment="E3", n_bins=120, lg_range=(-1.0, 13.0), merge=True, pop=None, k_acc=K_ACC):
     """hist: rows [ln a, t, H, T, ...] of the contracting branch (from today's epoch on), in order of time."""
     lg = np.linspace(lg_range[0], lg_range[1], n_bins)
     M = 10.0 ** lg
     if experiment == "E1":
         return dict(experiment="E1", f_V_bounce=0.0, f_V_max=0.0)
-    om = population(lg)
+    om = population(lg, **(pop or {}))
     # comoving number per bin (in units of rho_c0 / M_sun per unit comoving volume): N_i = Omega_i / M_i
     N = om / M
     la = np.array([h[0] for h in hist]); t = np.array([h[1] for h in hist]); H = np.array([h[2] for h in hist]); T = np.array([h[3] for h in hist])
@@ -69,7 +69,7 @@ def evolve(hist, experiment="E3", n_bins=120, lg_range=(-1.0, 13.0), merge=True)
             # accretion along characteristics, capped at the horizon mass
             MH = MH_COEF / max(abs(H[k]), np.sqrt(rho_th[k] / 3.0))
             dJ = J[k] - J[k - 1]
-            inv = 1.0 / M - K_ACC * dJ
+            inv = 1.0 / M - k_acc * dJ
             Mn = np.where(inv > 1.0 / MH, 1.0 / np.maximum(inv, 1e-300), np.maximum(M, MH))
             M = np.minimum(np.maximum(Mn, M), np.maximum(MH, M))
             if merge:
