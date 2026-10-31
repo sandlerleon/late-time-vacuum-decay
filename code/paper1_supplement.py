@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Supplementary information for Paper 1 (EPJ C).   python paper1_supplement.py   (after paper1_build.py)"""
+"""Supplementary information (Online Resource 1) for Paper 1 (General Relativity and Gravitation).   python paper1_supplement.py   (after paper1_build.py)"""
 import json
 import os
 import platform
@@ -27,7 +27,8 @@ tx = lambda x, d=1: CYB.texsci(x, d).join("$$")
 S = []
 add = S.append
 add(("title", "Supplementary Information: " + P1.TITLE))
-add(("author", "Leon Sandler\nIndependent Researcher, Northbrook, Illinois, USA"))
+add(("author", "Online Resource 1 for a manuscript submitted to General Relativity and Gravitation\nLeon Sandler, Independent Researcher, Northbrook, "
+               "Illinois, USA\nCorresponding author: sandler.leon@gmail.com"))
 add(("h1", "S1. Overview"))
 add(("p", "This supplement documents the numerical methods, the validation tables and the reproduction commands for the paper. Every number quoted in the "
           "paper is read from the JSON files produced by the scripts named here, and the manuscript is built only if the checks of Table S8 pass."))

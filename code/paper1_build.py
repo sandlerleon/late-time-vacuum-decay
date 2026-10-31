@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-"""Paper 1 (EPJ C): matter-dilution-triggered recollapse and conditional nonsingular cycles in a metastable dark-energy model.
+"""Paper 1 (General Relativity and Gravitation; first prepared for EPJ C): matter-dilution-triggered recollapse and conditional nonsingular cycles in a metastable dark-energy model.
 
 The homogeneous mechanism only: the matter-held vacuum, its release and the turnaround, the contraction and the effective bounce, reheating, dark
 matter and repeated cycles, numerical validation and viability, observational constraints. Localized tunneling and vacuum interfaces are the subject
 of the companion paper (Physics of the Dark Universe) and are mentioned only as a distinct extension.
 
-    python paper1_build.py        -> manuscript/EPJC_Dilution_Triggered_Cycles.{docx,tex}, supplement, cover letter (after verify.py)
+    python paper1_build.py        -> manuscript/GRG_Dilution_Triggered_Cycles.{docx,tex}, supplement, cover letter (after verify.py)
 """
 import datetime
 import json
@@ -57,22 +57,22 @@ add = B.append
 # ============================================================================================ front matter
 ABSTRACT = (
     "Can the dilution of matter end the cosmological expansion and start a new hot phase? We study a scalar field coupled to dark matter through "
-    "$A(\\varphi)=1+\\varphi^2/2M^2$, which holds a vacuum with the observed dark-energy density while the dark-matter density exceeds a critical value and "
-    "releases it into a negative vacuum once the expansion has diluted the matter. While the field is held, the homogeneous background reproduces "
-    "$\\Lambda$CDM to numerical accuracy ($w=-1$); after the release the expansion turns around tens of Gyr later. An intervention that freezes the density seen by the field keeps all %d coupled models of a "
-    "parameter grid expanding forever, whereas the uncoupled field with the same potential rolls before today for $\\mu\\ge%.0fH_0$. With an effective "
-    "loop-quantum-cosmology bounce, dissipation $\\Upsilon\\propto T^3$ and dark matter that obeys its own Boltzmann equation with a field-dependent mass, %d "
-    "consecutive cycles are integrated without resetting any variable. Each has a radiation-dominated bounce, freeze-out to the observed abundance, a matter "
-    "era, a held dark-energy epoch of $%s$ e-folds, a release and a turnaround, and the repeating cycle is an attracting fixed point of the bounce-to-bounce "
-    "map. The cycle requires a bounce that rethermalizes the dark matter but stays below the percolation of the previous cycle's black holes, dissipation, "
-    "inherited rather than regenerated shear and a coherent seed for the release; over stated parameter ranges these hold together in %.1f%% of draws. The "
-    "cycle does not produce the observed primordial perturbations ($n_s\\approx3$), so the results are conditional background solutions, not an "
-    "observationally complete cosmology."
-    % (SUM["runs"], DIL.CTRL_BEFORE[0], N_CYC, pm(HELD), 100 * HM["joint"]))
+    "$A(\\varphi)=1+\\varphi^2/2M^2$. The coupling holds a vacuum with the observed dark-energy density while the dark-matter density exceeds a critical "
+    "value, and releases it into a negative vacuum once the expansion has diluted the matter. While the field is held, the homogeneous background "
+    "reproduces the standard cosmological model to numerical accuracy; after the release the expansion turns around tens of "
+    "billions of years later. Freezing the density seen by the field keeps all %d coupled models of a parameter grid expanding forever, whereas "
+    "the uncoupled field rolls before today over most of the grid. With an assumed effective bounce, thermal dissipation and dark matter that obeys its "
+    "own Boltzmann equation with a field-dependent mass, %d consecutive cycles are integrated without resetting any variable. Each has a radiation-dominated bounce, freeze-out "
+    "to the observed abundance, a matter era, a held dark-energy epoch of $%s$ e-folds, a release and a turnaround; the repeating cycle is an attracting "
+    "fixed point of the bounce-to-bounce map, and an independent constraint-preserving solver reproduces it. The cycle requires a bounce hot enough to "
+    "rethermalize the dark matter but below the percolation of black holes, dissipation, inherited rather than regenerated anisotropy and a coherent "
+    "seed for the release. It does not produce the observed primordial perturbations (its scalar spectral index is near 3), so these are conditional "
+    "background solutions, not an observationally complete cosmology."
+    % (SUM["runs"], N_CYC, pm(HELD)))
 add(("title", TITLE))
-add(("author", "Leon Sandler\nIndependent Researcher, Northbrook, Illinois, USA\nsandler.leon@gmail.com   ·   ORCID 0009-0007-4584-808X"))
+add(("author", "Leon Sandler\nIndependent Researcher, Northbrook, Illinois, USA\nCorresponding author: sandler.leon@gmail.com   ·   ORCID 0009-0007-4584-808X"))
 add(("abstract", ABSTRACT))
-add(("keywords", "cyclic cosmology; nonsingular bounce; dark energy; coupled dark matter; symmetron; recollapse; Boltzmann equation; dissipation; anisotropy"))
+add(("keywords", "Cyclic cosmology; Nonsingular bounce; Dark energy; Coupled dark matter; Symmetron; Cosmological recollapse"))
 
 # ============================================================================================ 1 introduction
 add(("h1", "1. Introduction"))
@@ -481,7 +481,9 @@ add(("p", "The cycle is integrated with the state $(\\ln a, H, \\varphi, \\dot\\
           "absolute clock cannot resolve it. Absolute tolerances are set relative to each variable, an eighth-order Runge--Kutta method is tried first with "
           "LSODA and Radau as fall-backs, the overdamped reduction is used where $\\Upsilon>10^3\\max(m_{\\rm eff},H,\\mu)$ (%d chunks of the baseline run), and "
           "the constraint is projected away from the turning points (largest correction %s). The Maxwell--Boltzmann integrals use the asymptotic series of the "
-          "Bessel functions for $x>100$, where the library functions lose precision, and the heat capacity of the gas is computed analytically."
+          "Bessel functions for $x>100$, where the library functions lose precision, and the heat capacity of the gas is computed analytically. A large "
+          "language model (Claude, Anthropic) was used to assist with the design of the numerical analysis, the code, literature checking and drafting; "
+          "the author checked every derivation, reran every computation and takes full responsibility for the content."
           % (CR.get("overdamped_chunks", 0), sci(CR["projections"]["max_rel"], 0))))
 others = [r for r in NA["rows"] if r["variant"] != "baseline"]
 worst = lambda r, k: r["max_rel_change_vs_baseline"].get(k, float("nan"))
@@ -687,22 +689,25 @@ add(("p", "Three extensions would test the framework further: a derivation of th
           "contracting ekpyrotic phase. Each can falsify the model as it stands."))
 
 # ============================================================================================ declarations and references
-add(("h1", "Declarations"))
-add(("pb", "Funding.", "This research received no specific grant from funding agencies in the public, commercial, or not-for-profit sectors."))
-add(("pb", "Conflict of interest.", "The author declares no competing interests."))
-add(("pb", "Data availability.", "The data underlying every figure and table are in the repository listed below, as JSON and CSV files written by the scripts "
-        "named in the text."))
+add(("h1", "Statements and Declarations"))
+add(("pb", "Funding.", "No funding was received for conducting this study."))
+add(("pb", "Competing interests.", "The author has no relevant financial or non-financial interests to disclose."))
+add(("pb", "Author contributions.", "Leon Sandler is the sole author: conceptualization, methodology, software, formal analysis, investigation, and "
+        "writing of the original draft and its revisions."))
+add(("pb", "Data availability.", "The data underlying every figure and table are openly available as JSON and CSV files, written by the scripts named in "
+        "the text, in the repository and archive listed under Code availability. Supplementary tables are in Online Resource 1."))
 add(("pb", "Code availability.", "All code (Python, NumPy, SciPy, Matplotlib \\cite{NumPy,SciPy}) is at %s (MIT license) and archived at https://doi.org/%s; "
         "this manuscript is archived at https://doi.org/%s. Running the scripts in the order given in the README regenerates every number, table and figure."
         % (GITHUB, DOI_CODE, DOI_PAPER)))
 add(("pb", "Related manuscript.", "A companion manuscript on density-dependent vacuum bubble nucleation in the same class of matter-coupled models is "
-        "in preparation for separate submission to Physics of the Dark Universe%s; it shares the class of models but none of the results reported here."
+        "in preparation for separate submission to Physics of the Dark Universe%s. It addresses a different question (whether localized vacuum decay "
+        "can be triggered by dark-matter dilution, and what the walls do) and shares the class of models but none of the results reported here."
         % ((", archived at https://doi.org/%s" % COMPANION_DOI) if COMPANION_DOI else "")))
-add(("pb", "Use of generative AI.", "During the preparation of this work, the author used Claude (Anthropic) to assist with the design of the numerical "
-        "analysis, code, literature checking and drafting. The author reviewed and edited all content and takes full responsibility for it."))
+add(("pb", "Use of a large language model.", "Documented in Section 6.1; the author takes full responsibility for the content."))
+REFS["KT90"] = "E.W. Kolb, M.S. Turner, The Early Universe. Addison-Wesley, Redwood City (1990)"
 if COMPANION_DOI:
-    REFS["Companion"] = ("L. Sandler, Density-dependent vacuum bubble nucleation in matter-coupled dark-sector cosmology: wall dynamics, transmission and "
-                         "gravitational viability. Preprint, Zenodo (2026). https://doi.org/%s" % COMPANION_DOI)
+    REFS["Companion"] = ("L. Sandler, Density-dependent vacuum bubble nucleation in matter-coupled dark-sector cosmology: dark-matter granularity, "
+                         "wall dynamics and transmission. Preprint, Zenodo (2026). https://doi.org/%s" % COMPANION_DOI)
 add(("h1", "References"))
 
 # number citations in order of first appearance
@@ -725,8 +730,38 @@ if undefined:
     sys.exit("undefined citation keys %s" % undefined)
 numbering = {k: i + 1 for i, k in enumerate(order)}
 rep = lambda s: re.sub(r"\\cite\{([^}]+)\}", lambda m: "[" + ", ".join(str(numbering[x]) for x in m.group(1).split(",")) + "]", s)
+AUTH = re.compile(r"^(?:(?:[A-Z][a-z]?\.(?:-?[A-Z][a-z]?\.)*\s?)+[A-Z][\w'\u2019\-]+(?: [A-Z][\w'\u2019\-]+)?(?: et al\.)?|[A-Za-z0-9 ]+ Collaboration)$")
+
+
+def springer_ref(t):
+    """'R.C. Tolman, P. Singh, Title. Journal ...' -> 'Tolman, R.C., Singh, P.: Title. Journal ...' (Springer basic style); unchanged if the author
+    list cannot be identified."""
+    parts = t.split(", ")
+    auth = []
+    for seg in parts:
+        if AUTH.match(seg) and len(auth) < 40:
+            auth.append(seg)
+        else:
+            break
+    if not auth or len(auth) == len(parts):
+        return t
+    rest = ", ".join(parts[len(auth):])
+    out = []
+    for a_ in auth:
+        etal = a_.endswith(" et al.")
+        a_ = a_[:-7] if etal else a_
+        if a_.endswith("Collaboration"):
+            out.append(a_)
+        else:
+            m = re.match(r"^((?:[A-Z][a-z]?\.(?:-?[A-Z][a-z]?\.)*\s?)+)(.+)$", a_)
+            out.append("%s, %s" % (m.group(2).strip(), m.group(1).strip()))
+        if etal:
+            out.append("et al.")
+    return ", ".join(out) + ": " + rest.replace("--", "\u2013")
+
+
 for k in order:
-    add(("ref", "[%d] %s" % (numbering[k], REFS[k])))
+    add(("ref", "[%d] %s" % (numbering[k], springer_ref(REFS[k]))))
 B2 = []
 for b in B:
     if b[0] in ("p", "abstract", "note"):
@@ -793,7 +828,8 @@ def map_strings(block):
 
 
 B = [map_strings(b) for b in B]
-BASENAME = "EPJC_Dilution_Triggered_Cycles"
+B = [(b[0], b[1], re.sub(r"^Fig\. (\d+)\. ", r"Fig. \1 ", b[2])) + tuple(b[3:]) if b[0] == "fig" else b for b in B]
+BASENAME = "GRG_Dilution_Triggered_Cycles"
 
 
 def build_letter():
@@ -811,12 +847,13 @@ def build_letter():
         para(t, after=0)
     para("")
     para(datetime.date.today().strftime("%d %B %Y").lstrip("0"))
-    para("The Editors", after=0); para("The European Physical Journal C", after=0); para("Springer Nature")
+    para("The Editors-in-Chief", after=0); para("General Relativity and Gravitation", after=0); para("Springer Nature")
     para("Dear Editors,")
-    para("I submit the manuscript “%s” as a Regular Article (Theoretical Physics) for consideration in The European Physical Journal C." % TITLE)
+    para("I submit the manuscript “%s” as a research article for consideration in General Relativity and Gravitation." % TITLE)
     para("In plain terms, the paper reverses a common intuition about the far future. The dilution of matter is usually the end state of cosmic evolution, "
          "the approach to heat death; here it is the trigger. A scalar field coupled to dark matter holds a vacuum with the observed dark-energy density while "
-         "the dark-matter density is high, with a homogeneous background that reproduces LambdaCDM, and releases it by dilution into a negative vacuum, which "
+         "the dark-matter density is high, with a homogeneous background that reproduces the standard cosmological model, and releases it by dilution into "
+         "a negative vacuum, which "
          "ends the expansion. An intervention that freezes the matter density seen by the field removes the turnaround, and the uncoupled field with the same "
          "potential cannot reproduce the observed past over most of the parameter range.")
     para("With an effective loop-quantum-cosmology bounce, thermal dissipation and dark matter that obeys its own Boltzmann equation with a field-dependent "
@@ -825,25 +862,33 @@ def build_letter():
          "map. The paper states what the cycle requires and where it fails: a bounce hot enough to rethermalize the dark matter but below the percolation of "
          "the previous cycle's black holes, dissipation, inherited rather than regenerated anisotropy and a coherent seed for the release; over stated parameter "
          "ranges these hold together in %.1f%% of the sample space." % (N_CYC, 100 * HM["joint"]))
+    para("The paper is, I believe, a natural fit for General Relativity and Gravitation because its results are gravitational in substance: the recollapse "
+         "of a spatially flat universe driven by a negative vacuum, the continuation through an effective nonsingular bounce and the curvature invariants "
+         "and constraint preservation there, the growth of Bianchi I anisotropy in the contraction and its control by an ekpyrotic phase, the black-hole "
+         "population carried through the bounce, and Tolman's entropy growth across cycles. An independent, constraint-preserving formulation of the "
+         "gravitational equations reproduces the cycles.")
     para("The claims are limited deliberately. The bounce is an effective prescription, the dynamics are homogeneous, and the cycle does not produce the "
          "observed primordial perturbations (it gives n_s near 3), so the results are conditional background solutions, not an observationally complete "
          "cosmology. The ingredients (symmetron-type couplings, coupled dark matter, effective bounces, warm-inflation dissipation, freeze-out, Tolman's "
          "growing cycles) are established and cited; what is new is their combination into a cycle followed without resets, the exact relation that fixes the "
          "growth of the dark-matter mass at the release, the intervention tests, and the map of failure conditions.")
-    para("Related submission. An earlier, broader version of this work also contained an analysis of localized vacuum bubbles. Following a review, that part "
-         "has been separated into an independent companion manuscript on density-dependent vacuum bubble nucleation, which is in preparation for separate "
-         "submission to Physics of the Dark Universe%s. The two papers share the class of models; neither relies on the results of the other, and I will "
-         "provide the companion manuscript on request." % ((" (preprint https://doi.org/%s)" % COMPANION_DOI) if COMPANION_DOI else ""))
+    para("Related work and transparency. An earlier, broader version of this work (archived as a preprint on Zenodo) combined the present analysis with a "
+         "study of localized vacuum bubbles. Following a review, the two were separated because they answer different questions with different methods. "
+         "This manuscript treats the homogeneous trigger and its continuation into cycles. The companion manuscript, in preparation for separate submission "
+         "to Physics of the Dark Universe%s, asks whether a localized, tunneling version of the trigger can work at all, and finds that it requires wave-like "
+         "dark matter; it contains no results of the present paper. Some introductory and model-defining text is common to the two, and I will provide the "
+         "companion manuscript on request. Earlier versions of this manuscript were prepared for The European Physical Journal C but were not submitted "
+         "there for review." % ((" (preprint https://doi.org/%s)" % COMPANION_DOI) if COMPANION_DOI else ""))
     para("The analysis is fully reproducible. The code (Python, MIT license) and the data behind every figure and table are at %s and archived at "
          "https://doi.org/%s; the manuscript is archived at https://doi.org/%s. The manuscript is built from the stored results and only if the executable "
          "checks pass." % (GITHUB, DOI_CODE, DOI_PAPER))
-    para("A generative AI tool (Claude, Anthropic) was used to assist with the numerical analysis, code, literature checking and drafting; I reviewed all of "
-         "it and take full responsibility for the content, as disclosed in the manuscript. The manuscript is original, has not been published elsewhere and is "
+    para("A large language model (Claude, Anthropic) was used to assist with the numerical analysis, code, literature checking and drafting; I checked all "
+         "of it and take full responsibility for the content, as documented in Section 6.1 of the manuscript. The manuscript is original, has not been published elsewhere and is "
          "not under consideration at any other journal. I am the sole author, I have no competing interests, and the work received no external funding.")
     para("Thank you for considering this submission.")
     para("Sincerely,")
     para("Leon Sandler", True)
-    d.save(os.path.join(OUT, "EPJC_Cover_Letter.docx"))
+    d.save(os.path.join(OUT, "GRG_Cover_Letter.docx"))
 
 
 if __name__ == "__main__":

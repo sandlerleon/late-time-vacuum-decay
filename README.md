@@ -2,9 +2,9 @@
 
 Leon Sandler, Independent Researcher — sandler.leon@gmail.com — ORCID 0009-0007-4584-808X
 
-Code, data and manuscript for the paper of the same title, prepared for **The European Physical Journal C** (Regular Article, Theoretical Physics).
-Manuscript: `manuscript/EPJC_Dilution_Triggered_Cycles.{docx,tex,pdf}`, supplement `manuscript/EPJC_Dilution_Triggered_Cycles_Supplement.docx`,
-cover letter `manuscript/EPJC_Cover_Letter.docx`. Archived on Zenodo: paper 10.5281/zenodo.23841870, code 10.5281/zenodo.23841872 (this version; all versions: 23717616 / 23717618).
+Code, data and manuscript for the paper of the same title, prepared for **General Relativity and Gravitation** (Springer Nature; research article). Earlier versions were prepared for The European Physical Journal C.
+Manuscript: `manuscript/GRG_Dilution_Triggered_Cycles.{docx,tex,pdf}`, supplement (Online Resource 1) `manuscript/GRG_Dilution_Triggered_Cycles_Supplement.{docx,pdf}`,
+cover letter `manuscript/GRG_Cover_Letter.docx`. Archived on Zenodo: paper 10.5281/zenodo.23841870, code 10.5281/zenodo.23841872 (this version; all versions: 23717616 / 23717618).
 
 ## What the paper does
 
@@ -50,7 +50,7 @@ python contraction_stability.py && python bounce_validation.py && python compact
 python predictions.py && python vacuum_phase_map.py && python viability_mc.py
 python make_dil_figures.py && python make_osc_figures.py && python make_cyc_figures.py
 python verify.py && python paper1_build.py && python paper1_supplement.py
-cd ../manuscript && pdflatex EPJC_Dilution_Triggered_Cycles.tex && pdflatex EPJC_Dilution_Triggered_Cycles.tex
+cd ../manuscript && pdflatex GRG_Dilution_Triggered_Cycles.tex && pdflatex GRG_Dilution_Triggered_Cycles.tex
 ```
 
 Every number in the manuscript is read from the JSON files these scripts write. `numerics_admissibility.py reuse` keeps the stored no-projection run,
@@ -62,7 +62,7 @@ which takes about an hour to fail.
 
 This repository began as a broader manuscript (versions up to v1.8.2, Zenodo 10.5281/zenodo.23823727 / 23823733) that also contained an analysis of
 late-time vacuum decay by tunneling and of density-dependent vacuum walls. Following a review, the work was split. **This repository now contains only
-the EPJ C paper**; the combined manuscript and the scripts and figures used only by it were removed in v2.0.0 and remain available at tag `v1.8.2`. A few
+this paper**; the combined manuscript and the scripts and figures used only by it were removed in v2.0.0 and remain available at tag `v1.8.2`. A few
 JSON tables from that analysis (`bounce_tables.json`, `vacuum_wall.json`, `survival.json`, `thermal_tables.json`, `density_bounce.json`) are kept because
 `viability_mc.py` and `verify.py` read them; they are not used by this paper's results. The vacuum-wall analysis continues in a separate repository,
 `sandlerleon/matter-coupled-vacuum-bubbles`, for a companion manuscript in preparation for Physics of the Dark Universe; neither paper relies on the
