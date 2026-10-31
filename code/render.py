@@ -280,7 +280,7 @@ def render_tex(blocks, path, fig_dir_rel="../figures"):
             body.append(r"\noindent\textbf{Keywords:} \emph{" + tex_inline(b[1]) + "}\n")
         elif k == "h1":
             txt = re.sub(r"^\d+\.\s*", "", b[1])
-            star = "*" if b[1].startswith(("Declarations", "References", "Acknowledg", "Author", "Data", "Code", "Funding", "Conflict", "Ethics", "Use of")) else ""
+            star = "*" if b[1].startswith(("Declarations", "Statements and Declarations", "References", "Acknowledg", "Author", "Data", "Code", "Funding", "Conflict", "Ethics", "Use of")) else ""
             body.append(r"\section%s{%s}" % (star, tex_inline(txt)))
         elif k == "h2":
             txt = re.sub(r"^\d+\.\d+\s*", "", b[1])
