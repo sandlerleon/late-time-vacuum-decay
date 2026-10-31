@@ -22,7 +22,7 @@ import continuous_cycles as CC
 HERE = os.path.dirname(os.path.abspath(__file__))
 VARIANTS = [("baseline", {}), ("rtol 1e-10", dict(rtol=1e-10)), ("overdamped threshold 1e4", dict(od_ratio=1e4)),
             ("projection every 4th chunk", dict(proj_every=4)), ("no projection", dict(proj_every=10 ** 9))]
-KEYS = ("ln_a_max", "t_cycle", "held_accelerated_efolds", "Y_held_over_kappa", "Y_fo_over_kappa", "max_matter_fraction", "lnG", "phi_bounce_over_v", "bounce_x", "T_bounce", "T_release")
+KEYS = ("ln_a_max", "t_cycle", "held_accelerated_efolds", "Y_held_over_kappa", "Y_fo_over_kappa", "max_matter_fraction", "lnG", "phi_bounce_over_v", "bounce_x", "T_bounce", "T_release", "T_onset")
 
 
 def job(item):

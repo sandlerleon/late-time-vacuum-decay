@@ -14,6 +14,8 @@ import os
 import time
 from multiprocessing import Pool
 
+import numpy as np
+
 import continuous_cycles as CC
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -21,7 +23,8 @@ VARIANTS = [("projected (baseline)", {}), ("constrained, bridge 0.05", dict(grav
             ("constrained, bridge 0.02", dict(gravity="constrained", near=0.02)),
             ("constrained, bridge 0.05, rtol 1e-10", dict(gravity="constrained", near=0.05, rtol=1e-10))]
 KEYS = ("ln_a_max", "t_cycle", "T_turn", "held_accelerated_efolds", "Y_held_over_kappa", "Y_fo_over_kappa", "lnG", "phi_bounce_over_v", "T_bounce",
-        "T_release")
+        "T_release", "T_onset")
+ABS = ("lna_release", "lna_onset")           # cumulative ln a of events: compared as absolute differences (e-folds)
 
 
 def job(item):
@@ -29,7 +32,7 @@ def job(item):
     t = time.time()
     r = CC.run(CC.Params(), n_cycles=3, keep_history=False, wall=6000, **kw)
     return dict(variant=name, settings=kw, status=r["status"], classification=CC.classify(r), max_residual=r["max_residual"], projections=r["projections"],
-                cycles=[dict((k, c.get(k)) for k in ("n",) + KEYS) for c in r["cycles"]], seconds=time.time() - t)
+                cycles=[dict((k, c.get(k)) for k in ("n",) + KEYS + ABS) for c in r["cycles"]], seconds=time.time() - t)
 
 
 if __name__ == "__main__":
@@ -44,6 +47,16 @@ if __name__ == "__main__":
             if pairs:
                 dev[k] = float(max(abs(y / x - 1) for x, y in pairs))
         r["max_rel_change_vs_projected"] = dev
-        print("%-38s %-10s res %.1e bridges %s %s [%.0fs]" % (r["variant"], r["classification"][:10], r["max_residual"], r["projections"],
-                                                              {k: "%.2g" % v for k, v in dev.items()}, r["seconds"]), flush=True)
+        da = {}
+        for k in ABS:
+            pairs = [(x.get(k), y.get(k)) for x, y in zip(base["cycles"], r["cycles"]) if x["n"] >= 1]
+            pairs = [(x, y) for x, y in pairs if x is not None and y is not None]
+            if pairs:
+                da[k] = float(max(abs(y - x) for x, y in pairs))
+        r["max_abs_change_vs_projected_efolds"] = da
+        st = [np.log(c["T_release"] / c["T_onset"]) / (c["lna_release"] - c["lna_onset"]) for c in r["cycles"]
+              if c.get("T_onset") and c.get("T_release") and c.get("lna_release") and c.get("lna_onset") and c["lna_release"] > c["lna_onset"]]
+        r["dlnT_dlna_during_roll"] = [float(min(st)), float(max(st))] if st else None
+        print("%-38s %-10s res %.1e bridges %s %s abs %s roll %s [%.0fs]" % (r["variant"], r["classification"][:10], r["max_residual"], r["projections"],
+              {k: "%.2g" % v for k, v in dev.items()}, {k: "%.3f" % v for k, v in da.items()}, r["dlnT_dlna_during_roll"], r["seconds"]), flush=True)
     json.dump(dict(rows=rows), open(os.path.join(HERE, "independent_solver.json"), "w"), indent=1)

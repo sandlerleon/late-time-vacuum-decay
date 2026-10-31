@@ -377,6 +377,14 @@ def run(P, n_cycles=6, rtol=1e-8, verbose=False, wall=None, keep_history=True, f
                 cur["max_vacuum_fraction"] = max(cur.get("max_vacuum_fraction", 0.0), max(ci["V"], 0) / pos)
                 if "T_release" not in cur and abs(yi[2]) > 0.5 * mod.v and H > 0:
                     cur["T_release"] = float(yi[4])
+                    cur["lna_release"] = float(yi[0] + lnG)
+                # onset of the roll after the field has been restored (|phi| < 0.01 v): well conditioned, unlike T_release, which falls inside
+                # the reheating by the rolling field (T rises ~100x within ~0.2 e-folds)
+                if H > 0 and abs(yi[2]) < 0.01 * mod.v:
+                    cur["_restored"] = True
+                if cur.get("_restored") and "T_onset" not in cur and abs(yi[2]) > 0.05 * mod.v and H > 0:
+                    cur["T_onset"] = float(yi[4])
+                    cur["lna_onset"] = float(yi[0] + lnG)
                 if cur["start"] == "bounce" and "Y_fo" not in cur and ci["x"] > 300 and H > 0:
                     cur["Y_fo"] = float(ci["n"] * ci["me"] / yi[4] ** 3)             # just after freeze-out (the field may still be frozen)
                     cur["Y_fo_over_kappa"] = cur["Y_fo"] / KAPPA

@@ -517,6 +517,20 @@ add(("p", "The decisive test is an independent formulation of the gravitational 
           "e-folds, %s in the held-epoch abundance and %s in $\\ln G_n$. The projection is therefore not what makes the cycle repeat."
           % (len(ISok), len(ISall), sci(max(r["projections"]["max_rel"] for r in ISok) + 1e-16, 0), sci(iw("ln_a_max"), 0), sci(iw("t_cycle"), 0),
              sci(iw("held_accelerated_efolds"), 0), sci(iw("Y_held_over_kappa"), 0), sci(iw("lnG"), 0))))
+NAo = [r for r in NA["rows"] if r["variant"] != "baseline" and r["classification"] == "working"]
+roll = [x for r in ISV["rows"] if r.get("dlnT_dlna_during_roll") for x in r["dlnT_dlna_during_roll"]]
+add(("p", "One recorded quantity does not agree, and the reason is instructive. The bath temperature at the moment the field first exceeds $0.5v$, "
+          "$T_{\\rm release}$, differs from the projected baseline by up to %.0f%% in the constrained solver, and by %.0f--%.0f%% among the settings of the "
+          "projected solver itself. The disagreement is a property of the diagnostic, not of the solution. Once the field starts to roll, its energy is "
+          "dissipated into the bath, which reheats by two orders of magnitude while the scale factor grows by a few tenths of an e-fold: during the roll "
+          "$d\\ln T/d\\ln a$ is between %.0f and %.0f. A fixed field threshold therefore falls on a nearly vertical part of $T(a)$, and a shift of its crossing "
+          "by $\\Delta\\ln a$ changes $T_{\\rm release}$ by a factor $e^{(d\\ln T/d\\ln a)\\Delta\\ln a}$. The well-conditioned measures of the same event agree: "
+          "the scale factor at which the field crosses $0.5v$ differs by at most %.3f e-folds between the solvers, which with the steepness above accounts "
+          "for the spread of $T_{\\rm release}$, and the temperature after the reheating, at the turnaround, by at most %.1f%%. $T_{\\rm release}$ is not used in "
+          "the classification of the cycles, the fixed-point map or the viability analysis, and every setting of both solvers gives a working cycle."
+          % (100 * iw("T_release"), 100 * min(r["max_rel_change_vs_baseline"].get("T_release", 0) for r in NAo),
+             100 * max(r["max_rel_change_vs_baseline"].get("T_release", 0) for r in NAo), min(roll), max(roll),
+             max(r["max_abs_change_vs_projected_efolds"].get("lna_release", 0) for r in ISok), 100 * iw("T_turn"))))
 SHORTV = {"baseline": "baseline", "rtol 1e-10": "rtol $10^{-10}$", "overdamped threshold 1e4": "overdamped $10^4$",
           "projection every 4th chunk": "projection every 4th", "no projection": "no projection"}
 nrows = []
@@ -661,8 +675,12 @@ add(("p", "Within a stated model, the dilution of matter can end the cosmologica
 add(("p", "The conditions are explicit: a bounce at a fixed density, hot enough to rethermalize the dark matter and cold enough to keep the black holes of "
           "the previous cycle from percolating; dissipation; a thermal-relic dark matter; an anisotropy that is inherited rather than regenerated; and a coherent "
           "seed for the release. Over stated parameter ranges they hold together in %.1f%% of the sample space. With a colder bounce the cycle fails. The model "
-          "does not produce the observed primordial perturbations, so these are conditional background solutions: they show what a cyclic hot big bang "
-          "triggered by dilution requires, not that the universe has one." % (100 * HM["joint"])))
+          "does not produce the observed primordial perturbations ($n_s\\approx3$ against the observed 0.965), so these are conditional background "
+          "solutions: they show what a cyclic hot big bang triggered by dilution requires, not that the universe has one." % (100 * HM["joint"])))
+add(("p", "The distinction between numerical existence and physical viability should be stated without qualification. The numerical results establish "
+          "that repeated, attracting background trajectories exist within the specified matter-coupled scalar model and the phenomenological bounce. They do "
+          "not establish a physically realized cyclic universe: the bounce mechanism, the primordial perturbations and the fully inhomogeneous evolution, "
+          "including the growth of structure and of entropy across cycles beyond the homogeneous bookkeeping used here, remain unresolved."))
 add(("p", "Three extensions would test the framework further: a derivation of the bounce, or its replacement by a mechanism that fixes the bounce density "
           "from first principles; an inhomogeneous simulation of the contraction, in which the growth of structure rather than homogeneous shear decides "
           "whether the bounce is smooth; and a source of the primordial perturbations compatible with the cycle, for example an entropic mechanism in a "
