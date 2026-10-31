@@ -4,7 +4,7 @@ Leon Sandler, Independent Researcher — sandler.leon@gmail.com — ORCID 0009-0
 
 Code, data and manuscript for the paper of the same title, prepared for **The European Physical Journal C** (Regular Article, Theoretical Physics).
 Manuscript: `manuscript/EPJC_Dilution_Triggered_Cycles.{docx,tex,pdf}`, supplement `manuscript/EPJC_Dilution_Triggered_Cycles_Supplement.docx`,
-cover letter `manuscript/EPJC_Cover_Letter.docx`. Archived on Zenodo: paper 10.5281/zenodo.23717616, code 10.5281/zenodo.23717618 (all versions).
+cover letter `manuscript/EPJC_Cover_Letter.docx`. Archived on Zenodo: paper 10.5281/zenodo.23841870, code 10.5281/zenodo.23841872 (this version; all versions: 23717616 / 23717618).
 
 ## What the paper does
 
