@@ -39,6 +39,7 @@ unless every check passes.
  V33 phase structure of the matter-coupled potentials and the coherence of the release
  V34 vacuum wall: thin-wall limit, validated transmission, runaway and negligible filtering, Israel junction
  V35 daughter regions: constraint, bounce, entropy, self-similar cycles and the controls
+ V36 hand-off from the wall to the cycle, approximation bounds, independent integration, viability fractions
 """
 import json
 import os
@@ -351,5 +352,18 @@ lg = BCJ["B percolated"]["lnG"]
 ok35 = (IVJ["all_passed"] and max(lg) - min(lg) < 1e-3 and BCJ["C percolated (computed selectivity)"]["lnG"] == lg
         and BCJ["C* percolated, fully selective, cold bounce"]["failure"] is not None and BCJ["D"]["width"] <= 5.0)
 rec("V35_daughter_cycles", ok35, lnG=float(sum(lg) / len(lg)), D_window=BCJ["D"]["window_B0"], interface_checks=IVJ["n"])
+# V36: hand-off and viability
+HOJ = json.load(open(os.path.join(HERE, "bubble_handoff.json"), encoding="utf-8"))
+VMJ = json.load(open(os.path.join(HERE, "viability_mc.json"), encoding="utf-8"))
+vv = {v["variant"]: v for v in HOJ["variants"]}
+rp = HOJ["reproduction"]
+ok36 = (HOJ["percolation"]["completion_duration_over_hubble_time"] < 0.1 and HOJ["percolation"]["R_coll_times_H"] < 0.1
+        and all(v["failure"] is None for v in HOJ["variants"])
+        and abs(vv["wall energy as dark radiation until the bounce (w = 1/3)"]["lnG"][-1] - vv["baseline (LQC, rho_c = 1e44)"]["lnG"][-1]) < 1e-9
+        and HOJ["isolated"]["t_trapped"] is not None and HOJ["isolated"]["t_trapped"] < HOJ["isolated"]["t_bounce"]
+        and abs(rp["restoration_time_ivp"] / rp["restoration_time_root"] - 1) < 1e-8 and rp["constraint_residual_ivp"] < 1e-9
+        and 0 < VMJ["held"]["joint"] < 1 and 0 <= VMJ["tunneling"]["joint"] < 1)
+rec("V36_handoff_viability", ok36, completion_hubble_times=HOJ["percolation"]["completion_duration_over_hubble_time"],
+    t_trapped=HOJ["isolated"]["t_trapped"], t_bounce=HOJ["isolated"]["t_bounce"], held_joint=VMJ["held"]["joint"], tunneling_joint=VMJ["tunneling"]["joint"])
 json.dump(res, open(os.path.join(HERE, "verification.json"), "w", encoding="utf-8"), indent=1)
 print("\nALL PASS" if all(v["passed"] for v in res.values()) else "\nSOME FAILED")

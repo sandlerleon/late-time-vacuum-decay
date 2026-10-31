@@ -287,6 +287,14 @@
    286.0,
    289.0
   ],
-  "interface_checks": 36
+  "interface_checks": 40
+ },
+ "V36_handoff_viability": {
+  "passed": true,
+  "completion_hubble_times": 0.019132308760146752,
+  "t_trapped": 2.47752168208329,
+  "t_bounce": 2.948741995541025,
+  "held_joint": 0.0676,
+  "tunneling_joint": 0.06933333333333333
  }
 }

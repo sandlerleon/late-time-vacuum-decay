@@ -82,6 +82,7 @@ DESC = {
     "V33_vacuum_phase": "Phase structure: the symmetron release is spinodal (occupied minimum never metastable); tunneling-branch degeneracy at eta/2; coherence of the release; exact vs logarithmic coupling",
     "V34_wall_transport_gravity": "Wall tension and thin-wall limit; transmission validated against Poeschl-Teller and unitarity; walls run away and filter a negligible dark-matter fraction; junction flat limit, wall energy = deficit",
     "V35_daughter_cycles": "Daughter regions: constraint, bounce at rho_c and continuous H at every event; entropy non-decreasing; self-similar cycles; C = B, C* fails when cold, D window narrow; all interface checks pass",
+    "V36_handoff_viability": "Hand-off: percolation completes within a small fraction of a Hubble time; the cycle continues for w = 1/3 and w = 0 collision products and for every bounce variant; isolated bubbles are trapped before their bounce; independent integration agrees; viability fractions computed",
 }
 S = []
 add = S.append
@@ -254,6 +255,12 @@ rows = [["%.2f" % r["gh"], "%.2f" % r["T"], INT.texsci(max(r["P_static_over_dV"]
 add(("table", "Table S20. Pressure of a thermal test-scalar bath on the wall at the trigger relative to the driving pressure: static wall (computed reflection) and "
               "ultra-relativistic limit $\\Delta m^2T^2/24$. Temperatures in units of $\\sqrt\\lambda f$ (4.4 meV); the CMB at the trigger is %.3f." % INT.TJ["T_cmb_at_trigger_units"],
      ["$g/\\sqrt\\lambda$", "T", "static", "relativistic limit"], rows, None))
+add(("p", "bubble_handoff.py computes the false-vacuum fraction with the Guth--Tye integral on the baseline rate history, the bounds of Table 20, the "
+          "isolated-bubble test (the wall as a null ray in the open interior, the exterior false-vacuum universe at the same cosmic time; the crossing times "
+          "are insensitive to that identification because the exterior density changes by less than 1%% over the interval), the bounce and collision-product "
+          "variants, and the independent initial-value integration. viability_mc.py samples the stated ranges (200,000 draws for the held vacuum, %d for the "
+          "tunneling branch, whose past-light-cone integral is evaluated for every draw)." % INT.VM["tunneling"]["n"]))
+add(("table", "Table S21. Validation of the interface calculations (interface_validation.py).", ["Check", "Result"], INT.validation_rows(), None))
 add(("h1", "S6. Monte Carlo specification"))
 add(("p", "Draws: $N=%d$, NumPy PCG64 generator, seed %d. $\\log_{10}\\lambda\\sim U(-2,\\log_{10}4\\pi)$; $\\eta\\sim U(0.03,0.38)$; $\\ln D\\sim N(0,(1.5\\ln10)^2)$; $r_L=1$. Each draw is converted to "
           "$\\ln\\Gamma/H^4$ with Eq. (7), to a decay time, and classified: above the survival bound if $\\Gamma/H_\\Lambda^4\\ge%.2f$ (Section S5); otherwise decaying by $10^{12}$, $10^{20}$, $10^{50}$ or $10^{100}$ yr, or "
@@ -282,7 +289,8 @@ add(("p", "Environment of the published run: Python %s, NumPy %s, SciPy %s (Wind
           "manuscript builder reads; monte_carlo.py needs survival.json and falsification_map.py needs survival.json. A rerun in a clean clone of the repository reproduced the stored JSON files exactly in the earlier release. Code: %s, archived at https://doi.org/%s."
           % (platform.python_version(), np.__version__, scipy.__version__, GITHUB, DOI_CODE)))
 add(("p", "Section 7 (after the continuous-cycle scripts): vacuum_phase_map.py (about 40 seconds), vacuum_wall.py (about 2 minutes), interface_transport.py (about 25 minutes), "
-          "bubble_gravity.py (about 30 seconds), bubble_to_cycle.py (about 2 minutes), bubble_entropy.py, interface_validation.py (about 1 minute) and make_int_figures.py."))
+          "bubble_gravity.py (about 30 seconds), bubble_to_cycle.py (about 3 minutes), bubble_handoff.py (about 3 minutes), viability_mc.py (about 10 minutes), "
+          "bubble_entropy.py, interface_validation.py (about 1 minute) and make_int_figures.py."))
 add(("h1", "S9. Known limitations of the numerics"))
 add(("bullets", [
     "Shooting is unreliable for $\\eta<0.1$ (exponential sensitivity); the boundary-value solver is used there, and below $\\eta=0.03$ only the thin-wall asymptote is available, which is irrelevant because $B$ exceeds $10^5$.",
@@ -327,13 +335,22 @@ para("The paper asks whether the present dark energy can end the cosmological ex
      "the earlier prescribed resets had hidden: a bounce too cold to re-thermalize the dark matter gives an empty next cycle. It adds the conditions on anisotropy (with and without an ekpyrotic "
      "phase), an independent bounce mechanism, the black holes of the previous cycle (which bound the bounce temperature from above), a failure-mode map, and the observational consequences, "
      "including the negative one that the cycle does not produce the observed primordial perturbations." % CYB.N_CYC)
+para("In plain terms, the paper reverses a common intuition about the far future. The dilution of matter is usually the end state of cosmic evolution, the "
+     "approach to heat death; here it is the trigger. If the dark energy is the energy of a vacuum held in place by dark matter, the emptying of the universe "
+     "destabilizes it, and expansion can turn into contraction, a bounce and a new hot phase. What the paper contributes is not any single ingredient (cyclic "
+     "cosmology, vacuum decay, matter-coupled scalars and effective bounces are established and cited) but their combination into a quantitative cycle that is "
+     "followed without prescribed steps, with control experiments that remove each ingredient and an explicit map of the conditions under which the cycle "
+     "fails. Three limits are stated throughout: the bounce is an effective prescription, the interface results hold only for a completed transition, and the "
+     "model does not produce the observed primordial perturbations, so its claims concern the background cosmology.")
 para("Following a further review, this version adds a section on density-dependent vacuum interfaces (Section 7). It maps where tunneling is meaningful: the "
      "symmetron release of the main model is a classical roll and needs a coherent seed or a tilt to avoid domain walls, while a coupling centred on the false vacuum makes "
      "the held vacuum metastable below a degeneracy density. For that branch the wall tension, the density-dependent action, the transmission of fields through the wall, "
      "the Israel junction and the evolution of the enclosed region are computed, with energy and entropy closure and controls that remove the matter coupling or the "
-     "selectivity. The wall runs away and becomes transparent to the dark matter within a millimetre, so its mass-selective transmission has no cosmological effect; the "
-     "enclosed region contracts, is restored by the dark matter and bounces in self-similar cycles; and without the coupling the restoration fails and a transition "
-     "requires a tuned action. The title now reflects this content and states that the cycle is conditional.")
+     "selectivity. The wall runs away and becomes transparent to the dark matter within a millimetre, so its mass-selective transmission has no cosmological effect. "
+     "The hand-off from the walls to the cycle is checked explicitly: a completed transition is homogeneous above the collision scale, and the cycle continues "
+     "whether the collision products are relativistic or not, whereas an isolated bubble is trapped behind a horizon before its bounce. Within these effective "
+     "approximations the interface is presented as a conditional extension of the dilution trigger, not as a second demonstrated mechanism. A Monte Carlo over "
+     "stated parameter ranges reports how often all the conditions hold at once. The title now reflects this content and states that the cycle is conditional.")
 para("For the direct route the answer is negative. A scalar potential with an explicit metastable minimum is specified, the Coleman–De Luccia bounce is solved numerically in flat space and with Einstein gravity, and the action is converted to a "
      "nucleation rate with the measured dark-energy density as the false-vacuum energy. With all scales set by the dark energy the gravitational parameter is of order 10⁻⁶⁰, so gravity and the Hawking–Moss "
      "channel play no role and the decay is controlled by a single action, which must lie near %d for a transition on cosmological time scales. The survival of the present vacuum is evaluated on the Lorentzian past light "

@@ -1,0 +1,31 @@
+{
+ "held": {
+  "n": 200000,
+  "single": {
+   "H1 held today": 0.768865,
+   "H2 recollapse": 0.74931,
+   "H3 bounce window": 0.660585,
+   "H4 re-thermalization": 0.339765
+  },
+  "joint": 0.0676,
+  "joint_given_H1H2": 0.11737028066428801
+ },
+ "tunneling": {
+  "n": 3000,
+  "single": {
+   "T1 past light cone clear": 0.685,
+   "T2 completes": 0.5726666666666667,
+   "T3 recollapse": 0.7466666666666667,
+   "T4 bounce window": 0.6493333333333333,
+   "T5 re-thermalization": 0.7306666666666667
+  },
+  "joint": 0.06933333333333333,
+  "joint_background": 0.19,
+  "joint_given_background": 0.3649122807017544,
+  "by_eta": {
+   "0.20": 0.07586206896551724,
+   "0.30": 0.060544904137235116,
+   "0.36": 0.07142857142857142
+  }
+ }
+}

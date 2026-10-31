@@ -51,7 +51,7 @@ def junction(R, sigma, rho_in, rho_out):
 
 # ------------------------------------------------------------------------------------------------ daughter region
 class Daughter:
-    def __init__(self, eta, theta0, q, theta_trig, rho_c=1e44, regenerate=True, lnrate=None):
+    def __init__(self, eta, theta0, q, theta_trig, rho_c=1e44, regenerate=True, lnrate=None, wall_w=None, bounce_form="lqc"):
         self.eta, self.q, self.rho_c = eta, q, rho_c
         _, x_t0, _, x_f0, d0, _ = VP.classify_tb(eta, 0.0)
         self.x_t0, self.E0 = x_t0, (1.0 + q) * MC.VC / d0
@@ -60,6 +60,9 @@ class Daughter:
         self.theta_high = VP.window_tb(eta)[1]
         self.regenerate = regenerate
         self.lnrate = lnrate                    # theta -> ln(Gamma / H_Lambda^4); if given, nucleation is where ln(Gamma/H^4) first exceeds ln(9/(4 pi))
+        self.wall_w = wall_w                    # None: wall energy thermalized at collision; else a separate fluid with w = wall_w until the bounce
+        self.bounce_form = bounce_form          # 'lqc': H^2 = rho/3 (1 - rho/rho_c);  'quadratic': H^2 = rho/3 (1 - (rho/rho_c)^2)
+        self.Sx = 0.0
 
     def x_min(self, state, theta):
         st = VP.stationary_tb(self.eta, theta)
@@ -79,16 +82,18 @@ class Daughter:
         if x is None:
             x = self.x_min("false", th)
         rr = Sr / a ** 4
+        rx = self.Sx / a ** (3.0 * (1.0 + self.wall_w)) if self.wall_w is not None else 0.0
         rb = MC.RHO_B0 / a ** 3 * self.bscale
         U = self.U(x, th)
-        rho = rr + rb + rs + U
-        rpp = 4.0 / 3.0 * rr + rb + rs + self.E0 * th * (x - 1.0) ** 2 / 2.0
+        rho = rr + rb + rs + U + rx
+        rpp = 4.0 / 3.0 * rr + rb + rs + self.E0 * th * (x - 1.0) ** 2 / 2.0 + (1.0 + (self.wall_w or 0.0)) * rx
         return rho, rpp, x, th, rr
 
     def F(self, N, Sr, nd, state, Kc):
         """H^2 from the Friedmann constraint (effective bounce, curvature K)."""
         rho = self.parts(N, Sr, nd, state)[0]
-        return rho / 3.0 * (1.0 - rho / self.rho_c) + Kc * np.exp(-2.0 * N)
+        f = rho / self.rho_c if self.bounce_form == "lqc" else (rho / self.rho_c) ** 2
+        return rho / 3.0 * (1.0 - f) + Kc * np.exp(-2.0 * N)
 
     def segment(self, N1, N2, Sr, nd, state, Kc, sign, n=240):
         """Proper time and samples along a monotonic segment N1 -> N2 (H = sign sqrt(F)); 1/sqrt singularities at turning points are integrable."""
@@ -130,7 +135,7 @@ class Daughter:
         from scipy.optimize import brentq
         """filter_frac: fraction of the dark matter kept out of the true-vacuum region by the wall (it remains as gravitating matter in
         false-vacuum remnants and no longer couples to the field); regen_allowed: the bounce is hot enough (T_b > m A / 5) to re-thermalize it."""
-        self.bscale, self.cf = 1.0, 1.0
+        self.bscale, self.cf, self.Sx = 1.0, 1.0, 0.0
         Sr, nd, state, Kc = MC.RHO_R0, MC.RHO_DM0, "false", 0.0
         s_ratio0 = nd / Sr ** 0.75
         N, tau = 0.0, 0.0
@@ -183,7 +188,9 @@ class Daughter:
             H_before = np.sqrt(self.F(N, Sr, nd, state, Kc))
             state = "true"
             self.cf = 1.0 - filter_frac
-            if mode == "percolated":
+            if mode == "percolated" and self.wall_w is not None:
+                self.Sx += dU * np.exp(3.0 * (1.0 + self.wall_w) * N)        # unthermalized wall/collision products
+            elif mode == "percolated":
                 Sr += dU * np.exp(4.0 * N)
             else:
                 Kc += dU / 3.0 * np.exp(2.0 * N)                            # nested bubbles: the deficits add
@@ -215,15 +222,20 @@ class Daughter:
                 N = N_res
                 restore(N, "restoration")
             # contraction to the bounce: F = 0 at rho ~ rho_c
-            N_lo = 0.25 * np.log(Sr / (2.0 * self.rho_c)) - 1.0
+            N_lo = 0.25 * np.log(Sr / (2.0 * self.rho_c)) - 3.0
             Ng = np.linspace(N, N_lo, 20001)[1:]
             Fg = np.array([self.F(x, Sr, nd, state, Kc) for x in Ng])
             k = np.argmax(Fg <= 0)
             N_b = brentq(lambda x: self.F(x, Sr, nd, state, Kc), Ng[k - 1], Ng[k], xtol=1e-15)
             add(N, N_b, -1, "held, contracting" if state == "false" else "true vacuum, contracting")
             N = N_b
+            ex = {}
+            if self.Sx > 0:                                                   # collision products thermalize in the hot bounce
+                ex["wall_fluid_fraction_at_bounce"] = float(self.Sx / np.exp(3.0 * (1.0 + self.wall_w) * N) / self.parts(N, Sr, nd, state)[0])
+                Sr += self.Sx / np.exp(3.0 * (1.0 + self.wall_w) * N) * np.exp(4.0 * N)
+                self.Sx = 0.0
             rr = Sr * np.exp(-4 * N)
-            ex = dict(T_b_MeV=float((30.0 * rr * K.RHO_CRIT / 3.0 / (np.pi ** 2 * 10.75)) ** 0.25 * 1e3), radiation_fraction=float(rr / self.parts(N, Sr, nd, state)[0]))
+            ex.update(T_b_MeV=float((rr * K.RHO_CRIT / 3.0) ** 0.25 * 1e3), radiation_fraction=float(rr / self.parts(N, Sr, nd, state)[0]))
             if self.regenerate and regen_allowed:
                 nd_new = s_ratio0 * Sr ** 0.75
                 ex["dm_regenerated_factor"] = float(nd_new / nd)

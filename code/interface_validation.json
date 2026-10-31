@@ -141,7 +141,7 @@
   {
    "name": "B isolated: H^2 = 0 at turnaround and bounce (relative)",
    "passed": true,
-   "worst": 3.6682779036551244e-09
+   "worst": 3.6682803461457815e-09
   },
   {
    "name": "B isolated: bounce at rho_c",
@@ -176,8 +176,26 @@
   {
    "name": "C* fails without re-thermalization",
    "passed": true
+  },
+  {
+   "name": "percolation completes within 0.1 Hubble time",
+   "passed": true,
+   "duration": 0.019132308760146752
+  },
+  {
+   "name": "dark-radiation collision products give the thermalized ln G",
+   "passed": true
+  },
+  {
+   "name": "bounce density and form leave ln G unchanged",
+   "passed": true
+  },
+  {
+   "name": "independent initial-value integration reproduces the events",
+   "passed": true,
+   "residual": 1.6122133899846575e-12
   }
  ],
  "all_passed": true,
- "n": 36
+ "n": 40
 }

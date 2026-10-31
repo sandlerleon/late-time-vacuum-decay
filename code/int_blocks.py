@@ -10,6 +10,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 J = lambda f: json.load(open(os.path.join(HERE, f), encoding="utf-8"))
 PM, WJ, TJ, GJ, CJ, EJ, VJ = (J("vacuum_phase_map.json"), J("vacuum_wall.json"), J("interface_transport.json"), J("bubble_gravity.json"),
                               J("bubble_to_cycle.json"), J("bubble_entropy.json"), J("interface_validation.json"))
+HJ, VM = J("bubble_handoff.json"), J("viability_mc.json")
 COH = PM["symmetron_coherence"]
 PS, TW = WJ["physical"], WJ["trigger_wall"]
 DM = TJ["dark_matter"]
@@ -97,7 +98,7 @@ def blocks():
               "and the action from $b=%.0f$ to $%.0f$ between $\\theta=0$ and $0.6\\,\\theta_{\\rm deg}$ (Fig. 24a,b). The thin-wall action "
               "$B_{\\rm tw}=27\\pi^2\\sigma^4/2\\Delta V^3$, with $\\sigma$ computed after removing the energy difference, is recovered within 1%% from "
               "$0.6\\,\\theta_{\\rm deg}$ upwards, and underestimates the thick-wall bounce near zero density ($b/B_{\\rm tw}=%.2f$). Shooting becomes "
-              "exponentially sensitive in the thin-wall limit, where collocation is used; the two agree where both work (Table 21)."
+              "exponentially sensitive in the thin-wall limit, where collocation is used; the two agree where both work (Table S21)."
               % (deg["sigma"], deg["thickness"], r0["R_w"], r6["R_w"], r0["b"], r6["b"], r0["b_over_B_tw"])))
     add(("p", "With the normalization of Section 4 (false vacuum = observed dark energy, $V_t=-qV_f$ with $q=1$, $B_0=b(0)/\\lambda=%.0f$, "
               "$\\theta_0=%.1f\\,\\theta_{\\rm deg}$ today, $\\eta=0.30$), $f=%.2f$ meV and the wall scale $1/\\sqrt\\lambda f$ is %.3f mm. The rate "
@@ -163,9 +164,11 @@ def blocks():
               "about the held minimum is an adiabatic invariant that returns to the same amplitude when the density falls back through $\\theta_{\\rm high}$, "
               "and the field could re-enter the true minimum without a held epoch. The region then bounces at the density of Section 6.8, radiation dominated, and "
               "re-expands with the field held; the dark matter is re-thermalized, and the vacuum is released again when the dilution completes the next "
-              "transition (Fig. 26b,c). The cycles are self-similar after the first: $\\ln G=%.3f$ per cycle for a percolated transition and $%.3f$ for an "
-              "isolated bubble, set by the entropy produced when the wall energy is thermalized and when the vacuum is restored."
-              % (tB["a_max_over_a_nuc"], tI["a_max_over_a_nuc"], rB["dE_released"] / VC, LNG["B"], LNG["Bi"])))
+              "transition (Fig. 26b). The cycles are self-similar after the first, with $\\ln G=%.3f$ per cycle, set by the entropy produced when the wall "
+              "energy is thermalized and when the vacuum is restored; the bounce temperature is %.0f MeV, defined by $\\rho_r=T^4$ as in Section 6.8. The "
+              "same equations continued formally for the open region of an isolated bubble give $\\ln G=%.3f$ (Fig. 26c), but Section 7.6 shows that this "
+              "continuation is not part of the parent universe."
+              % (tB["a_max_over_a_nuc"], tI["a_max_over_a_nuc"], rB["dE_released"] / VC, LNG["B"], bB["T_b_MeV"], LNG["Bi"])))
     add(("p", "The comoving entropy never decreases (bubble_entropy.py): it is inherited across the wall, since every species crosses it, and is raised by "
               "a factor of about %.0f when the wall energy thermalizes. The interior bookkeeping $dE_{\\rm in}=F_E\\,dV+W_{\\rm wall}$, with the swept-in content "
               "$F_E=\\rho_+$ and the work $W_{\\rm wall}=-\\Delta V_{\\rm eff}dV$ handed to the wall, closes to round-off. The decay removes the cosmological "
@@ -175,52 +178,134 @@ def blocks():
               % (EJ["entropy"][B_P]["nucleation_jumps"][1], texsci(EJ["horizon"]["S_dS"], 1), texsci(EJ["horizon"]["S_radiation_Hubble_volume"], 1))))
     add(("fig", "fig26_daughter_evolution.png", "Fig. 26. (a) Lorentz factor of the wall from the Israel junction against the flat-space runaway, and its self-gravity "
                 "(right axis). (b) Scale factor of a percolated transition through three cycles: nucleation, turnaround, restoration of the held vacuum, "
-                "bounce. (c) The same for the open region enclosed by an isolated bubble.", 6.6))
-    # ---------------------------------------------------------------------------------------------- 7.6
-    add(("h2", "7.6 Controls and viability"))
+                "bounce. (c) The same equations continued formally for the open region enclosed by an isolated bubble, which becomes trapped before its "
+                "restoration (Section 7.6).", 6.6))
+    # ---------------------------------------------------------------------------------------------- 7.6 hand-off
+    add(("h2", "7.6 Is the hand-off from the wall to the cycle consistent?"))
+    PC, WB, IS, RP = HJ["percolation"], HJ["wall_bounds"], HJ["isolated"], HJ["reproduction"]
+    var = {v["variant"]: v for v in HJ["variants"]}
+    w0 = var["wall energy as massive scalar quanta until the bounce (w = 0)"]
+    w13 = var["wall energy as dark radiation until the bounce (w = 1/3)"]
+    gmin = min(r["gamma_terminal"] for r in WB["gauge_nlo_terminal_gamma"] if r["T_meV"] < 1.0 and r["g"] <= 1.0)
+    add(("p", "The wall is treated with the Israel junction and the enclosed region as a Friedmann region, and each is consistent on its own; whether "
+              "they connect without violating the constraints is a separate question (bubble_handoff.py). For a completed transition the answer follows "
+              "from the percolation dynamics. With the rate history of Fig. 24c, the false-vacuum fraction $f=e^{-I}$, "
+              "$I=\\frac{4\\pi}{3}\\int\\Gamma a^3r^3dt$, falls to one half at $a=%.3f$ and to 1%% at $a=%.3f$; the rate grows at "
+              "$\\beta=d\\ln\\Gamma/dt=%.0f\\,H$, so the transition is completed in %.3f Hubble times and the bubbles collide at a mean radius "
+              "$R_{\\rm coll}=(8\\pi)^{1/3}/\\beta=%.4f/H$ (Fig. 27a). On scales above $R_{\\rm coll}$ the region is homogeneous and its stress-energy is "
+              "the false-vacuum value minus $\\Delta V_{\\rm eff}$ plus the energy of the walls and their collision products, which is exactly the "
+              "initial datum of Section 7.5 if the products are relativistic. The products are not computed; their equation of state is bracketed instead. "
+              "Carried as dark radiation ($w=1/3$) until the hot bounce, they give $\\ln G=%.3f$, identical to the thermalized case because radiation "
+              "entropy is an adiabatic invariant; carried as massive scalar quanta ($w=0$), the turnaround moves from %.2f to %.2f times the nucleation "
+              "scale factor and $\\ln G=%.3f$. The cycle continues in both limits; its growth per cycle lies between these values."
+              % (PC["a_half"], PC["a_one_percent"], PC["beta_over_H"], PC["completion_duration_over_hubble_time"], PC["R_coll_times_H"],
+                 float(np.mean(w13["lnG"])), w13["a_max_over_a_nuc"][1], w0["a_max_over_a_nuc"][1], float(np.mean(w0["lnG"])))))
+    add(("p", "The ultra-relativistic wall was also checked against the effects the junction omits (Table 20). Its Lorentz factor at collision is "
+              "%s, its contracted thickness is %s of its radius, and its self-gravity is negligible. The dark matter exerts at most %.2f of the driving "
+              "pressure. A dark gauge boson acquiring mass from $\\varphi$ would add a pressure that grows with the Lorentz factor (Boedeker and Moore 2017 "
+              "\\cite{BM17}) and stop the runaway; for couplings $g\\le1$ and any bath colder than 1 meV the terminal Lorentz factor is at least %.0f, still "
+              "above the threshold %.1f at which the dark matter crosses, so the filtering conclusion of Section 7.3 is unchanged. Gravitational waves from "
+              "the collisions carry at most a fraction $\\sim%s$ of the wall energy, $(H/\\beta)^2$ suppressed, and since $R_{\\rm coll}H\\approx%.3f$ no "
+              "region of Hubble size is overdense enough to form black holes."
+              % (sci(WB["gamma_at_collision"], 0), sci(WB["contracted_thickness_over_radius"], 0), WB["dm_pressure_over_vacuum_drive"], gmin,
+                 WB["gamma_threshold_dm"], texsci(WB["gw_fraction_bound"], 0), WB["pbh_scale_ratio"])))
+    add(("p", "For an isolated bubble the hand-off fails. Following the wall as a null ray in the open interior and comparing the Misner--Sharp mass inside "
+              "it with that of the exterior false-vacuum universe at the same areal radius, the interior becomes a trapped region ($\\rho_{\\rm in}R^2/3>1$) "
+              "at $t=%.2f/H_0$ and denser than the exterior at $t=%.2f/H_0$, both before its restoration ($%.2f$) and its bounce ($%.2f$) (Fig. 27b). "
+              "From then on the junction requires $\\Gamma_+$ to change sign: the recollapsing region is cut off behind a horizon and seen from outside as a "
+              "black hole, as for the false-vacuum bubbles of \\cite{BGG}, and its bounce, if it occurs, produces a region causally disconnected from the "
+              "parent. The cycle of Section 7.5 therefore belongs to a completed, percolated transition of the whole region, not to individual bubbles; "
+              "isolated bubbles in an eternally inflating false vacuum, the case without completion in Fig. 28a, end as black holes."
+              % (IS["t_trapped"], IS["t_interior_denser"], IS["t_restoration"], IS["t_bounce"])))
+    add(("p", "Two further checks address the effective bounce and the numerics. The bounce density $\\rho_c$ varied over eight orders of magnitude and a "
+              "different bounce form, $H^2=(\\rho/3)[1-(\\rho/\\rho_c)^2]$, change only the bounce temperature (from %.0f to %.0f MeV); the turnaround, the "
+              "restoration and $\\ln G$ are set at low density and do not change, so the growth law does not depend on the bounce prescription, although "
+              "the existence of a bounce remains an assumption (Section 6.11 tests a different mechanism). An independent integration of the percolated "
+              "history as an initial-value problem reproduces the turnaround and restoration of the root-finding solution to %s in time, with a "
+              "constraint residual of %s."
+              % (var["rho_c = 1e40"]["T_b_MeV"], var["rho_c = 1e48"]["T_b_MeV"],
+                 sci(abs(RP["restoration_time_ivp"] - RP["restoration_time_root"]) / RP["restoration_time_root"], 0), sci(RP["constraint_residual_ivp"], 0))))
+    brows = [["completion of the transition", "%.3f Hubble times; $R_{\\rm coll}H=%.4f$" % (PC["completion_duration_over_hubble_time"], PC["R_coll_times_H"]),
+              "homogeneous above $R_{\\rm coll}$"],
+             ["equation of state of collision products", "$w=1/3$: $\\ln G=%.3f$; $w=0$: $\\ln G=%.3f$" % (float(np.mean(w13["lnG"])), float(np.mean(w0["lnG"]))),
+              "cycle continues in both"],
+             ["thin wall after contraction", "thickness/radius %s" % texsci(WB["contracted_thickness_over_radius"], 0).join("$$"), "valid"],
+             ["self-gravity of the wall", "$\\sigma R/2\\Gamma=%s$" % texsci(GJ["wall"]["max_grav"], 0), "negligible"],
+             ["dark-matter pressure", "%.2f of the drive" % WB["dm_pressure_over_vacuum_drive"], "runaway"],
+             ["gauge-boson (NLO) pressure", "terminal $\\Gamma\\ge%.0f$ ($g\\le1$, $T<1$ meV)" % gmin, "dark matter still crosses"],
+             ["gravitational waves", "fraction $\\lesssim%s$" % texsci(WB["gw_fraction_bound"], 0), "negligible"],
+             ["black holes from collisions", "$R_{\\rm coll}H=%.4f$" % WB["pbh_scale_ratio"], "none"],
+             ["isolated bubble", "trapped at $t=%.2f$, before bounce at %.2f" % (IS["t_trapped"], IS["t_bounce"]), "black hole; no hand-off"],
+             ["bounce prescription", "$\\rho_c$ over 8 decades, quadratic form", "only $T_b$ changes"]]
+    add(("table", "Table 20. Approximations of the hand-off from the wall to the cycle, and their bounds (bubble_handoff.py).",
+         ["Effect", "Bound or result", "Consequence"], brows, None))
+    add(("fig", "fig27_handoff.png", "Fig. 27. (a) Fraction of space in the false vacuum along the baseline dilution history, with the completion "
+                "criterion $\\Gamma/H^4=9/4\\pi$. (b) Isolated bubble: density inside the wall and in the exterior, and the trapping parameter "
+                "$\\rho_{\\rm in}R^2/3$, with the turnaround, restoration and bounce of the interior.", 6.4))
+    # ---------------------------------------------------------------------------------------------- 7.7
+    add(("h2", "7.7 Controls and viability"))
     rows = [["A", "homogeneous held vacuum (Sec. 6.8)", "classical roll", "%.2f" % LNG["A"], "coherent seed or tilt; $T_b\\gtrsim m/5$"],
             ["B", "bubbles, all species transmitted", "nucleation, $B=%.0f$" % TW["B"], "%.3f" % LNG["B"], "dissipation at restoration"],
-            ["B", "isolated bubble (open region)", "nucleation", "%.3f" % LNG["Bi"], "as above"],
+            ["B", "isolated bubble (open region)", "nucleation", "(%.3f)" % LNG["Bi"], "trapped before restoration: black hole"],
             ["B", "no re-thermalization at the bounce", "nucleation", "%.3f, %.3f, ..." % (NOREG[0], NOREG[1]), "cycles continue, dark matter dilutes away"],
             ["C", "computed selectivity", "nucleation", "%.3f" % LNG["C"], "identical to B (filtered fraction %s)" % texsci(DM["filtered_fraction"], 0).join("$$")],
             ["C*", "fully selective wall, hot bounce", "nucleation", "%.3f" % LNG["Cs"], "restoration only at the bounce"],
             ["C*", "fully selective wall, cold bounce", "nucleation", "fails", "no held epoch after the first cycle"],
             ["D", "no matter coupling", "constant rate", "fails", "window $%.0f\\le B_0\\le%.0f$; no restoration" % tuple(DW)]]
-    add(("table", "Table 20. Controls for the interface mechanism (baseline $\\eta=0.30$, $q=1$, $B_0=%.0f$, $\\theta_0=%.1f\\,\\theta_{\\rm deg}$). $\\ln G$: growth "
-                  "of the scale factor at successive transitions." % (WJ["base"]["B0"], WJ["base"]["f0"]),
+    add(("table", "Table 21. Controls for the interface mechanism (baseline $\\eta=0.30$, $q=1$, $B_0=%.0f$, $\\theta_0=%.1f\\,\\theta_{\\rm deg}$). $\\ln G$: growth "
+                  "of the scale factor at successive transitions; in brackets, a formal continuation (Section 7.6)." % (WJ["base"]["B0"], WJ["base"]["f0"]),
          ["Model", "Description", "Release", "$\\ln G$ per cycle", "Requires / outcome"], rows, None))
-    add(("p", "Table 20 answers the five questions. (A) Dilution creates a metastable window in the tunneling branch, not in the symmetron form. (B) A wall forms, "
+    add(("p", "Table 21 answers the five questions. (A) Dilution creates a metastable window in the tunneling branch, not in the symmetron form. (B) A wall forms, "
               "with a tension fixed by the field equations and nearly independent of density. (C) It is selective by mass, but it runs away and becomes "
               "transparent within a millimetre, so the computed selectivity changes nothing: models B and C coincide to %s. Only a hypothetical wall that kept "
               "all dark matter out (C*) would differ, and then the cycle survives only if the bounce re-thermalizes the dark matter, which restores the field "
               "at the bounce instead of during the contraction. (D) The region enclosed genuinely contracts for any negative true vacuum ($q>0$) and is solved "
-              "as a cosmology, not inferred from the wall radius. (E) It bounces and reheats with the effective bounce and the restoration by dissipation, "
+              "as a cosmology, not inferred from the wall radius, but only a completed transition keeps it part of the parent universe: an isolated bubble is "
+              "cut off behind a horizon (Section 7.6). (E) Within the effective approximations it bounces and reheats with the prescribed bounce and the "
+              "restoration by dissipation, "
               "and the cycles are self-similar when the dark matter is re-thermalized; without re-thermalization they continue but the dark matter dilutes away "
               "relative to the entropy. Without the coupling (D) there is no restoration, and a single transition that neither has already happened nor never "
               "completes requires $B_0$ in a window of width %.0f around %.0f, the fine tuning of Section 4; with the coupling, the region of the "
               "$(B_0,\\theta_0)$ plane that survives the past light cone and completes in the future extends from $B_0=%.0f$ to $%.0f$ for suitable $\\theta_0$ "
-              "and covers %.0f%% of the plane scanned (Fig. 27a)."
+              "and covers %.0f%% of the plane scanned (Fig. 28a)."
               % (sci(DM["filtered_fraction"], 0), DW[1] - DW[0], 0.5 * (DW[0] + DW[1]), CJ["map"]["B0_range_viable"][0], CJ["map"]["B0_range_viable"][1],
                  100 * CJ["map"]["fraction_viable"])))
-    add(("p", "The interface therefore gives a second, independent route to the conditional cycle, with a trigger that is first order rather than spinodal, "
-              "but it adds no new condition that the homogeneous model escapes and removes none: the turnaround needs $q>0$, the restoration needs "
-              "dissipation, and self-similarity needs re-thermalization. It does not filter entropy, does not restore the universe to an earlier state and "
-              "does not prove repeated big bangs. The idea of a matter-selective interface was suggested by membranes that pass some species and retain "
-              "others; in this potential the analogy fails quantitatively because the wall runs away. All %d interface checks pass (Table 21)."
+    Hm, Tm = VM["held"], VM["tunneling"]
+    add(("p", "How often are all the conditions met at once? Over stated ranges (viability_mc.py; log-uniform $a_c\\in[0.5,10]$, $m\\in[1,1000]$ MeV, "
+              "$T_b\\in[1\\,{\\rm MeV},10\\,{\\rm GeV}]$, uniform $q\\in[-1,3]$), the held vacuum of Section 6.8 satisfies holding today, recollapse, the "
+              "bounce window between BBN and the percolation of black holes, and re-thermalization of the dark matter together in %.1f%% of the draws "
+              "(%.1f%% of those that are held today and recollapse); re-thermalization, $T_b>mA(v)/5$ with the exact $A(v)$ of Section 6.2, is the "
+              "binding condition (%.0f%% alone). For the tunneling branch, adding $B_0\\in[50,1000]$, $\\theta_0/\\theta_{\\rm deg}\\in[10^{-3},10]$ and "
+              "$\\eta\\in\\{0.20,0.30,0.36\\}$, a clear past light cone, completion and recollapse hold together in %.1f%% of the draws, and all five "
+              "conditions in %.1f%%. Dissipation, a coherent seed and the absence of regenerated shear are required in addition and are not sampled. "
+              "These fractions describe the sample space of the model, not a probability for our universe; they show that the cycle is not confined "
+              "to a fine-tuned point but does require several independent conditions at once."
+              % (100 * Hm["joint"], 100 * Hm["joint_given_H1H2"], 100 * Hm["single"]["H4 re-thermalization"], 100 * Tm["joint_background"],
+                 100 * Tm["joint"])))
+    add(("p", "Within these effective approximations, the density-dependent tunneling branch admits contracting daughter-region trajectories that can be "
+              "continued through a prescribed nonsingular bounce, provided the transition completes; isolated bubbles do not. The interface is therefore "
+              "a conditional extension of the matter-dilution trigger, not a demonstrated second mechanism: a self-consistent treatment of the collision "
+              "products, of the reheating they produce and of the gravitational field across the completion of the transition would be needed to "
+              "establish one. It adds no condition that the homogeneous model escapes and removes none (the turnaround needs $q>0$, the restoration "
+              "needs dissipation, self-similarity needs re-thermalization), it does not filter entropy, and it concerns the background cosmology "
+              "only. The idea of a matter-selective interface was suggested by membranes that pass some species and retain others; in this "
+              "potential the analogy fails quantitatively because the wall runs away. All %d interface checks pass (Table S21)."
               % VJ["n"]))
-    add(("fig", "fig27_viability_map.png", "Fig. 27. (a) Outcome over the vacuum action $B_0$ and the coupling today $\\theta_0/\\theta_{\\rm deg}$ ($\\eta=0.30$, $q=1$): "
+    add(("fig", "fig28_viability_map.png", "Fig. 28. (a) Outcome over the vacuum action $B_0$ and the coupling today $\\theta_0/\\theta_{\\rm deg}$ ($\\eta=0.30$, $q=1$): "
                 "already decayed in the past light cone, no completed transition, or nucleation followed by recollapse, restoration, bounce and reheating; "
                 "the red band is the window without coupling (model D). (b) Contraction requires $q>0$; re-thermalization of the dark matter "
                 "($T_b\\gtrsim mA/5$) is required only by a fully selective wall (C*).", 6.4))
+    return B
+
+
+def validation_rows():
     def clean(t):
         for a, b_ in (("e^d - 1", "exp(d) - 1"), ("(k1 + k2)^2", "(k1 + k2) squared"), ("H^2", "H squared"), ("Gamma/H^4", "Gamma/H4"),
                       ("theta_deg", "theta(deg)"), ("R/R_0", "R/R0"), ("rho_c", "rho(c)"), ("dE_in", "dE(in)"), ("F_E", "F(E)"), ("W_wall", "W(wall)"),
                       ("B_tw", "B(tw)"), ("R_0", "R0")):
             t = t.replace(a, b_)
         return t.replace("_", " ").replace("^", "")
-    vrows = [[clean(c["name"]), "pass" if c["passed"] else "FAIL"] for c in VJ["checks"]]
-    add(("table", "Table 21. Validation of the interface calculations (interface_validation.py).", ["Check", "Result"], vrows, None))
-    return B
+    return [[clean(c["name"]), "pass" if c["passed"] else "FAIL"] for c in VJ["checks"]]
 
 
 if __name__ == "__main__":

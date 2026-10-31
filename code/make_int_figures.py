@@ -167,10 +167,34 @@ def fig27():
     a.legend(handles=[Patch(color="#EADFC2", label="no recollapse (q <= 0)"), Patch(color="#D8D0E8", label="B, C viable; C* fails (no re-thermalization)"),
                       Patch(color="#C9DCC9", label="B, C and C* viable")], fontsize=5.8, loc="upper left", framealpha=0.9)
     T_(a, "(b) Contraction and re-thermalization")
-    save(fig, "fig27_viability_map.png")
+    save(fig, "fig28_viability_map.png")
+
+
+def fig28():
+    HJ = J("bubble_handoff.json")
+    P_, I_ = HJ["percolation"], HJ["isolated"]
+    fig, ax = plt.subplots(1, 2, figsize=(7.6, 3.0))
+    a = ax[0]
+    a.plot(P_["a"], P_["f_false"], color=C1)
+    a.axvline(P_["a_trigger_criterion"], color=C2, ls="--", lw=0.9, label=r"$\Gamma/H^4=9/4\pi$")
+    a.axvline(P_["a_half"], color=C3, ls=":", lw=0.9, label="f = 1/2")
+    a.set_xlabel("scale factor a"); a.set_ylabel("false-vacuum fraction f"); a.set_xlim(1.0, 2.0); a.legend(fontsize=6.5)
+    T_(a, "(a) Completion of the transition")
+    a = ax[1]
+    t = np.array(I_["curve_t"])
+    ri, ro, tr = np.array(I_["curve_rho_in"]), np.array(I_["curve_rho_out"]), np.array(I_["curve_trap"])
+    a.plot(t, np.sign(ri) * np.log10(1 + np.abs(ri)), color=C1, label=r"interior $\rho_{in}$ (signed log$_{10}$(1+|$\rho$|))")
+    a.plot(t, np.log10(1 + ro), color=C3, label=r"exterior $\rho_{out}$")
+    a.plot(t, np.log10(tr + 1e-30), color=C2, label=r"log$_{10}(\rho_{in}R^2/3)$")
+    a.axhline(0, color="k", lw=0.5)
+    for k, c in (("t_turnaround", GR), ("t_restoration", C3), ("t_bounce", C4), ("t_trapped", C2)):
+        a.axvline(I_[k], color=c, lw=0.7, ls="--")
+    a.set_ylim(-6, 8); a.set_xlabel(r"interior proper time ($H_0^{-1}$)"); a.legend(fontsize=5.8, loc="upper left")
+    T_(a, "(b) Isolated bubble: trapped before its bounce")
+    save(fig, "fig27_handoff.png")
 
 
 if __name__ == "__main__":
-    for f in (fig23, fig24, fig25, fig26, fig27):
+    for f in (fig23, fig24, fig25, fig26, fig27, fig28):
         f()
         print(f.__name__, "done")

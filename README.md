@@ -66,13 +66,13 @@ code/       cdl_lib.py              potential, flat-space and gravitational boun
             continuous_cycles.py    cycles without resets, 100 cycles (continuous_cycles.json/.csv); cycle_scan.py   failure-mode map
             causal_controls.py, contraction_stability.py, bounce_validation.py, compact_relics.py, predictions.py   Sections 6.9-6.14
             cycle_map.py (return map, closed-form held epoch), numerics_admissibility.py (numerical devices)
-            vacuum_phase_map.py, vacuum_wall.py, interface_transport.py, bubble_gravity.py, bubble_to_cycle.py, bubble_entropy.py, interface_validation.py   Section 7
-            verify.py               35 executable checks
-            make_figures.py, make_thermal_figures.py, make_sim_figures.py, make_osc_figures.py, make_dil_figures.py, make_cyc_figures.py, make_int_figures.py   Figs 1-27
+            vacuum_phase_map.py, vacuum_wall.py, interface_transport.py, bubble_gravity.py, bubble_to_cycle.py, bubble_handoff.py, viability_mc.py, bubble_entropy.py, interface_validation.py   Section 7
+            verify.py               36 executable checks
+            make_figures.py, make_thermal_figures.py, make_sim_figures.py, make_osc_figures.py, make_dil_figures.py, make_cyc_figures.py, make_int_figures.py   Figs 1-28
             omml.py, render.py      LaTeX -> native Word equations; Word and LaTeX renderers
             build_paper.py, thermal_blocks.py, sim_blocks.py, osc_blocks.py, dil_blocks.py, cyc_blocks.py, build_supporting.py   build the manuscript, supplement and cover letter from the stored results
 *.json      stored results that the manuscript reads
-figures/    Figs 1-27 (300 dpi)
+figures/    Figs 1-28 (300 dpi)
 manuscript/ manuscript (Word and LaTeX/PDF), supplement, cover letter
 ```
 
@@ -104,7 +104,7 @@ python causal_controls.py      # ~20 min (4 processes)
 python contraction_stability.py   # ~40 min
 python bounce_validation.py; python compact_relics.py; python predictions.py   # ~10 min
 python cycle_map.py; python numerics_admissibility.py   # ~30 min
-python verify.py               # ~25 s; 35 checks
+python verify.py               # ~25 s; 36 checks
 python make_figures.py
 python build_paper.py          # refuses to run unless verify.py passed
 python build_supporting.py
@@ -114,6 +114,7 @@ Seeds are fixed (Monte Carlo: 20261030), so the numbers reproduce exactly.
 
 ## Revision history
 
+* **v1.8.0** — Hand-off from the wall to the cycle (Section 7.6): percolation (completion in 0.02 Hubble times, collisions at 0.8% of the Hubble scale), collision products bracketed by w = 1/3 and w = 0, bounds on the ultra-relativistic wall (NLO gauge friction, GWs, black holes), isolated bubbles trapped behind a horizon before their bounce, bounce-form and rho_c variants, independent integration; viability Monte Carlo over stated ranges (Section 7.7); conditional wording of the interface claims, background-only scope; validation table moved to the supplement (S21); Table 20, Fig. 28, check V36 (36), 40 interface checks.
 * **v1.7.0** — Density-dependent vacuum interfaces (new title, Section 7, Sections 7-9 renumbered 8-10): phase maps of both matter-coupled potentials, the coherence of the symmetron release, wall tension and density-dependent CDL action, field transmission and wall pressure, Israel junction and the evolution of the enclosed region through recollapse, restoration and bounce, energy and entropy closure, controls A-D and a viability map; Tables 20-21, S20, Figs 23-27, checks V33-V35 (35), 36 interface checks.
 * **v1.6.0** — Every prescribed step removed from the cycle (new title): Boltzmann dark matter with field-dependent mass, continuous dissipation, 100 cycles without resets; the failure hidden by the resets (a bounce too cold to re-thermalize the dark matter) and a failure-mode map; causal interventions on the turnaround; Bianchi I shear and an ekpyrotic phase; bounce validation including a ghost-fluid bounce; black-hole relics through the bounce; observational consequences (no primordial spectrum of the observed form); Sections 6.8-6.15, Tables 18-19, Figs 17-22, checks V29-V32 (32); the cycle as an attracting fixed point of the bounce-to-bounce map, a closed form for the held epoch, numerical-admissibility tests, <sigma v> fixed by the held-epoch abundance of the attractor.
 * **v1.5.0** — Main direction changed to a cyclic hot big bang triggered by matter dilution (new title): matter-held vacuum with a dark-matter coupling, release and recollapse against an uncoupled control (200-run grid), cooling vs dilution, tunneling branch, cold and hot cycles with an effective bounce, thermal dissipation and freeze-out (self-similar cycles), Section 6.2-6.7, Tables 16-17, Figs 13-16, checks V27-V28 (28).

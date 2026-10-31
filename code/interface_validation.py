@@ -108,6 +108,18 @@ for key, e in EJ["entropy"].items():
 chk("C equals B (computed selectivity changes nothing)", CJ["C percolated (computed selectivity)"]["lnG"] == CJ["B percolated"]["lnG"])
 chk("C* fails without re-thermalization", CJ["C* percolated, fully selective, cold bounce"]["failure"] is not None)
 
+# 7. hand-off
+HJ = J("bubble_handoff.json")
+chk("percolation completes within 0.1 Hubble time", HJ["percolation"]["completion_duration_over_hubble_time"] < 0.1,
+    duration=HJ["percolation"]["completion_duration_over_hubble_time"])
+vv = {v["variant"]: v for v in HJ["variants"]}
+chk("dark-radiation collision products give the thermalized ln G", abs(vv["wall energy as dark radiation until the bounce (w = 1/3)"]["lnG"][-1]
+    - vv["baseline (LQC, rho_c = 1e44)"]["lnG"][-1]) < 1e-9)
+chk("bounce density and form leave ln G unchanged", max(abs(v["lnG"][-1] - vv["baseline (LQC, rho_c = 1e44)"]["lnG"][-1]) for k, v in vv.items()
+    if "rho_c" in k or "quadratic" in k) < 1e-9)
+rp = HJ["reproduction"]
+chk("independent initial-value integration reproduces the events", abs(rp["restoration_time_ivp"] / rp["restoration_time_root"] - 1) < 1e-8
+    and abs(rp["turnaround_lna_ivp"] - rp["turnaround_lna_root"]) < 1e-9, residual=rp["constraint_residual_ivp"])
 out = dict(checks=checks, all_passed=all(c["passed"] for c in checks), n=len(checks))
 json.dump(out, open(os.path.join(HERE, "interface_validation.json"), "w"), indent=1)
 print("%d/%d passed" % (sum(c["passed"] for c in checks), len(checks)))
