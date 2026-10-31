@@ -773,6 +773,8 @@ _i6 = [k for k, b in enumerate(B) if b[0] == "h1" and b[1].startswith("6. Matter
 B[_i6:_i6] = SBK.blocks() + OSB.blocks()
 _i7 = [k for k, b in enumerate(B) if b[0] == "h1" and b[1].startswith("8. Consistency")][0]
 B[_i7:_i7] = DIL.blocks() + CYB.blocks() + INT.blocks()
+import copyedit as CE
+B = [CE.block(b) for b in B]                  # language review (Rubriq, accepted selectively)
 text_all = " ".join(b[-1] for b in B if b[0] in ("p", "abstract", "pb") and isinstance(b[-1], str)) + " ".join(" ".join(x) for b in B if b[0] == "bullets" for x in [b[1]])
 order = []
 for blk in B:

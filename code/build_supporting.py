@@ -300,6 +300,8 @@ add(("bullets", [
     "The negative-mode analysis is for flat space; the gravitational negative-mode problem is not addressed because $g\\sim10^{-60}$.",
 ]))
 supp = os.path.join(OUT, "EPJC_Late_Time_Vacuum_Decay_Supplement.docx")
+import copyedit as CE
+S = [CE.block(b) for b in S]
 RN.render_docx(S, supp, os.path.join(REPO, "figures"))
 
 # --------------------------------------------------------------------------------------------------------- cover letter
@@ -310,6 +312,7 @@ for s in d.sections:
 
 
 def para(text, bold=False, after=None):
+    text = CE.ce(text)
     p = d.add_paragraph(); r = p.add_run(text); r.bold = bold
     if after is not None:
         p.paragraph_format.space_after = Pt(after)
