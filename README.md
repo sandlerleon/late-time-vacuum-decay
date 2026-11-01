@@ -4,7 +4,7 @@ Leon Sandler, Independent Researcher — sandler.leon@gmail.com — ORCID 0009-0
 
 Code, data and manuscript for the paper of the same title, prepared for **General Relativity and Gravitation** (Springer Nature; research article). Earlier versions were prepared for The European Physical Journal C.
 Manuscript: `manuscript/GRG_Dilution_Triggered_Cycles.{docx,tex,pdf}`, supplement (Online Resource 1) `manuscript/GRG_Dilution_Triggered_Cycles_Supplement.{docx,pdf}`,
-cover letter `manuscript/GRG_Cover_Letter.docx`. Archived on Zenodo: paper 10.5281/zenodo.23841870, code 10.5281/zenodo.23841872 (this version; all versions: 23717616 / 23717618).
+cover letter `manuscript/GRG_Cover_Letter.docx`. Archived on Zenodo: paper 10.5281/zenodo.23849849, code 10.5281/zenodo.23849853 (version 2.1.0; all versions: 10.5281/zenodo.23717616 / 10.5281/zenodo.23717618).
 
 ## What the paper does
 
