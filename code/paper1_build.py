@@ -692,6 +692,9 @@ add(("p", "Three extensions would test the framework further: a derivation of th
 add(("h1", "Statements and Declarations"))
 add(("pb", "Funding.", "No funding was received for conducting this study."))
 add(("pb", "Competing interests.", "The author has no relevant financial or non-financial interests to disclose."))
+add(("pb", "Ethics approval and consent to participate.", "Not applicable."))
+add(("pb", "Consent for publication.", "Not applicable."))
+add(("pb", "Materials availability.", "Not applicable."))
 add(("pb", "Author contributions.", "Leon Sandler is the sole author: conceptualization, methodology, software, formal analysis, investigation, and "
         "writing of the original draft and its revisions."))
 add(("pb", "Data availability.", "The data underlying every figure and table are openly available as JSON and CSV files, written by the scripts named in "
@@ -896,6 +899,13 @@ if __name__ == "__main__":
     RN.render_docx(B, os.path.join(OUT, BASENAME + ".docx"), FIGDIR)
     RN.render_tex(B, os.path.join(OUT, BASENAME + ".tex"))
     build_letter()
+    # Springer Nature template (sn-jnl) submission folder: class file, .tex, Fig1..FigN, compiled with pdflatex separately
+    SN = os.path.join(OUT, "GRG_submission")
+    os.makedirs(SN, exist_ok=True)
+    names = RN.render_tex_sn(B, os.path.join(SN, BASENAME + ".tex"), SN, FIGDIR, ("Independent Researcher", "Northbrook", "Illinois", "USA"),
+                             "sandler.leon@gmail.com", "0009-0007-4584-808X")
+    open(os.path.join(SN, "FIGURES.txt"), "w", encoding="utf-8").write(
+        "Figure files (PNG, 300 dpi, made with Matplotlib):\n" + "\n".join("Fig%d.png  <-  figures/%s" % (i + 1, n) for i, n in enumerate(names)) + "\n")
     words = sum(len(b[1].split()) for b in B if b[0] in ("p", "abstract")) + sum(len(x.split()) for b in B if b[0] == "bullets" for x in b[1])
     nfig = sum(1 for b in B if b[0] == "fig")
     print("Paper 1: %d words, %d figures, %d tables, %d equations, %d references" % (words, nfig, sum(1 for b in B if b[0] == "table"),

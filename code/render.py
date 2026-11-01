@@ -298,7 +298,7 @@ def render_tex(blocks, path, fig_dir_rel="../figures"):
         elif k == "fig":
             fignum += 1
             wfrac = min(1.0, (b[3] if len(b) > 3 else 6.3) / 6.3)
-            body.append(r"\begin{figure}[htbp]\centering\includegraphics[width=%.2f\textwidth]{%s/%s}\caption{%s}\end{figure}" % (wfrac, fig_dir_rel, b[1], tex_inline(re.sub(r"^Fig\.\s*\d+\.\s*", "", b[2]))))
+            body.append(r"\begin{figure}[htbp]\centering\includegraphics[width=%.2f\textwidth]{%s/%s}\caption{%s}\end{figure}" % (wfrac, fig_dir_rel, b[1], tex_inline(re.sub(r"^Fig\.\s*\d+\.?\s*", "", b[2]))))
         elif k == "table":
             tabnum += 1
             header, rows = b[2], b[3]
@@ -327,3 +327,59 @@ def render_tex(blocks, path, fig_dir_rel="../figures"):
     L += body
     L += [r"\end{document}"]
     open(path, "w", encoding="utf-8").write("\n".join(L))
+
+
+
+def render_tex_sn(blocks, path, sn_dir, fig_src_dir, affil, email, orcid=None):
+    """Springer Nature (sn-jnl, sn-mathphys-num) version for submission: a self-contained folder `sn_dir` with sn-jnl.cls, the .tex, and the figures
+    renamed Fig1, Fig2, ... in order of appearance. Title, author, abstract and keywords go to the sn-jnl front matter; the reference list becomes a
+    thebibliography environment (citations in the text are already numbered); \backmatter precedes the declarations."""
+    import os
+    import shutil
+    tmp = path + ".tmp"
+    render_tex([b for b in blocks if b[0] not in ("title", "author", "abstract", "keywords")], tmp, "FIGDIR")
+    body = open(tmp, encoding="utf-8").read()
+    os.remove(tmp)
+    body = body[body.index(r"\maketitle") + len(r"\maketitle"):body.index(r"\end{document}")]
+    # figures: FIGDIR/<name> -> FigN.<ext>, copied into the submission folder
+    names = []
+    def fig_sub(m):
+        n = m.group(1)
+        if n not in names:
+            names.append(n)
+        return "Fig%d%s" % (names.index(n) + 1, os.path.splitext(n)[1])
+    body = re.sub(r"FIGDIR/([^}]+)", fig_sub, body)
+    for i, n in enumerate(names):
+        shutil.copyfile(os.path.join(fig_src_dir, n), os.path.join(sn_dir, "Fig%d%s" % (i + 1, os.path.splitext(n)[1])))
+    # references -> thebibliography
+    i0 = body.index(r"\section*{References}")
+    refs = re.findall(r"\\noindent\\hangindent=1\.5em \[(\d+)\] (.*?)\\par", body[i0:], flags=re.S)
+    bib = [r"\begin{thebibliography}{%d}" % len(refs)] + [r"\bibitem{r%s} %s" % (k, t.strip()) for k, t in refs] + [r"\end{thebibliography}"]
+    body = body[:i0] + "\n".join(bib) + "\n"
+    for h in (r"\section*{Statements and Declarations}", r"\section*{Declarations}"):
+        if h in body:
+            body = body.replace(h, "\\backmatter\n\n" + h, 1)
+            break
+    get = lambda k: [b for b in blocks if b[0] == k][0][1]
+    name = get("author").split("\n")[0].split()
+    fnm, sur = " ".join(name[:-1]), name[-1]
+    org, city, state, country = affil
+    L = [r"\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}", r"\usepackage{graphicx}", r"\usepackage{amsmath,amssymb,amsfonts}", r"\usepackage{booktabs,array}",
+         r"\usepackage{xurl}", r"\usepackage{textcomp}", r"\raggedbottom", r"\begin{document}",
+         r"\title[%s]{%s}" % (tex_inline(get("title"))[:60], tex_inline(get("title"))),
+         r"\author*[1]{\fnm{%s} \sur{%s}}\email{%s}" % (fnm, sur, email),
+         r"\affil*[1]{\orgname{%s}, \orgaddress{\city{%s}, \state{%s}, \country{%s}}}" % (org, city, state, country),
+         r"\abstract{%s}" % tex_inline(get("abstract")),
+         r"\keywords{%s}" % ", ".join(tex_inline(x.strip()) for x in get("keywords").split(";")),
+         r"\maketitle", ""]
+    if orcid:
+        L.insert(L.index(r"\maketitle"), "% ORCID " + orcid)
+    shutil.copyfile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "sn-jnl.cls"), os.path.join(sn_dir, "sn-jnl.cls"))
+    # the sn-jnl text block (31 pc) is narrower than article's: one size smaller for tables
+    # (sn-jnl wraps table in threeparttable, which breaks inside \resizebox: wide tables use the original float, scaled to the text width)
+    body = re.sub(r"\\begin\{table\}\[htbp\]\\centering\\footnotesize(\\setlength\{\\tabcolsep\}\{3pt\}\n\\caption\{.*?\}\n)(\\begin\{tabular\}.*?\\end\{tabular\})\n\\end\{table\}",
+                  lambda m: r"\begin{tableorg}[htbp]\centering\footnotesize" + m.group(1) + r"\resizebox{\textwidth}{!}{" + m.group(2) + "}\n\\end{tableorg}",
+                  body, flags=re.S)
+    body = body.replace(r"\centering\small", r"\centering\footnotesize")
+    open(path, "w", encoding="utf-8").write("\n".join(L) + "\n" + body + "\n\\end{document}\n")
+    return names

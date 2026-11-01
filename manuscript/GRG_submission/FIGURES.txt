@@ -1,0 +1,10 @@
+Figure files (PNG, 300 dpi, made with Matplotlib):
+Fig1.png  <-  figures/fig13_matter_held_vacuum.png
+Fig2.png  <-  figures/fig14_release_scan.png
+Fig3.png  <-  figures/fig19_causal_controls.png
+Fig4.png  <-  figures/fig12_hysteresis_stability.png
+Fig5.png  <-  figures/fig20_contraction_stability.png
+Fig6.png  <-  figures/fig21_bounce_validation.png
+Fig7.png  <-  figures/fig22_relics_failure_map.png
+Fig8.png  <-  figures/fig17_continuous_cycles.png
+Fig9.png  <-  figures/fig18_cycle_map.png
